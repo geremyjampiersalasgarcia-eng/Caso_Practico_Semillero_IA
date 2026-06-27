@@ -1,0 +1,1 @@
+// SourcesBadge.tsx placeholder

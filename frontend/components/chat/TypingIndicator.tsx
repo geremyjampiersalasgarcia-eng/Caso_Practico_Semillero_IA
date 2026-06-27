@@ -1,0 +1,1 @@
+// TypingIndicator.tsx placeholder

@@ -1,0 +1,1 @@
+// ChatWindow.test.tsx placeholder

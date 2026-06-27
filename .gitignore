@@ -1,0 +1,78 @@
+# =============================================
+# Caso_Practico_Semillero_IA - .gitignore
+# =============================================
+
+# ---------- Control files (internos, no subir) ----------
+AGENTS.md
+STATUS.md
+WORKFLOW.md
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+*.whl
+
+# ---------- Virtual environments ----------
+venv/
+.venv/
+env/
+.env
+
+# ---------- IDE ----------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------- Node / Frontend ----------
+node_modules/
+.next/
+out/
+.turbo/
+pnpm-lock.yaml
+
+# ---------- ChromaDB persistence ----------
+backend/data/chroma_db/*
+!backend/data/chroma_db/.gitkeep
+
+# ---------- Environment files ----------
+.env
+.env.local
+.env.production
+.env.*.local
+backend/.env
+frontend/.env
+frontend/.env.local
+
+# ---------- Logs ----------
+*.log
+logs/
+
+# ---------- Test / Coverage ----------
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# ---------- Docker ----------
+*.pid
+
+# ---------- Misc ----------
+*.bak
+*.tmp
+*.temp
