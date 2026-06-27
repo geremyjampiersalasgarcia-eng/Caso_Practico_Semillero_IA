@@ -249,23 +249,7 @@ docker-compose up --build
 | Frontend UI | http://localhost:3000 | Interfaz de chat en el navegador |
 | PostgreSQL | `localhost:5432` | Base de datos relacional |
 
-### Opción B: Sin Docker (Desarrollo Local en Windows/Linux)
-```bash
-# 1. Levantar el Backend
-cd backend
-# Crear y activar entorno virtual
-python -m venv venv
-# (En Windows: .\venv\Scripts\activate | En Linux/Mac: source venv/bin/activate)
-.\venv\Scripts\activate
-pip install -r requirements.txt
-# (Nota: Si PostgreSQL no está corriendo, el sistema usará automáticamente una BD local SQLite como fallback)
-python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-# 2. Levantar el Frontend (en otra terminal)
-cd frontend
-npm install
-npm run dev
-```
 
 ### Atajos con Makefile
 El proyecto incluye un `Makefile` con atajos para las operaciones más comunes:
