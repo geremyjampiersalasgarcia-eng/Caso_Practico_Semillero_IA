@@ -246,7 +246,10 @@ docker-compose up --build
 ```bash
 # 1. Levantar el Backend
 cd backend
-# Activar entorno virtual (En Windows: .\venv\Scripts\activate | En Linux: source venv/bin/activate)
+# Crear y activar entorno virtual
+python -m venv venv
+# (En Windows: .\venv\Scripts\activate | En Linux/Mac: source venv/bin/activate)
+.\venv\Scripts\activate
 pip install -r requirements.txt
 # (Nota: Si PostgreSQL no está corriendo, el sistema usará automáticamente una BD local SQLite como fallback)
 python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
@@ -298,6 +301,9 @@ Se espera un mínimo de **80% de cobertura** de líneas en el backend.
 | Método | Endpoint | Descripción |
 | :--- | :--- | :--- |
 | `POST` | `/api/v1/chat` | Envía un mensaje al orquestador de agentes y devuelve la respuesta consolidada con fuentes. |
+| `GET` | `/api/v1/conversations` | Lista el historial de todas las conversaciones guardadas en la base de datos. |
+| `GET` | `/api/v1/conversations/{id}` | Carga el detalle completo (mensajes y fuentes) de una conversación pasada. |
+| `DELETE` | `/api/v1/conversations/{id}` | Elimina una conversación de manera permanente. |
 | `GET` | `/api/v1/health` | Verifica el estado del servicio y conexión a BD/ChromaDB. |
 | `GET` | `/api/v1/documents` | Lista los documentos indexados en el sistema RAG. |
 

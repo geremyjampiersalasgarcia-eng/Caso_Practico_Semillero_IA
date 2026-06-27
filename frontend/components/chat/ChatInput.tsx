@@ -76,58 +76,12 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
           disabled={isLoading}
         />
 
-        {/* AI Model Selector / Badge (Gemini Style) */}
-        <div className="hidden sm:flex h-10 items-center shrink-0 relative" onClick={(e) => e.stopPropagation()}>
-          <button 
-            onClick={() => setIsModelMenuOpen(!isModelMenuOpen)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100/80 hover:bg-slate-200/80 text-sm font-semibold text-slate-600 transition-colors mr-2"
-          >
+        {/* AI Model Badge */}
+        <div className="hidden sm:flex h-10 items-center shrink-0 relative">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100/80 text-sm font-semibold text-slate-600 mr-2 cursor-default border border-slate-200/50">
             <Sparkles className="h-3.5 w-3.5 text-blue-500" />
-            <span>{selectedModel}</span>
-            <ChevronDown className={`h-3.5 w-3.5 text-slate-400 transition-transform ${isModelMenuOpen ? 'rotate-180' : ''}`} />
-          </button>
-
-          {/* Menú Desplegable */}
-          {isModelMenuOpen && (
-            <div className="absolute bottom-[120%] right-2 w-64 bg-white rounded-2xl shadow-[0_10px_40px_rgb(0,0,0,0.12)] border border-slate-100 p-2 animate-in fade-in zoom-in-95 duration-200 z-50">
-              
-              <button 
-                onClick={() => { setSelectedModel("Orquestador Flash"); setIsModelMenuOpen(false); }}
-                className="flex w-full items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors text-left"
-              >
-                <Zap className="h-5 w-5 mt-0.5 text-emerald-500 shrink-0" />
-                <div>
-                  <div className="text-sm font-bold text-slate-800">Orquestador Flash</div>
-                  <div className="text-xs text-slate-500 mt-0.5">Respuestas rápidas para tareas sencillas.</div>
-                </div>
-              </button>
-
-              <button 
-                onClick={() => { setSelectedModel("Orquestador Pro"); setIsModelMenuOpen(false); }}
-                className="flex w-full items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors text-left mt-1"
-              >
-                <Sparkles className="h-5 w-5 mt-0.5 text-blue-500 shrink-0" />
-                <div>
-                  <div className="text-sm font-bold text-slate-800">Orquestador Pro</div>
-                  <div className="text-xs text-slate-500 mt-0.5">Ayuda completa, programación y análisis profundo.</div>
-                </div>
-              </button>
-
-              <div className="h-px bg-slate-100 my-1 mx-2"></div>
-              
-              <button 
-                onClick={() => { setSelectedModel("Especialista Avanzado"); setIsModelMenuOpen(false); }}
-                className="flex w-full items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors text-left"
-              >
-                <Brain className="h-5 w-5 mt-0.5 text-purple-500 shrink-0" />
-                <div>
-                  <div className="text-sm font-bold text-slate-800">Especialista Avanzado</div>
-                  <div className="text-xs text-slate-500 mt-0.5">Análisis documental exhaustivo (lento).</div>
-                </div>
-              </button>
-
-            </div>
-          )}
+            <span>Gemini 2.5 Flash</span>
+          </div>
         </div>
 
         {/* Send Button */}
