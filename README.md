@@ -149,7 +149,11 @@ Caso_Practico_Semillero_IA/
 │   ├── tests/                      # Pruebas de interfaz
 │   └── types/                      # Interfaces TypeScript reflejando los schemas del backend
 ├── docs/                           # Documentación técnica, ADRs, riesgos y guías
+├── .github/workflows/              # Flujos de CI/CD de GitHub Actions
 ├── docker-compose.yml              # Orquestación de infraestructura local
+├── docker-compose.override.yml     # Configuraciones específicas para desarrollo local
+├── Makefile                        # Atajos para comandos de desarrollo y pruebas
+├── LICENSE                         # Licencia MIT
 ├── *.md                            # Documentos de control (AGENTS.md, STATUS.md, WORKFLOW.md, etc.)
 └── README.md                       # Documentación maestra del sistema
 ```
