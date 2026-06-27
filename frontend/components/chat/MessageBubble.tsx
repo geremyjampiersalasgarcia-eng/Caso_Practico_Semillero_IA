@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Bot, User } from "lucide-react";
+import { Sparkles, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -15,25 +15,27 @@ export function MessageBubble({ role, content }: MessageBubbleProps) {
   return (
     <div
       className={cn(
-        "flex w-full items-start gap-4 py-4",
+        "flex w-full items-start gap-5 py-2 animate-in fade-in slide-in-from-bottom-2 duration-500",
         isUser ? "justify-end" : "justify-start"
       )}
     >
       {!isUser && (
-        <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md border shadow bg-primary text-primary-foreground">
-          <Bot className="h-5 w-5" />
+        <div className="flex h-10 w-10 shrink-0 select-none items-center justify-center rounded-full bg-gradient-to-tr from-blue-500 to-indigo-400 p-[2px] shadow-sm mt-1">
+          <div className="h-full w-full bg-white rounded-full flex items-center justify-center">
+            <Sparkles className="h-5 w-5 text-blue-500" />
+          </div>
         </div>
       )}
 
       <div
         className={cn(
-          "relative flex max-w-[80%] flex-col gap-2 rounded-lg px-4 py-3 text-sm shadow-sm",
+          "relative flex max-w-[85%] flex-col gap-2 px-6 py-4 text-[15px] shadow-sm leading-relaxed",
           isUser
-            ? "bg-primary text-primary-foreground"
-            : "bg-muted border text-foreground"
+            ? "bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-3xl rounded-tr-sm"
+            : "bg-white border border-slate-100 text-slate-700 rounded-3xl rounded-tl-sm shadow-[0_4px_20px_rgb(0,0,0,0.03)]"
         )}
       >
-        <div className="prose prose-sm dark:prose-invert max-w-none break-words">
+        <div className="prose prose-slate max-w-none break-words prose-p:leading-relaxed prose-pre:bg-slate-50 prose-pre:border prose-pre:border-slate-100 prose-pre:text-slate-700 prose-headings:font-bold">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {content}
           </ReactMarkdown>
@@ -41,7 +43,7 @@ export function MessageBubble({ role, content }: MessageBubbleProps) {
       </div>
 
       {isUser && (
-        <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md border shadow bg-secondary text-secondary-foreground">
+        <div className="flex h-10 w-10 shrink-0 select-none items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-slate-600 shadow-sm mt-1">
           <User className="h-5 w-5" />
         </div>
       )}

@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { SendHorizontal, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { SendHorizontal, Loader2, Paperclip, ChevronDown, Sparkles } from "lucide-react";
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -11,13 +10,12 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-resize textarea
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${Math.min(
         textareaRef.current.scrollHeight,
-        200
+        150
       )}px`;
     }
   }, [input]);
@@ -40,30 +38,57 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
   };
 
   return (
-    <div className="relative flex w-full items-end gap-2 rounded-xl border bg-background p-3 shadow-sm focus-within:ring-1 focus-within:ring-ring">
-      <textarea
-        ref={textareaRef}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Escribe tu consulta aquí..."
-        className="max-h-[200px] min-h-[24px] w-full resize-none bg-transparent px-2 py-1 text-sm focus:outline-none disabled:opacity-50"
-        rows={1}
-        disabled={isLoading}
-      />
-      <Button
-        size="icon"
-        variant="default"
-        className="h-8 w-8 shrink-0 rounded-lg"
-        onClick={handleSend}
-        disabled={isLoading || !input.trim()}
-      >
-        {isLoading ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <SendHorizontal className="h-4 w-4" />
-        )}
-      </Button>
+    <div className="relative rounded-[2rem] p-[2px] overflow-hidden group shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20 transition-shadow duration-500">
+      
+      {/* Animated Gradient Background Wrapper */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-300 via-indigo-400 to-purple-400 bg-[length:200%_200%] animate-bg-pan opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+      {/* Inner Input Wrapper */}
+      <div className="relative flex w-full items-end gap-2 rounded-[calc(2rem-2px)] bg-white/95 backdrop-blur-xl px-4 py-3">
+        
+        {/* Attachment Button */}
+        <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">
+          <Paperclip className="h-5 w-5" />
+        </button>
+
+        {/* Text Area */}
+        <textarea
+          ref={textareaRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Pregunta sobre la arquitectura, el código..."
+          className="max-h-[150px] min-h-[24px] w-full resize-none bg-transparent px-1 py-2 text-[15px] text-slate-700 placeholder:text-slate-400 focus:outline-none disabled:opacity-50 mt-1"
+          rows={1}
+          disabled={isLoading}
+        />
+
+        {/* AI Model Selector / Badge (Gemini Style) */}
+        <div className="hidden sm:flex h-10 items-center shrink-0">
+          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100/80 hover:bg-slate-200/80 text-sm font-semibold text-slate-600 transition-colors mr-2">
+            <Sparkles className="h-3.5 w-3.5 text-blue-500" />
+            <span>Orquestador Pro</span>
+            <ChevronDown className="h-3.5 w-3.5 text-slate-400" />
+          </button>
+        </div>
+
+        {/* Send Button */}
+        <button
+          onClick={handleSend}
+          disabled={isLoading || !input.trim()}
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all duration-300 shadow-sm ${
+            input.trim() && !isLoading 
+              ? "bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md hover:scale-105" 
+              : "bg-slate-100 text-slate-300 cursor-not-allowed"
+          }`}
+        >
+          {isLoading ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          ) : (
+            <SendHorizontal className="h-5 w-5 ml-0.5" />
+          )}
+        </button>
+      </div>
     </div>
   );
 }
