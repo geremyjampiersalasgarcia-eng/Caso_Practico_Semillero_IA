@@ -1,1 +1,3 @@
-# CI Backend
+# ci-backend.yml
+# Workflow de GitHub Actions para Integración Continua del Backend
+# Ejecutará flake8, black, mypy y pytest en cada Pull Request

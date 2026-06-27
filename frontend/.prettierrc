@@ -1,1 +1,5 @@
-// .prettierrc placeholder
+{
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2
+}

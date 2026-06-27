@@ -1,1 +1,3 @@
-# CI Frontend
+# ci-frontend.yml
+# Workflow de GitHub Actions para Integración Continua del Frontend
+# Ejecutará linting (ESLint), formateo (Prettier) y tests unitarios (Jest/Vitest)

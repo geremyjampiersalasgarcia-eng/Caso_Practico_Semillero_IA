@@ -1,1 +1,3 @@
-# Docker Build
+# docker-build.yml
+# Workflow de GitHub Actions para construir y publicar imágenes Docker
+# Útil para el paso a producción (despliegue continuo en Azure/AWS)

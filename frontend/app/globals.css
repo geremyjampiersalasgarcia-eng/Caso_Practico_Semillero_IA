@@ -1,1 +1,3 @@
-/* globals.css placeholder */
+/* globals.css - Estilos globales de la aplicación Next.js */
+/* Aquí se importarán las directivas principales de Tailwind CSS (@tailwind base, components, utilities) */
+/* Y variables de tema globales para modo oscuro/claro */

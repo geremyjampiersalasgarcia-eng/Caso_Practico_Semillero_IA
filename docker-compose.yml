@@ -1,1 +1,3 @@
 # docker-compose.yml
+# Define los servicios principales: backend (FastAPI), frontend (Next.js) y postgres
+# Orquesta el levantamiento completo de la Mesa de Ayuda IA en contenedores

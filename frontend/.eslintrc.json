@@ -1,1 +1,4 @@
-// .eslintrc.json placeholder
+{
+  "extends": "next/core-web-vitals",
+  "rules": {}
+}

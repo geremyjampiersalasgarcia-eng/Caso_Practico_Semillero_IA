@@ -1,1 +1,3 @@
-// next.config.js placeholder
+/** @type {import('next').NextConfig} */
+const nextConfig = {};
+module.exports = nextConfig;

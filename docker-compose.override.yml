@@ -1,1 +1,3 @@
 # docker-compose.override.yml
+# Configuraciones específicas para el entorno de desarrollo local
+# Incluye mapeo de puertos adicionales, volúmenes locales y variables de debug
