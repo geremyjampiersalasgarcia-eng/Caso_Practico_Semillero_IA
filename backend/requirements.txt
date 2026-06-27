@@ -1,1 +1,28 @@
-# requirements.txt
+# ==================================================
+# Caso_Practico_Semillero_IA - Backend Dependencies
+# ==================================================
+
+# --- Framework API ---
+fastapi==0.115.12
+uvicorn[standard]==0.34.3
+python-multipart==0.0.20
+
+# --- LLM / AI ---
+langchain==0.3.25
+langchain-core==0.3.59
+langchain-google-genai==2.1.5
+langgraph==0.4.8
+
+# --- Vector Store ---
+chromadb==1.0.12
+
+# --- Validation & Config ---
+pydantic==2.11.4
+pydantic-settings==2.9.1
+python-dotenv==1.1.0
+
+# --- Logging ---
+structlog==25.4.0
+
+# --- HTTP ---
+httpx==0.28.1

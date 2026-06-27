@@ -1,1 +1,54 @@
-# pyproject.toml
+# ==================================================
+# Caso_Practico_Semillero_IA - Backend Configuration
+# ==================================================
+
+[project]
+name = "caso-practico-semillero-ia"
+version = "0.1.0"
+description = "Mesa de Ayuda IA con agentes especializados"
+requires-python = ">=3.11"
+
+# --- Black (formatter) ---
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+# --- Ruff (linter) ---
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "RUF",  # ruff-specific rules
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+# --- Mypy (type checker) ---
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+ignore_missing_imports = true
+
+# --- Pytest ---
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+python_files = ["test_*.py"]
+python_functions = ["test_*"]

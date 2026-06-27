@@ -1,1 +1,18 @@
-# requirements-dev.txt
+# ==================================================
+# Dev Dependencies (install with: pip install -r requirements-dev.txt)
+# ==================================================
+
+-r requirements.txt
+
+# --- Testing ---
+pytest==8.4.1
+pytest-asyncio==1.0.0
+httpx==0.28.1
+
+# --- Linting & Formatting ---
+ruff==0.11.13
+black==25.1.0
+mypy==1.16.0
+
+# --- Type stubs ---
+types-python-dotenv==0.21.0.20241213
