@@ -81,9 +81,9 @@ graph TD
 
 ### Flujo de Inferencia Paso a Paso
 
-A continuación se presenta el flujo detallado de inferencia y procesamiento secuencial de una consulta dentro del sistema de mesa de ayuda técnica:
+A continuación se presenta el flujo detallado de inferencia y procesamiento secuencial de una consulta dentro de la arquitectura de agentes RAG del proyecto:
 
-![Proceso de Inferencia: Mesa de Ayuda IA](docs/images/pipeline_infographic.png)
+![Flujo de Inferencia: Arquitectura Multi-Agente RAG](docs/images/pipeline_infographic.png)
 
 ---
 
