@@ -10,17 +10,17 @@ pydantic==2.9.0
 pydantic-settings==2.5.0
 
 # --- LLM & AI ---
-langchain>=0.3.0
-langchain-core>=0.3.0
-langchain-google-genai>=2.0.0
-langchain-community>=0.3.0
-langchain-text-splitters>=0.3.0
-langgraph>=0.2.27
-google-generativeai>=0.7.0,<0.8.0
+langchain
+langchain-core
+langchain-google-genai
+langchain-community
+langchain-text-splitters
+langgraph
+google-generativeai
 
 # --- Vector Store ---
-langchain-chroma>=0.1.4
-chromadb>=0.5.0
+langchain-chroma
+chromadb
 
 # --- Database ---
 sqlalchemy==2.0.32
