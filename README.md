@@ -1,5 +1,21 @@
 # Caso Práctico Semillero IA
 
+Prototipo de mesa de ayuda técnica para Desarrollo TI con **agentes especializados** orquestados con **LangGraph**, RAG sobre documentos y modelo **Google Gemini**. Incluye API REST e interfaz web.
+
+> Caso práctico — Desarrollador Senior IA. Foco: criterio de arquitectura, seguridad, RAG, trazabilidad y capacidad de explicación. No es solución productiva.
+
+---
+
+## Tabla de contenido
+
+* [Stack Tecnológico](#stack-tecnológico)
+* [Arquitectura](#arquitectura)
+* [Estructura del Proyecto](#estructura-del-proyecto)
+* [Cómo empezar (Configuración Inicial)](#cómo-empezar-configuración-inicial)
+* [Endpoints de la API](#endpoints-de-la-api)
+* [Decisiones Técnicas](#decisiones-técnicas)
+
+---
 
 ## Stack Tecnológico
 
@@ -17,6 +33,55 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-000000?style=for-the-badge&logo=shadcnui&logoColor=white)](https://ui.shadcn.com/)
+
+### Justificación de Tecnologías Clave
+
+| Componente | Elección | Por qué |
+| :--- | :--- | :--- |
+| **Lenguaje** | Python 3.11 | Estándar empresarial para IA / RAG. Ecosistema robusto de NLP. |
+| **Web framework** | FastAPI + uvicorn | Tipado estricto, documentación automática (Swagger), alto rendimiento asíncrono. |
+| **Orquestación** | LangGraph 0.4 | Permite modelar el flujo de agentes como un grafo explícito (State Graph), ideal para enrutamiento condicional y flujos cíclicos. |
+| **Vector store** | ChromaDB (local) | Persistente, rápido de configurar y no requiere servicios externos para el prototipo. |
+| **Base de Datos** | PostgreSQL + SQLAlchemy | Almacenamiento robusto y estructurado para historial de conversaciones y auditoría. |
+| **LLM & Embeddings** | Google Gemini 1.5 Flash / embeddings-004 | Alta velocidad de inferencia, excelente ventana de contexto, ideal para agentes. |
+| **Frontend UI** | Next.js + Tailwind + Shadcn UI | Desarrollo ágil con componentes pre-estilizados de alta calidad y SSR/CSR híbrido. |
+
+---
+
+## Arquitectura
+
+El sistema sigue una arquitectura de microservicios separando el frontend del backend, con un flujo interno orquestado por LangGraph.
+
+```mermaid
+graph TD
+    User([Usuario]) -->|Pregunta (HTTP POST)| API[FastAPI / Chat Endpoint]
+    
+    subgraph Orquestador LangGraph
+        API --> Classify[Clasificador de Intención]
+        Classify -->|Condicional| Router{Router}
+        
+        Router -->|Tema A| AgentA[Agente A]
+        Router -->|Tema B| AgentB[Agente B]
+        Router -->|Múltiple| AgentC[Agente C]
+        
+        AgentA --> Consolidate[Consolidador de Respuesta]
+        AgentB --> Consolidate
+        AgentC --> Consolidate
+    end
+    
+    subgraph Capa RAG
+        AgentA <-->|Retriever| VectorDB[(ChromaDB)]
+        AgentB <-->|Retriever| VectorDB
+        AgentC <-->|Retriever| VectorDB
+        VectorDB -.-> Docs[Documentos Locales]
+    end
+    
+    Consolidate -->|Respuesta + Fuentes| API
+    API -->|JSON Response| User
+    
+    API -.-> DB[(PostgreSQL)]
+    DB -.->|Auditoría / Historial| DB
+```
 
 ---
 
@@ -94,3 +159,21 @@ El proyecto utiliza variables de entorno para manejar credenciales de forma segu
    ```
 
 El archivo `.env` ya está excluido en el `.gitignore`, así que no hay riesgo de subirlo accidentalmente.
+
+---
+
+## Endpoints de la API
+
+| Método | Endpoint | Descripción |
+| :--- | :--- | :--- |
+| `POST` | `/api/v1/chat` | Envía un mensaje al orquestador de agentes y devuelve la respuesta consolidada con fuentes. |
+| `GET` | `/api/v1/health` | Verifica el estado del servicio y conexión a BD/ChromaDB. |
+| `GET` | `/api/v1/documents` | Lista los documentos indexados en el sistema RAG. |
+
+---
+
+## Decisiones Técnicas
+
+* **Arquitectura Clean/Hexagonal**: Se han separado las capas de presentación (`api`), negocio (`services`/`core`/`agents`), y acceso a datos (`rag`/`repositories`).
+* **Patrón de Registro de Agentes (Registry)**: Permite inyectar nuevos agentes especializados sin modificar el código base del orquestador.
+* **Trazabilidad Pura**: Cada respuesta incluye un bloque de `sources` que detalla qué agente intervino, qué documento consultó y qué sección exacta extrajo, mitigando alucinaciones.
