@@ -5,15 +5,16 @@ import { Sidebar } from "@/components/chat/Sidebar";
 import { MessageBubble } from "@/components/chat/MessageBubble";
 import { ChatInput } from "@/components/chat/ChatInput";
 import { useChat } from "@/hooks/useChat";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Menu } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const { messages, isLoading, sendMessage } = useChat();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentTime, setCurrentTime] = useState<string>("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
-    // Evitar errores de hidratación seteando la hora solo en el cliente
     const updateTime = () => {
       const now = new Date();
       setCurrentTime(now.toLocaleString('es-ES', { 
@@ -39,13 +40,27 @@ export default function Home() {
   }, [messages, isLoading]);
 
   return (
-    <div className="flex h-screen w-full overflow-hidden text-slate-800">
-      <Sidebar />
+    <div className="flex h-screen w-full overflow-hidden text-slate-800 bg-background">
+      {/* Sidebar Wrapper with animation */}
+      <div 
+        className={cn(
+          "transition-all duration-300 ease-in-out shrink-0 h-full",
+          isSidebarOpen ? "w-[280px]" : "w-0 opacity-0 pointer-events-none"
+        )}
+      >
+        <Sidebar />
+      </div>
       
       <main className="flex flex-1 flex-col relative">
         {/* Header (Glass) */}
         <header className="absolute top-0 left-0 right-0 z-10 flex h-16 items-center justify-between px-6 glass-panel border-x-0 border-t-0 bg-white/50">
           <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="p-2 rounded-full hover:bg-slate-100 text-slate-500 transition-colors"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
             <div className="flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-blue-500" />
               <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">

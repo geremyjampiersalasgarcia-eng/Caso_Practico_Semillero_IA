@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { SendHorizontal, Loader2, Paperclip, ChevronDown, Sparkles } from "lucide-react";
+import { SendHorizontal, Loader2, Paperclip, ChevronDown, Sparkles, Zap, Brain } from "lucide-react";
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -8,6 +8,8 @@ interface ChatInputProps {
 
 export function ChatInput({ onSend, isLoading }: ChatInputProps) {
   const [input, setInput] = useState("");
+  const [isModelMenuOpen, setIsModelMenuOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState("Orquestador Pro");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -37,6 +39,15 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
     }
   };
 
+  // Cierra el menú si haces clic fuera
+  useEffect(() => {
+    const handleClickOutside = () => setIsModelMenuOpen(false);
+    if (isModelMenuOpen) {
+      document.addEventListener("click", handleClickOutside);
+    }
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [isModelMenuOpen]);
+
   return (
     <div className="relative rounded-[2rem] p-[2px] overflow-hidden group shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20 transition-shadow duration-500">
       
@@ -64,12 +75,57 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
         />
 
         {/* AI Model Selector / Badge (Gemini Style) */}
-        <div className="hidden sm:flex h-10 items-center shrink-0">
-          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100/80 hover:bg-slate-200/80 text-sm font-semibold text-slate-600 transition-colors mr-2">
+        <div className="hidden sm:flex h-10 items-center shrink-0 relative" onClick={(e) => e.stopPropagation()}>
+          <button 
+            onClick={() => setIsModelMenuOpen(!isModelMenuOpen)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100/80 hover:bg-slate-200/80 text-sm font-semibold text-slate-600 transition-colors mr-2"
+          >
             <Sparkles className="h-3.5 w-3.5 text-blue-500" />
-            <span>Orquestador Pro</span>
-            <ChevronDown className="h-3.5 w-3.5 text-slate-400" />
+            <span>{selectedModel}</span>
+            <ChevronDown className={`h-3.5 w-3.5 text-slate-400 transition-transform ${isModelMenuOpen ? 'rotate-180' : ''}`} />
           </button>
+
+          {/* Menú Desplegable */}
+          {isModelMenuOpen && (
+            <div className="absolute bottom-[120%] right-2 w-64 bg-white rounded-2xl shadow-[0_10px_40px_rgb(0,0,0,0.12)] border border-slate-100 p-2 animate-in fade-in zoom-in-95 duration-200 z-50">
+              
+              <button 
+                onClick={() => { setSelectedModel("Orquestador Flash"); setIsModelMenuOpen(false); }}
+                className="flex w-full items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors text-left"
+              >
+                <Zap className="h-5 w-5 mt-0.5 text-emerald-500 shrink-0" />
+                <div>
+                  <div className="text-sm font-bold text-slate-800">Orquestador Flash</div>
+                  <div className="text-xs text-slate-500 mt-0.5">Respuestas rápidas para tareas sencillas.</div>
+                </div>
+              </button>
+
+              <button 
+                onClick={() => { setSelectedModel("Orquestador Pro"); setIsModelMenuOpen(false); }}
+                className="flex w-full items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors text-left mt-1"
+              >
+                <Sparkles className="h-5 w-5 mt-0.5 text-blue-500 shrink-0" />
+                <div>
+                  <div className="text-sm font-bold text-slate-800">Orquestador Pro</div>
+                  <div className="text-xs text-slate-500 mt-0.5">Ayuda completa, programación y análisis profundo.</div>
+                </div>
+              </button>
+
+              <div className="h-px bg-slate-100 my-1 mx-2"></div>
+              
+              <button 
+                onClick={() => { setSelectedModel("Especialista Avanzado"); setIsModelMenuOpen(false); }}
+                className="flex w-full items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors text-left"
+              >
+                <Brain className="h-5 w-5 mt-0.5 text-purple-500 shrink-0" />
+                <div>
+                  <div className="text-sm font-bold text-slate-800">Especialista Avanzado</div>
+                  <div className="text-xs text-slate-500 mt-0.5">Análisis documental exhaustivo (lento).</div>
+                </div>
+              </button>
+
+            </div>
+          )}
         </div>
 
         {/* Send Button */}

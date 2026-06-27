@@ -8,23 +8,30 @@ export interface ChatMessage {
   agents?: string[];
 }
 
+export interface SourceInfo {
+  document_name: string;
+  content_snippet: string;
+  relevance_score?: number;
+}
+
 export interface ChatRequest {
-  query: string;
+  question: string;
   conversation_id?: string;
-  stream?: boolean;
 }
 
 export interface ChatResponse {
   answer: string;
-  conversation_id: string;
-  sources: string[];
-  agents: string[];
-  metadata?: any;
+  meta: {
+    agents_used: string[];
+    latency_ms: number;
+    conversation_id: string;
+  };
+  sources: SourceInfo[];
 }
 
 export const api = {
   async sendMessage(request: ChatRequest): Promise<ChatResponse> {
-    const response = await fetch(`${API_BASE_URL}/chat`, {
+    const response = await fetch(`${API_BASE_URL}/chat/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

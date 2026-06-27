@@ -23,21 +23,21 @@ export function useChat() {
 
     try {
       const res = await api.sendMessage({
-        query: content,
+        question: content,
         conversation_id: conversationId,
       });
 
       // Guardar el conversation_id para futuras llamadas
-      if (res.conversation_id) {
-        setConversationId(res.conversation_id);
+      if (res.meta.conversation_id) {
+        setConversationId(res.meta.conversation_id);
       }
 
       const botMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content: res.answer,
-        sources: res.sources,
-        agents: res.agents,
+        sources: res.sources.map(s => s.document_name),
+        agents: res.meta.agents_used,
       };
 
       setMessages((prev) => [...prev, botMsg]);

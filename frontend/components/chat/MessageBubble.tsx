@@ -31,7 +31,7 @@ export function MessageBubble({ role, content }: MessageBubbleProps) {
         className={cn(
           "relative flex max-w-[85%] flex-col gap-2 px-6 py-4 text-[15px] shadow-sm leading-relaxed",
           isUser
-            ? "bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-3xl rounded-tr-sm"
+            ? "bg-slate-100/80 border border-slate-200/50 text-slate-800 rounded-3xl rounded-tr-sm"
             : "bg-white border border-slate-100 text-slate-700 rounded-3xl rounded-tl-sm shadow-[0_4px_20px_rgb(0,0,0,0.03)]"
         )}
       >
