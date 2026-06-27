@@ -49,13 +49,15 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
   }, [isModelMenuOpen]);
 
   return (
-    <div className="relative rounded-[2rem] p-[2px] overflow-hidden group shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20 transition-shadow duration-500">
+    <div className="relative group shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20 transition-shadow duration-500 rounded-[2rem]">
       
-      {/* Animated Gradient Background Wrapper */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-300 via-indigo-400 to-purple-400 bg-[length:200%_200%] animate-bg-pan opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
+      {/* Animated Gradient Background Wrapper (with overflow hidden just for the border) */}
+      <div className="absolute inset-0 rounded-[2rem] overflow-hidden">
+        <div className="absolute inset-[-10px] bg-gradient-to-r from-blue-300 via-indigo-400 to-purple-400 bg-[length:200%_200%] animate-bg-pan opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
+      </div>
 
-      {/* Inner Input Wrapper */}
-      <div className="relative flex w-full items-end gap-2 rounded-[calc(2rem-2px)] bg-white/95 backdrop-blur-xl px-4 py-3">
+      {/* Inner Input Wrapper (needs relative and z-10 so dropdown isn't clipped) */}
+      <div className="relative z-10 m-[2px] flex w-full items-end gap-2 rounded-[calc(2rem-2px)] bg-white/95 backdrop-blur-xl px-4 py-3">
         
         {/* Attachment Button */}
         <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">
