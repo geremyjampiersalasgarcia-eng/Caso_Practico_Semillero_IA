@@ -1,1 +1,1 @@
-# rag __init__
+# Paquete RAG

@@ -1,1 +1,4 @@
-# agents __init__
+# Paquete Agents
+from app.agents.registry import agent_registry
+
+__all__ = ["agent_registry"]

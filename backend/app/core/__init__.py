@@ -1,1 +1,1 @@
-# core __init__
+# Paquete Core

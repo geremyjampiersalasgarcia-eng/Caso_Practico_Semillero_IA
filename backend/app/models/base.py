@@ -1,3 +1,13 @@
-# base.py - Modelo base declarativo de SQLAlchemy
-# Define DeclarativeBase con campos comunes (id, created_at, updated_at)
-# Todos los modelos ORM (Conversation, Message, AuditLog) heredan de esta clase
+from datetime import datetime, timezone
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+
+class Base(DeclarativeBase):
+    """
+    Clase base para todos los modelos ORM.
+    Incluye campos comunes de auditoría automática.
+    """
+    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
+    updated_at: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(timezone.utc), 
+        onupdate=lambda: datetime.now(timezone.utc)
+    )

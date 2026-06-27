@@ -1,3 +1,8 @@
-# router.py - Enrutador maestro de la API v1
-# Agrupa y monta los sub-routers: chat, health, documents
-# Cada sub-router se registra con su prefijo y tags para Swagger/OpenAPI
+from fastapi import APIRouter
+from app.api.v1.endpoints import chat, health, documents
+
+api_router = APIRouter()
+
+api_router.include_router(health.router, prefix="/health", tags=["health"])
+api_router.include_router(chat.router, prefix="/chat", tags=["chat"])
+api_router.include_router(documents.router, prefix="/documents", tags=["documents"])
