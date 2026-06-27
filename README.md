@@ -158,11 +158,23 @@ Caso_Practico_Semillero_IA/
 └── README.md                       # Documentación maestra del sistema
 ```
 
-### 📂 ¿Qué hace cada carpeta principal?
+### 📂 ¿Qué hace cada carpeta a detalle?
 
-- **`backend/`**: Es el cerebro de la aplicación. Aquí vive FastAPI (la API REST), LangGraph (el orquestador lógico), ChromaDB (la base de datos vectorial para el RAG) y todos los prompts que le dan "personalidad" y límites a cada Agente IA. Se encarga de procesar la pregunta, buscar en documentos y generar la respuesta segura.
-- **`frontend/`**: Es la cara visible construida con Next.js y TailwindCSS. Contiene todos los componentes visuales de React (como la ventana de chat, las burbujas de mensaje y los indicadores de carga). Su única función es comunicarse con el backend para mostrar las respuestas y las fuentes al usuario de forma elegante.
-- **`docs/`**: Contiene los "Steering Docs" (Documentos de Control). Son manuales de calidad, reglas de arquitectura y directrices de seguridad que leen los desarrolladores (y los propios agentes IA locales) para mantener la consistencia del proyecto a medida que escala.
+**1. Núcleo del Backend (`backend/app/`)**
+- **`agents/`**: Aquí viven las clases concretas de cada agente experto (Arquitectura, Seguridad, etc.). Heredan de una base común y cada uno busca solo en su propia colección de documentos para evitar cruzar información.
+- **`core/`**: Es el motor de la inteligencia. Contiene `orchestrator.py` (el grafo de LangGraph que decide quién habla), `classifier.py` (Gemini decidiendo la intención del usuario) y la conexión global al LLM.
+- **`rag/`**: Contiene la lógica pura de ingesta y búsqueda vectorial. Tiene scripts para cargar PDFs/TXTs, partirlos en trozos lógicos (`splitter.py`) y buscarlos semánticamente en ChromaDB (`retriever.py`).
+- **`api/v1/`**: Define las rutas (endpoints) que expone FastAPI. Aquí es donde el Frontend envía las peticiones HTTP (`/chat`, `/health`).
+- **`models/` & `repositories/`**: Abstracciones para conectar y guardar en PostgreSQL el historial de chats y el registro de auditoría. 
+
+**2. Interfaz de Usuario (`frontend/`)**
+- **`app/`**: Utiliza el "App Router" de Next.js. Define la estructura HTML de la página, el layout global y los estilos base (`globals.css`).
+- **`components/chat/`**: Contiene los bloques visuales de React. Por ejemplo, `MessageBubble.tsx` pinta lo que dice el agente y `SourcesBadge.tsx` pinta los botoncitos con los documentos citados.
+- **`hooks/`**: (`useChat.ts`) Toda la lógica pesada de React está separada aquí. Maneja el estado de si la IA "está escribiendo", la lista de mensajes y los errores de red, manteniendo los componentes visuales limpios.
+- **`types/`**: Contratos en TypeScript que son espejos exactos de los esquemas (Pydantic) del Backend, garantizando que el Frontend no falle al leer respuestas JSON.
+
+**3. Documentación y Control (`docs/`)**
+- Son los "Steering Docs". En vez de dejar la arquitectura a la imaginación, aquí se documenta formalmente la calidad del código (`CODE_QUALITY.md`), cómo armar los prompts (`PROMPTS.md`) y las decisiones técnicas (`DECISIONS.md`). Son leídos tanto por desarrolladores humanos como por agentes IA locales para mantener el contexto del repositorio.
 
 ---
 
