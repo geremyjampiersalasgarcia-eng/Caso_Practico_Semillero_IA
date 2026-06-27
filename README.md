@@ -48,35 +48,68 @@
 
 El sistema sigue una arquitectura de microservicios separando el frontend del backend, con un flujo interno orquestado por LangGraph.
 
+### Diagrama de alto nivel
+
+```text
+Browser ──► Web UI (Next.js)  │  TypeScript + Tailwind + Shadcn
+                │
+                ▼
+         HTTP (POST /api/v1/chat, GET /api/v1/health)
+                │
+                ▼
+┌───────────────────────────────────────────────────┐
+│  FastAPI                                          │
+│  app.main  ──►  api/v1/router  ──►  endpoints     │
+│                                                   │
+│  ┌─────────────────────────────────────────────┐  │
+│  │  LangGraph StateGraph (orchestrator.py)     │  │
+│  │                                             │  │
+│  │  START                                      │  │
+│  │   ├► classify  (Clasificador, LLM temp=0)   │  │
+│  │   │    ├► agente_1 ──┐                      │  │
+│  │   │    ├► agente_2 ──┤──► consolidate ► END │  │
+│  │   │    ├► agente_N ──┘                      │  │
+│  │   │    └► mixta (N agentes)                 │  │
+│  └─────────────────────────────────────────────┘  │
+│                     │                             │
+│                     ▼                             │
+│           ChromaDB (colección por agente)          │
+│           Retriever + Embeddings Gemini            │
+│                                                   │
+│           PostgreSQL (historial + auditoría)       │
+└───────────────────────────────────────────────────┘
+```
+
+### Diagrama de flujo detallado
+
 ```mermaid
 graph TD
-    User([Usuario]) -->|Pregunta (HTTP POST)| API["FastAPI / Chat Endpoint"]
-    
+    User([Usuario]) -->|HTTP POST| API["FastAPI"]
+
     subgraph Orquestador LangGraph
-        API --> Classify["Clasificador de Intención"]
-        Classify -->|Condicional| Router{Router}
-        
+        API --> Classify["Clasificador de Intencion"]
+        Classify --> Router{Router}
+
         Router -->|Tema A| AgentA["Agente A"]
         Router -->|Tema B| AgentB["Agente B"]
-        Router -->|Múltiple| AgentC["Agente C"]
-        
-        AgentA --> Consolidate["Consolidador de Respuesta"]
+        Router -->|Multiple| AgentC["Agente C"]
+
+        AgentA --> Consolidate["Consolidador"]
         AgentB --> Consolidate
         AgentC --> Consolidate
     end
-    
+
     subgraph Capa RAG
-        AgentA <-->|Retriever| VectorDB[(ChromaDB)]
-        AgentB <-->|Retriever| VectorDB
-        AgentC <-->|Retriever| VectorDB
-        VectorDB -.-> Docs["Documentos Locales"]
+        AgentA --> VectorDB[(ChromaDB)]
+        AgentB --> VectorDB
+        AgentC --> VectorDB
+        VectorDB --> Docs["Documentos Locales"]
     end
-    
-    Consolidate -->|Respuesta + Fuentes| API
+
+    Consolidate --> API
     API -->|JSON Response| User
-    
-    API -.-> DB[(PostgreSQL)]
-    DB -.->|Auditoría / Historial| DB
+
+    API --> DB[(PostgreSQL)]
 ```
 
 ### Flujo de Inferencia Paso a Paso
