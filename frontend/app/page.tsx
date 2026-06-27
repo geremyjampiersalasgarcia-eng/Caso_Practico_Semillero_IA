@@ -9,7 +9,7 @@ import { Sparkles, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function Home() {
-  const { messages, isLoading, sendMessage } = useChat();
+  const { messages, isLoading, sendMessage, clearChat } = useChat();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentTime, setCurrentTime] = useState<string>("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -48,7 +48,7 @@ export default function Home() {
           isSidebarOpen ? "w-[280px]" : "w-0 opacity-0 pointer-events-none"
         )}
       >
-        <Sidebar />
+        <Sidebar onNewChat={clearChat} />
       </div>
       
       <main className="flex flex-1 flex-col relative">
