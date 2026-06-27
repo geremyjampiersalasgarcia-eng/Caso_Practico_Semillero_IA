@@ -1,3 +1,6 @@
-// utils.ts - Utilidades generales compartidas
-// Funciones puras para formateo de fechas, manipulación de clases de Tailwind (cn)
-// o procesamiento ligero de textos para la UI
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
