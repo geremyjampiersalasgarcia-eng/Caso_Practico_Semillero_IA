@@ -1,8 +1,5 @@
 # Caso Práctico Semillero IA
 
-> **⚠️ NOTA:** El dominio/tema específico del proyecto aún no ha sido asignado.
-
-Mesa de Ayuda IA con agentes especializados e integrados. Este es un prototipo funcional diseñado para demostrar arquitectura, uso de RAG, LangGraph y agentes especializados.
 
 ## Stack Tecnológico
 
