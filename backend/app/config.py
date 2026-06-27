@@ -37,9 +37,11 @@ class Settings(BaseSettings):
     API_DEBUG: bool = Field(default=True)
     LOG_LEVEL: str = Field(default="INFO")
     
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    model_config = {
+        "extra": "ignore",
+        "env_file": ".env",
+        "env_file_encoding": "utf-8"
+    }
 
 # Instancia global
 settings = Settings()
