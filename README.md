@@ -242,14 +242,16 @@ docker-compose up --build
 | Frontend UI | http://localhost:3000 | Interfaz de chat en el navegador |
 | PostgreSQL | `localhost:5432` | Base de datos relacional |
 
-### Opción B: Sin Docker (Desarrollo Local)
+### Opción B: Sin Docker (Desarrollo Local en Windows/Linux)
 ```bash
-# Backend
+# 1. Levantar el Backend
 cd backend
+# Activar entorno virtual (En Windows: .\venv\Scripts\activate | En Linux: source venv/bin/activate)
 pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+# (Nota: Si PostgreSQL no está corriendo, el sistema usará automáticamente una BD local SQLite como fallback)
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-# Frontend (en otra terminal)
+# 2. Levantar el Frontend (en otra terminal)
 cd frontend
 npm install
 npm run dev
