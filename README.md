@@ -1,5 +1,7 @@
 # Caso Práctico Semillero IA
 
+![Interfaz de Nexus IA](docs/images/chat_interface.png)
+
 ---
 
 ## Tabla de contenido

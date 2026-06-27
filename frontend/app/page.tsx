@@ -128,8 +128,7 @@ export default function Home() {
                   ¿Cómo te puedo ayudar hoy?
                 </h2>
                 <p className="max-w-xl text-lg text-slate-500 leading-relaxed">
-                  Soy tu asistente orquestador potenciado por IA. Consulta sobre normativas, 
-                  arquitectura y documentación, y te daré respuestas precisas basadas en el conocimiento interno.
+                  Soy tu asistente inteligente. Pregúntame lo que necesites y te ayudaré a encontrar la respuesta rápidamente.
                 </p>
               </div>
             ) : (
