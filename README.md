@@ -158,6 +158,12 @@ Caso_Practico_Semillero_IA/
 └── README.md                       # Documentación maestra del sistema
 ```
 
+### 📂 ¿Qué hace cada carpeta principal?
+
+- **`backend/`**: Es el cerebro de la aplicación. Aquí vive FastAPI (la API REST), LangGraph (el orquestador lógico), ChromaDB (la base de datos vectorial para el RAG) y todos los prompts que le dan "personalidad" y límites a cada Agente IA. Se encarga de procesar la pregunta, buscar en documentos y generar la respuesta segura.
+- **`frontend/`**: Es la cara visible construida con Next.js y TailwindCSS. Contiene todos los componentes visuales de React (como la ventana de chat, las burbujas de mensaje y los indicadores de carga). Su única función es comunicarse con el backend para mostrar las respuestas y las fuentes al usuario de forma elegante.
+- **`docs/`**: Contiene los "Steering Docs" (Documentos de Control). Son manuales de calidad, reglas de arquitectura y directrices de seguridad que leen los desarrolladores (y los propios agentes IA locales) para mantener la consistencia del proyecto a medida que escala.
+
 ---
 
 ## 🚀 Cómo empezar (Configuración Inicial)
