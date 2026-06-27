@@ -7,8 +7,11 @@
 * [Stack Tecnológico](#stack-tecnológico)
 * [Arquitectura](#arquitectura)
 * [Estructura del Proyecto](#estructura-del-proyecto)
-* [Cómo empezar (Configuración Inicial)](#cómo-empezar-configuración-inicial)
+* [Cómo empezar](#-cómo-empezar)
+* [Ejecutar el Proyecto](#-ejecutar-el-proyecto)
+* [Pruebas](#-pruebas)
 * [Endpoints de la API](#endpoints-de-la-api)
+* [Ingesta de Documentos](#-ingesta-de-documentos)
 * [Decisiones Técnicas](#decisiones-técnicas)
 
 ---
@@ -19,10 +22,13 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Python](https://img.shields.io/badge/Python_3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)](https://www.langchain.com/)
+[![LangGraph](https://img.shields.io/badge/LangGraph_0.4-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)](https://langchain-ai.github.io/langgraph/)
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-FF4F00?style=for-the-badge&logo=chroma&logoColor=white)](https://www.trychroma.com/)
 [![Gemini](https://img.shields.io/badge/Gemini_1.5-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy_2.0-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white)](https://www.sqlalchemy.org/)
+[![Alembic](https://img.shields.io/badge/Alembic-6BA81E?style=for-the-badge&logo=alembic&logoColor=white)](https://alembic.sqlalchemy.org/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 
 ### Frontend (Interfaz de Chat Premium)
 [![Next.js](https://img.shields.io/badge/Next.js_14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
@@ -178,7 +184,7 @@ Caso_Practico_Semillero_IA/
 
 ---
 
-## 🚀 Cómo empezar (Configuración Inicial)
+## 🚀 Cómo empezar
 
 ### 1. Clonar el repositorio
 ```bash
@@ -188,7 +194,7 @@ cd Caso_Practico_Semillero_IA
 
 ### 2. Configurar Variables de Entorno (IMPORTANTE)
 
-El proyecto utiliza variables de entorno para manejar credenciales de forma segura. NUNCA debes subir tus API keys al repositorio.
+El proyecto utiliza variables de entorno para manejar credenciales de forma segura. **NUNCA** debes subir tus API keys al repositorio.
 
 **Para el Backend:**
 1. Navega a la carpeta del backend:
@@ -200,7 +206,7 @@ El proyecto utiliza variables de entorno para manejar credenciales de forma segu
    cp .env.example .env
    ```
    *(En Windows puedes usar `copy .env.example .env`)*
-3. Abre el nuevo archivo `.env` en tu editor de código y agrega tu clave de Gemini (y cualquier otra credencial que necesites en el futuro):
+3. Abre el nuevo archivo `.env` en tu editor de código y agrega tu clave de Gemini:
    ```env
    GOOGLE_API_KEY=tu_api_key_aqui
    ```
@@ -219,6 +225,72 @@ El archivo `.env` ya está excluido en el `.gitignore`, así que no hay riesgo d
 
 ---
 
+## 🐳 Ejecutar el Proyecto
+
+### Opción A: Con Docker (Recomendado)
+```bash
+# Levantar todos los servicios de una sola vez
+make up
+
+# O si prefieres usar docker-compose directamente:
+docker-compose up --build
+```
+
+| Servicio | URL | Descripción |
+| :--- | :--- | :--- |
+| Backend API | http://localhost:8000/docs | Swagger UI interactivo de FastAPI |
+| Frontend UI | http://localhost:3000 | Interfaz de chat en el navegador |
+| PostgreSQL | `localhost:5432` | Base de datos relacional |
+
+### Opción B: Sin Docker (Desarrollo Local)
+```bash
+# Backend
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+
+# Frontend (en otra terminal)
+cd frontend
+npm install
+npm run dev
+```
+
+### Atajos con Makefile
+El proyecto incluye un `Makefile` con atajos para las operaciones más comunes:
+
+| Comando | Acción |
+| :--- | :--- |
+| `make up` | Levanta todo con Docker Compose |
+| `make down` | Detiene todos los contenedores |
+| `make test` | Ejecuta toda la suite de pruebas |
+| `make ingest` | Indexa los documentos en ChromaDB |
+| `make lint` | Ejecuta linters (black, flake8) |
+
+---
+
+## 🧪 Pruebas
+
+```bash
+# Ejecutar todas las pruebas del backend
+cd backend && pytest -v --cov=app
+
+# Solo pruebas unitarias
+pytest tests/unit/ -v
+
+# Solo pruebas de integración
+pytest tests/integration/ -v
+
+# Solo pruebas end-to-end
+pytest tests/e2e/ -v
+
+# Pruebas del frontend
+cd frontend && npm test
+```
+
+Se espera un mínimo de **80% de cobertura** de líneas en el backend.
+
+---
+
 ## Endpoints de la API
 
 | Método | Endpoint | Descripción |
@@ -226,6 +298,28 @@ El archivo `.env` ya está excluido en el `.gitignore`, así que no hay riesgo d
 | `POST` | `/api/v1/chat` | Envía un mensaje al orquestador de agentes y devuelve la respuesta consolidada con fuentes. |
 | `GET` | `/api/v1/health` | Verifica el estado del servicio y conexión a BD/ChromaDB. |
 | `GET` | `/api/v1/documents` | Lista los documentos indexados en el sistema RAG. |
+
+---
+
+## 📥 Ingesta de Documentos
+
+La indexación de documentos en ChromaDB se realiza mediante un script offline (no es un endpoint en caliente):
+
+```bash
+# Indexar todos los documentos de data/raw/ en ChromaDB
+make ingest
+
+# O directamente:
+python scripts/ingest.py
+```
+
+**Flujo de ingesta:**
+1. `loader.py` lee los archivos TXT/PDF de `data/raw/`
+2. `splitter.py` los divide en fragmentos optimizados (chunks de ~1000 caracteres)
+3. `embeddings.py` genera los vectores con Gemini `text-embedding-004`
+4. `vectorstore.py` almacena los vectores en la colección correspondiente de ChromaDB
+
+> **Nota:** Para agregar nuevos documentos, simplemente colócalos en `data/raw/` y re-ejecuta `make ingest`.
 
 ---
 
