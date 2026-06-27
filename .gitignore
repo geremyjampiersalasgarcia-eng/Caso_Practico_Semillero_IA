@@ -6,6 +6,17 @@
 AGENTS.md
 STATUS.md
 WORKFLOW.md
+ARCHITECTURE.md
+CHANGELOG.md
+docs/DESIGN.md
+docs/CODE_QUALITY.md
+docs/TESTING.md
+docs/PROMPTS.md
+docs/SECURITY.md
+docs/DECISIONS.md
+docs/DEPLOYMENT.md
+docs/RISKS.md
+docs/ARCHITECTURE.md
 
 # ---------- Python ----------
 __pycache__/
