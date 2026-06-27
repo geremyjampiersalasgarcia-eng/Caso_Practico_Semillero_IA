@@ -1,3 +1,77 @@
 # docker-compose.yml
-# Define los servicios principales: backend (FastAPI), frontend (Next.js) y postgres
 # Orquesta el levantamiento completo de la Mesa de Ayuda IA en contenedores
+# Servicios: PostgreSQL, Backend (FastAPI), Frontend (Next.js)
+
+services:
+  # ──────────────────────────────────────────────
+  # Base de Datos PostgreSQL
+  # ──────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: mesa_ayuda_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mesa_ayuda_user
+      POSTGRES_PASSWORD: mesa_ayuda_pass_2024
+      POSTGRES_DB: mesa_ayuda_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mesa_ayuda_user -d mesa_ayuda_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ──────────────────────────────────────────────
+  # Backend FastAPI
+  # ──────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mesa_ayuda_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://mesa_ayuda_user:mesa_ayuda_pass_2024@postgres:5432/mesa_ayuda_db
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      LLM_MODEL_NAME: gemini-1.5-flash
+      EMBEDDING_MODEL_NAME: models/text-embedding-004
+      LLM_TEMPERATURE: "0.1"
+      CHROMA_PERSIST_DIR: data/chroma_db
+      CHUNK_SIZE: "1000"
+      CHUNK_OVERLAP: "200"
+      RETRIEVAL_TOP_K: "4"
+      API_HOST: "0.0.0.0"
+      API_PORT: "8000"
+      API_DEBUG: "true"
+      LOG_LEVEL: INFO
+      CORS_ORIGINS: '["http://localhost:3000"]'
+    volumes:
+      - ./backend/data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ──────────────────────────────────────────────
+  # Frontend Next.js
+  # ──────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mesa_ayuda_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000/api/v1
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+    driver: local

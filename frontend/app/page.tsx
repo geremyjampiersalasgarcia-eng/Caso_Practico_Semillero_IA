@@ -129,12 +129,16 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Input Area (Floating) */}
-        <div className="absolute bottom-6 left-0 right-0 px-4">
-          <div className="mx-auto max-w-4xl relative">
-            <ChatInput onSend={sendMessage} isLoading={isLoading} />
-            <div className="text-center text-xs text-slate-400 mt-3 font-medium">
-              La IA puede cometer errores. Por favor, verifica la información importante.
+        {/* Input Area (Floating with blue gradient backdrop like Gemini) */}
+        <div className="absolute bottom-0 left-0 right-0">
+          {/* Gradient fade from blue to transparent going upward */}
+          <div className="absolute inset-0 bg-gradient-to-t from-blue-50/80 via-blue-50/40 to-transparent pointer-events-none" />
+          <div className="relative px-4 pt-8 pb-6">
+            <div className="mx-auto max-w-4xl relative">
+              <ChatInput onSend={sendMessage} isLoading={isLoading} />
+              <div className="text-center text-xs text-slate-400 mt-3 font-medium">
+                La IA puede cometer errores. Por favor, verifica la información importante.
+              </div>
             </div>
           </div>
         </div>

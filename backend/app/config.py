@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     LLM_TEMPERATURE: float = Field(default=0.1)
     
     # Base de Datos
-    DATABASE_URL: str = Field(default="sqlite:///./data/app.db") # Fallback a SQLite local por ahora
+    DATABASE_URL: str = Field(default="postgresql://mesa_ayuda_user:mesa_ayuda_pass_2024@localhost:5432/mesa_ayuda_db")
     
     # ChromaDB
     CHROMA_PERSIST_DIR: str = Field(default="data/chroma_db")

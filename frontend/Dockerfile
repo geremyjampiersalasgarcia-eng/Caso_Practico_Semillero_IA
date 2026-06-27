@@ -1,3 +1,21 @@
-# Dockerfile - Frontend
-# Instrucciones para construir la imagen de Next.js
-# Se usará multi-stage build para reducir el tamaño final de la imagen
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copiar archivos de dependencias
+COPY package.json package-lock.json* ./
+
+# Instalar dependencias
+RUN npm ci
+
+# Copiar código fuente
+COPY . .
+
+# Construir la app para producción
+RUN npm run build
+
+# Exponer el puerto de Next.js
+EXPOSE 3000
+
+# Comando por defecto
+CMD ["npm", "start"]

@@ -30,12 +30,15 @@ app.add_exception_handler(AppError, app_error_handler)
 # 4. Incluir Rutas
 app.include_router(api_router, prefix="/api/v1")
 
+from app.agents import register_all_agents
+
 # 5. Eventos de inicio/apagado
 @app.on_event("startup")
 async def startup_event():
     logger.info("Iniciando aplicación. Creando tablas en base de datos si no existen...")
-    # Crear tablas usando SQLAlchemy (Alembic se usaría en producción)
     Base.metadata.create_all(bind=engine)
+    logger.info("Registrando agentes del sistema...")
+    register_all_agents()
     logger.info("Aplicación iniciada correctamente")
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ class GraphState(TypedDict):
     agent_results: Annotated[List[AgentResult], operator.add]
     final_answer: str
     sources: List[Dict[str, Any]]
-    agents_invoked: List[str]
+    agents_invoked: Annotated[List[str], operator.add]
     start_time: float
 
 # 2. Nodos del Grafo
