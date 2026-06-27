@@ -42,14 +42,24 @@ class ChatService:
         agents_invoked = result_state.get("agents_invoked", [])
         raw_sources = result_state.get("sources", [])
         
-        # Formatear fuentes
-        formatted_sources = [
-            SourceInfo(
-                document_name=s.get("document_name", "Desconocido"),
-                content_snippet=s.get("content_snippet", ""),
-                relevance_score=s.get("relevance_score", 0.0)
-            ) for s in raw_sources
-        ]
+        # Formatear fuentes (pueden venir como dict o como objetos Pydantic)
+        formatted_sources = []
+        for s in raw_sources:
+            if isinstance(s, dict):
+                formatted_sources.append(SourceInfo(
+                    document_name=s.get("document_name", "Desconocido"),
+                    content_snippet=s.get("content_snippet", ""),
+                    relevance_score=s.get("relevance_score", 0.0)
+                ))
+            elif isinstance(s, SourceInfo):
+                formatted_sources.append(s)
+            else:
+                # Si es otro objeto Pydantic con los mismos campos
+                formatted_sources.append(SourceInfo(
+                    document_name=getattr(s, "document_name", "Desconocido"),
+                    content_snippet=getattr(s, "content_snippet", ""),
+                    relevance_score=getattr(s, "relevance_score", 0.0)
+                ))
         
         latency = (time.time() - start_total) * 1000
 
