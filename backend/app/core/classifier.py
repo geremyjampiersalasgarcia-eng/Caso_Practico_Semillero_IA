@@ -20,25 +20,30 @@ def classify_intent(question: str) -> IntentClassification:
     # pero el mecanismo de Pydantic/Structured Output de LangChain funcionará igual.
     # Por ahora usamos un approach básico: pedimos que devuelva la categoría en texto.
     
-    prompt = """
-    Eres un clasificador experto. Clasifica la intención de la siguiente pregunta.
+    prompt = """Eres un clasificador experto. Clasifica la intención de la siguiente pregunta del usuario.
     Solo puedes responder con una de estas categorías:
-    - agente_1
-    - agente_2
-    - mixta
+    - agente_1: para consultas sobre soporte técnico, niveles de soporte, tiempos de respuesta, accesos, operaciones generales
+    - agente_2: para consultas sobre arquitectura de software, despliegues, contenedores, bases de datos, CI/CD
+    - mixta: cuando la pregunta cubre ambos dominios o no queda claro
     
-    Pregunta: {question}
-    
-    Responde ÚNICAMENTE con el nombre de la categoría.
-    """
+    Responde ÚNICAMENTE con el nombre de la categoría, sin explicación adicional."""
     
     messages = [
-        SystemMessage(content=prompt.format(question=question))
+        SystemMessage(content=prompt),
+        HumanMessage(content=question)
     ]
     
     try:
         response = llm.invoke(messages)
-        cat = response.content.strip().lower()
+        # response.content puede ser str, list (bloques multimodal), o None
+        raw_content = response.content
+        if isinstance(raw_content, list):
+            # Extraer texto de bloques: [{"type": "text", "text": "..."}]
+            raw_content = " ".join(
+                block.get("text", str(block)) if isinstance(block, dict) else str(block)
+                for block in raw_content
+            )
+        cat: str = (raw_content or "").strip().lower()
         
         # Validar fallback
         if cat not in ["agente_1", "agente_2", "mixta"]:
