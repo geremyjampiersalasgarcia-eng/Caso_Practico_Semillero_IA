@@ -316,7 +316,7 @@ python scripts/ingest.py
 **Flujo de ingesta:**
 1. `loader.py` lee los archivos TXT/PDF de `data/raw/`
 2. `splitter.py` los divide en fragmentos optimizados (chunks de ~1000 caracteres)
-3. `embeddings.py` genera los vectores con Gemini `text-embedding-004`
+3. `embeddings.py` genera los vectores con Gemini `gemini-embedding-2`
 4. `vectorstore.py` almacena los vectores en la colección correspondiente de ChromaDB
 
 > **Nota:** Para agregar nuevos documentos, simplemente colócalos en `data/raw/` y re-ejecuta `make ingest`.
