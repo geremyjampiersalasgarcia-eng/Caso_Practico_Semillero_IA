@@ -7,8 +7,8 @@ const font = Outfit({ subsets: ["latin"] });
 
 
 export const metadata: Metadata = {
-  title: "Mesa de Ayuda IA",
-  description: "Asistente inteligente con RAG para soporte técnico",
+  title: "Nexus IA",
+  description: "Asistente inteligente con RAG Multi-Agente",
 };
 
 export default function RootLayout({

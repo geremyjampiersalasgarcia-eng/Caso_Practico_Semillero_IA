@@ -196,17 +196,18 @@ cd Caso_Practico_Semillero_IA
 
 El proyecto utiliza variables de entorno para manejar credenciales de forma segura. **NUNCA** debes subir tus API keys al repositorio.
 
-**Para el Backend:**
-1. Navega a la carpeta del backend:
+**Para el Backend (API Key de Gemini):**
+1. Necesitas una clave API de Google Gemini. Si no la tienes, ve a [Google AI Studio](https://aistudio.google.com/app/apikey) y haz clic en "Create API Key".
+2. Navega a la carpeta del backend:
    ```bash
    cd backend
    ```
-2. Copia el archivo de ejemplo para crear tu propio archivo `.env` local:
+3. Copia el archivo de ejemplo para crear tu propio archivo `.env` local:
    ```bash
    cp .env.example .env
    ```
    *(En Windows puedes usar `copy .env.example .env`)*
-3. Abre el nuevo archivo `.env` en tu editor de código y agrega tu clave de Gemini:
+4. Abre el nuevo archivo `.env` en tu editor de código y pega tu clave generada:
    ```env
    GOOGLE_API_KEY=tu_api_key_aqui
    ```
@@ -228,6 +229,10 @@ El archivo `.env` ya está excluido en el `.gitignore`, así que no hay riesgo d
 ## 🐳 Ejecutar el Proyecto
 
 ### Opción A: Con Docker (Recomendado)
+
+> [!NOTE]
+> Para usar esta opción, asegúrate de tener descargado e instalado [Docker Desktop](https://www.docker.com/products/docker-desktop/) en tu computadora y que la aplicación esté abierta corriendo en segundo plano.
+
 ```bash
 # Levantar todos los servicios de una sola vez
 make up
