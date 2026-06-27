@@ -29,6 +29,29 @@ export interface ChatResponse {
   sources: SourceInfo[];
 }
 
+export interface ConversationListResponse {
+  id: string;
+  title: string | null;
+  updated_at: string;
+}
+
+export interface MessageResponse {
+  id: number;
+  role: "user" | "assistant";
+  content: string;
+  sources: SourceInfo[];
+  agents_used: string[];
+  created_at: string;
+}
+
+export interface ConversationDetailResponse {
+  id: string;
+  title: string | null;
+  created_at: string;
+  updated_at: string;
+  messages: MessageResponse[];
+}
+
 export const api = {
   async sendMessage(request: ChatRequest): Promise<ChatResponse> {
     const response = await fetch(`${API_BASE_URL}/chat/`, {
@@ -46,6 +69,25 @@ export const api = {
     return response.json();
   },
   
+  async getConversations(): Promise<ConversationListResponse[]> {
+    const response = await fetch(`${API_BASE_URL}/conversations/`);
+    if (!response.ok) throw new Error("Error loading conversations");
+    return response.json();
+  },
+
+  async getConversation(id: string): Promise<ConversationDetailResponse> {
+    const response = await fetch(`${API_BASE_URL}/conversations/${id}`);
+    if (!response.ok) throw new Error("Error loading conversation detail");
+    return response.json();
+  },
+
+  async deleteConversation(id: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/conversations/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) throw new Error("Error deleting conversation");
+  },
+
   async checkHealth() {
     const response = await fetch(`${API_BASE_URL}/health`);
     return response.json();

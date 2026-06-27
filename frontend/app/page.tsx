@@ -7,12 +7,38 @@ import { ChatInput } from "@/components/chat/ChatInput";
 import { useChat } from "@/hooks/useChat";
 import { Sparkles, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { api } from "@/lib/api";
 
 export default function Home() {
-  const { messages, isLoading, sendMessage, clearChat } = useChat();
+  const { messages, isLoading, sendMessage, clearChat, loadConversation } = useChat();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentTime, setCurrentTime] = useState<string>("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [history, setHistory] = useState<{id: string, title: string}[]>([]);
+
+  // Función para refrescar el historial desde el backend
+  const refreshHistory = async () => {
+    try {
+      const data = await api.getConversations();
+      setHistory(data.map((c: any) => ({
+        id: c.id,
+        title: c.title || "Nueva conversación"
+      })));
+    } catch (error) {
+      console.error("Failed to load history", error);
+    }
+  };
+
+  // Cargar historial inicial
+  useEffect(() => {
+    refreshHistory();
+  }, []);
+
+  // Función para manejar el botón de Nuevo Chat
+  const handleNewChat = () => {
+    clearChat();
+    refreshHistory();
+  };
 
   useEffect(() => {
     const updateTime = () => {
@@ -48,7 +74,7 @@ export default function Home() {
           isSidebarOpen ? "w-[280px]" : "w-0 opacity-0 pointer-events-none"
         )}
       >
-        <Sidebar onNewChat={clearChat} />
+        <Sidebar onNewChat={handleNewChat} onLoadChat={loadConversation} history={history} setHistory={setHistory} />
       </div>
       
       <main className="flex flex-1 flex-col relative">

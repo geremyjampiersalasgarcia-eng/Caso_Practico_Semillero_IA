@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
+from datetime import datetime
 
 class SourceInfo(BaseModel):
     """Información sobre un documento fuente utilizado en la respuesta"""
@@ -22,3 +23,23 @@ class ChatResponse(BaseModel):
     answer: str
     meta: MetaInfo
     sources: List[SourceInfo] = []
+
+class MessageResponse(BaseModel):
+    id: int
+    role: str
+    content: str
+    sources: List[dict] = []
+    agents_used: List[str] = []
+    created_at: datetime
+
+class ConversationListResponse(BaseModel):
+    id: str
+    title: Optional[str]
+    updated_at: datetime
+
+class ConversationDetailResponse(BaseModel):
+    id: str
+    title: Optional[str]
+    created_at: datetime
+    updated_at: datetime
+    messages: List[MessageResponse]

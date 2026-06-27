@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { MessageSquare, Settings, Plus, LayoutGrid, Trash2 } from "lucide-react";
+import { api } from "@/lib/api";
 
-export function Sidebar({ onNewChat }: { onNewChat?: () => void }) {
-  const [history, setHistory] = useState<{id: number, title: string}[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+export function Sidebar({ 
+  onNewChat, 
+  onLoadChat,
+  history, 
+  setHistory 
+}: { 
+  onNewChat?: () => void;
+  onLoadChat?: (id: string) => void;
+  history: {id: string, title: string}[];
+  setHistory: (h: {id: string, title: string}[]) => void;
+}) {
 
-  useEffect(() => {
-    const saved = localStorage.getItem("chatHistory");
-    if (saved) {
-      setHistory(JSON.parse(saved));
-    } else {
-      setHistory([
-        { id: 1, title: "¿Cómo configuro la BD?" },
-        { id: 2, title: "Error en el despliegue" }
-      ]);
+  const handleDelete = async (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    try {
+      await api.deleteConversation(id);
+      const newHistory = history.filter(item => item.id !== id);
+      setHistory(newHistory);
+    } catch (error) {
+      console.error("Failed to delete conversation", error);
     }
-    setIsLoaded(true);
-  }, []);
-
-  const handleDelete = (id: number) => {
-    const newHistory = history.filter(item => item.id !== id);
-    setHistory(newHistory);
-    localStorage.setItem("chatHistory", JSON.stringify(newHistory));
   };
 
   return (
@@ -43,13 +44,17 @@ export function Sidebar({ onNewChat }: { onNewChat?: () => void }) {
             <div className="text-xs text-slate-400 px-2 italic">No hay chats recientes</div>
           )}
           {history.map((item) => (
-            <div key={item.id} className="group flex w-full items-center gap-3 rounded-xl py-2 px-3 text-sm font-medium text-slate-600 transition-colors hover:bg-white hover:shadow-sm">
+            <div 
+              key={item.id} 
+              onClick={() => onLoadChat && onLoadChat(item.id)}
+              className="group flex w-full items-center gap-3 rounded-xl py-2 px-3 text-sm font-medium text-slate-600 transition-colors hover:bg-white hover:shadow-sm cursor-pointer"
+            >
               <MessageSquare className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-blue-500 transition-colors" />
-              <button className="flex-1 text-left truncate group-hover:text-blue-600">
+              <div className="flex-1 text-left truncate group-hover:text-blue-600">
                 {item.title}
-              </button>
+              </div>
               <button 
-                onClick={() => handleDelete(item.id)}
+                onClick={(e) => handleDelete(e, item.id)}
                 className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-red-50 hover:text-red-500 rounded-md transition-all text-slate-400"
               >
                 <Trash2 className="h-3.5 w-3.5" />

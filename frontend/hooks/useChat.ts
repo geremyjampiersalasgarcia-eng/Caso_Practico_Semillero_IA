@@ -57,6 +57,28 @@ export function useChat() {
     }
   }, [conversationId]);
 
+  const loadConversation = useCallback(async (id: string) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const detail = await api.getConversation(id);
+      setConversationId(detail.id);
+      
+      const loadedMessages: ChatMessage[] = detail.messages.map(m => ({
+        id: m.id.toString(),
+        role: m.role,
+        content: m.content,
+        sources: m.sources ? m.sources.map(s => s.document_name) : [],
+        agents: m.agents_used || [],
+      }));
+      setMessages(loadedMessages);
+    } catch (err: any) {
+      setError(err.message || "Error al cargar la conversación");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   const clearChat = useCallback(() => {
     setMessages([]);
     setConversationId(undefined);
@@ -69,5 +91,6 @@ export function useChat() {
     error,
     sendMessage,
     clearChat,
+    loadConversation,
   };
 }
