@@ -1,14 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MessageSquare, Settings, Plus, LayoutGrid, Trash2 } from "lucide-react";
 
 export function Sidebar({ onNewChat }: { onNewChat?: () => void }) {
-  const [history, setHistory] = useState([
-    { id: 1, title: "¿Cómo configuro la BD?" },
-    { id: 2, title: "Error en el despliegue" }
-  ]);
+  const [history, setHistory] = useState<{id: number, title: string}[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("chatHistory");
+    if (saved) {
+      setHistory(JSON.parse(saved));
+    } else {
+      setHistory([
+        { id: 1, title: "¿Cómo configuro la BD?" },
+        { id: 2, title: "Error en el despliegue" }
+      ]);
+    }
+    setIsLoaded(true);
+  }, []);
 
   const handleDelete = (id: number) => {
-    setHistory(history.filter(item => item.id !== id));
+    const newHistory = history.filter(item => item.id !== id);
+    setHistory(newHistory);
+    localStorage.setItem("chatHistory", JSON.stringify(newHistory));
   };
 
   return (
