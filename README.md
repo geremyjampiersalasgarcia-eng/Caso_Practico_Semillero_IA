@@ -1,9 +1,5 @@
 # Caso Práctico Semillero IA
 
-Prototipo de mesa de ayuda técnica para Desarrollo TI con **agentes especializados** orquestados con **LangGraph**, RAG sobre documentos y modelo **Google Gemini**. Incluye API REST e interfaz web.
-
-> Caso práctico — Desarrollador Senior IA. Foco: criterio de arquitectura, seguridad, RAG, trazabilidad y capacidad de explicación. No es solución productiva.
-
 ---
 
 ## Tabla de contenido
@@ -54,17 +50,17 @@ El sistema sigue una arquitectura de microservicios separando el frontend del ba
 
 ```mermaid
 graph TD
-    User([Usuario]) -->|Pregunta (HTTP POST)| API[FastAPI / Chat Endpoint]
+    User([Usuario]) -->|Pregunta (HTTP POST)| API["FastAPI / Chat Endpoint"]
     
     subgraph Orquestador LangGraph
-        API --> Classify[Clasificador de Intención]
+        API --> Classify["Clasificador de Intención"]
         Classify -->|Condicional| Router{Router}
         
-        Router -->|Tema A| AgentA[Agente A]
-        Router -->|Tema B| AgentB[Agente B]
-        Router -->|Múltiple| AgentC[Agente C]
+        Router -->|Tema A| AgentA["Agente A"]
+        Router -->|Tema B| AgentB["Agente B"]
+        Router -->|Múltiple| AgentC["Agente C"]
         
-        AgentA --> Consolidate[Consolidador de Respuesta]
+        AgentA --> Consolidate["Consolidador de Respuesta"]
         AgentB --> Consolidate
         AgentC --> Consolidate
     end
@@ -73,7 +69,7 @@ graph TD
         AgentA <-->|Retriever| VectorDB[(ChromaDB)]
         AgentB <-->|Retriever| VectorDB
         AgentC <-->|Retriever| VectorDB
-        VectorDB -.-> Docs[Documentos Locales]
+        VectorDB -.-> Docs["Documentos Locales"]
     end
     
     Consolidate -->|Respuesta + Fuentes| API
@@ -82,6 +78,12 @@ graph TD
     API -.-> DB[(PostgreSQL)]
     DB -.->|Auditoría / Historial| DB
 ```
+
+### Flujo de Inferencia Paso a Paso
+
+A continuación se presenta el flujo detallado de inferencia y procesamiento secuencial de una consulta dentro del sistema de mesa de ayuda técnica:
+
+![Proceso de Inferencia: Mesa de Ayuda IA](docs/images/pipeline_infographic.png)
 
 ---
 
