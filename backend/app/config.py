@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     
     # LLM y Embeddings
     LLM_MODEL_NAME: str = Field(default="gemini-1.5-flash")
-    EMBEDDING_MODEL_NAME: str = Field(default="models/embedding-001")
+    EMBEDDING_MODEL_NAME: str = Field(default="models/gemini-embedding-2")
     LLM_TEMPERATURE: float = Field(default=0.1)
     
     # Base de Datos
