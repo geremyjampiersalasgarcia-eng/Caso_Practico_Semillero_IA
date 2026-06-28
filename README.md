@@ -160,7 +160,6 @@ Caso_Practico_Semillero_IA/
 ├── .github/workflows/              # Flujos de CI/CD de GitHub Actions
 ├── docker-compose.yml              # Orquestación de infraestructura local
 ├── docker-compose.override.yml     # Configuraciones específicas para desarrollo local
-├── Makefile                        # Atajos para comandos de desarrollo y pruebas
 ├── LICENSE                         # Licencia MIT
 ├── *.md                            # Documentos de control (AGENTS.md, STATUS.md, WORKFLOW.md, etc.)
 └── README.md                       # Documentación maestra del sistema
@@ -214,17 +213,7 @@ El proyecto utiliza variables de entorno para manejar credenciales de forma segu
    GOOGLE_API_KEY=tu_api_key_aqui
    ```
 
-**Para el Frontend:**
-1. Navega a la carpeta del frontend:
-   ```bash
-   cd ../frontend
-   ```
-2. Crea tu archivo `.env.local`:
-   ```bash
-   cp .env.example .env.local
-   ```
-
-El archivo `.env` ya está excluido en el `.gitignore`, así que no hay riesgo de subirlo accidentalmente.
+El archivo `.env` del backend ya está excluido en el `.gitignore`, así que no hay riesgo de subir tu clave accidentalmente a GitHub.
 
 ---
 
@@ -238,7 +227,7 @@ El archivo `.env` ya está excluido en el `.gitignore`, así que no hay riesgo d
 Abre una terminal en la **raíz del proyecto** (`Caso_Practico_Semillero_IA/`) y ejecuta el siguiente comando una sola vez:
 
 ```bash
-# Este único comando levantará la Base de Datos, el Backend y el Frontend al mismo tiempo
+# Este único comando levantará la Base de Datos
 docker-compose up --build
 ```
 
@@ -247,6 +236,15 @@ docker-compose up --build
 | Backend API | http://localhost:8000/docs | Swagger UI interactivo de FastAPI |
 | Frontend UI | http://localhost:3000 | Interfaz de chat en el navegador |
 | PostgreSQL | `localhost:5432` | Base de datos relacional |
+
+### Para próximas ocasiones (Encendido rápido de la Base de Datos)
+Una vez que hayas ejecutado Docker por primera vez, el contenedor de PostgreSQL quedará guardado en tu Docker Desktop. Para las próximas veces, ya **no** necesitas usar la terminal para la base de datos. 
+
+Simplemente abre Docker Desktop, busca el grupo `caso_practico_semillero_ia` y haz clic en el botón de **Play (Start)**. ¡Eso levantará tu Base de Datos automáticamente!
+
+![Encender desde Docker Desktop](docs/images/DOCKEER.png)
+
+> **Importante:** Una vez que la base de datos esté corriendo en Docker Desktop, deberás levantar el Backend y el Frontend manualmente en la terminal (como se explica en la **Opción B** a continuación).
 
 ### Opción B: De forma manual (Frontend y Backend por separado)
 > [!NOTE]
