@@ -238,7 +238,7 @@ Una vez que hayas ejecutado el comando de arriba por primera vez, el contenedor 
 
 ### Paso 2: Levantar el Código Manualmente (Backend y Frontend)
 
-Una vez que la base de datos esté corriendo (Paso 1), debes levantar los servidores de Python y React por separado. Abre dos terminales nuevas:
+Una vez que la base de datos esté corriendo (Paso 1), debes levantar los servidores de Python y Next.js por separado. Abre dos terminales nuevas:
 
 **Terminal 1: Para levantar el Backend**  
 Ubícate en la raíz del proyecto y ejecuta estos comandos uno por uno:
