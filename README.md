@@ -246,8 +246,10 @@ docker-compose up --build
 | Frontend UI | http://localhost:3000 | Interfaz de chat en el navegador |
 | PostgreSQL | `localhost:5432` | Base de datos relacional |
 
-### Opción B: De forma manual (Sin Docker)
-Si prefieres levantar cada parte por separado usando dos terminales:
+### Opción B: De forma manual (Frontend y Backend por separado)
+> [!NOTE]
+> De igual manera, asegúrate de tener Docker Desktop abierto y corriendo en segundo plano (para la base de datos PostgreSQL).
+> Si prefieres levantar el código de cada parte por separado usando dos terminales:
 
 **Terminal 1: Para levantar el Backend**  
 Abre una terminal, ubícate en la raíz del proyecto y ejecuta estos comandos uno por uno:
