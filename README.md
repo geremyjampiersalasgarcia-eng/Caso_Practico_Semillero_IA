@@ -237,9 +237,6 @@ El archivo `.env` ya está excluido en el `.gitignore`, así que no hay riesgo d
 
 ```bash
 # Levantar todos los servicios de una sola vez
-make up
-
-# O si prefieres usar docker-compose directamente:
 docker-compose up --build
 ```
 
@@ -275,16 +272,6 @@ npm run dev
 *(El frontend quedará corriendo en `http://localhost:3000`)*
 
 
-### Atajos con Makefile
-El proyecto incluye un `Makefile` con atajos para las operaciones más comunes:
-
-| Comando | Acción |
-| :--- | :--- |
-| `make up` | Levanta todo con Docker Compose |
-| `make down` | Detiene todos los contenedores |
-| `make test` | Ejecuta toda la suite de pruebas |
-| `make ingest` | Indexa los documentos en ChromaDB |
-| `make lint` | Ejecuta linters (black, flake8) |
 
 ---
 
@@ -330,9 +317,6 @@ La indexación de documentos en ChromaDB se realiza mediante un script offline (
 
 ```bash
 # Indexar todos los documentos de data/raw/ en ChromaDB
-make ingest
-
-# O directamente:
 python scripts/ingest.py
 ```
 
@@ -342,7 +326,7 @@ python scripts/ingest.py
 3. `embeddings.py` genera los vectores con Gemini `gemini-embedding-2`
 4. `vectorstore.py` almacena los vectores en la colección correspondiente de ChromaDB
 
-> **Nota:** Para agregar nuevos documentos, simplemente colócalos en `data/raw/` y re-ejecuta `make ingest`.
+> **Nota:** Para agregar nuevos documentos, simplemente colócalos en `data/raw/` y re-ejecuta `python scripts/ingest.py`.
 
 ---
 
