@@ -249,6 +249,30 @@ docker-compose up --build
 | Frontend UI | http://localhost:3000 | Interfaz de chat en el navegador |
 | PostgreSQL | `localhost:5432` | Base de datos relacional |
 
+### Opción B: De forma manual (Sin Docker)
+Si prefieres levantar cada parte por separado usando dos terminales:
+
+**Terminal 1: Para levantar el Backend**  
+Abre una terminal, ubícate en la raíz del proyecto y ejecuta estos comandos uno por uno:
+
+```bash
+cd backend
+python -m venv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+*(El backend quedará corriendo en `http://localhost:8000`)*
+
+**Terminal 2: Para levantar el Frontend**  
+Abre **otra** terminal nueva, ubícate en la raíz del proyecto y ejecuta:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*(El frontend quedará corriendo en `http://localhost:3000`)*
 
 
 ### Atajos con Makefile
