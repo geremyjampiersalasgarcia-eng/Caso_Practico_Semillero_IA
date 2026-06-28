@@ -219,40 +219,29 @@ El archivo `.env` del backend ya está excluido en el `.gitignore`, así que no 
 
 ## 🐳 Ejecutar el Proyecto
 
-### Opción A: Con Docker (Recomendado)
+### Paso 1: Levantar la Base de Datos (con Docker)
 
 > [!NOTE]
-> Para usar esta opción, asegúrate de tener descargado e instalado [Docker Desktop](https://www.docker.com/products/docker-desktop/) en tu computadora y que la aplicación esté abierta corriendo en segundo plano.
+> Asegúrate de tener descargado e instalado [Docker Desktop](https://www.docker.com/products/docker-desktop/) en tu computadora y que la aplicación esté abierta corriendo en segundo plano.
 
 Abre una terminal en la **raíz del proyecto** (`Caso_Practico_Semillero_IA/`) y ejecuta el siguiente comando una sola vez:
 
 ```bash
-# Este único comando levantará la Base de Datos
-docker-compose up --build
+# Este comando inicializará y levantará el contenedor de la Base de Datos
+docker-compose up -d postgres
 ```
 
-| Servicio | URL | Descripción |
-| :--- | :--- | :--- |
-| Backend API | http://localhost:8000/docs | Swagger UI interactivo de FastAPI |
-| Frontend UI | http://localhost:3000 | Interfaz de chat en el navegador |
-| PostgreSQL | `localhost:5432` | Base de datos relacional |
-
-### Para próximas ocasiones (Encendido rápido de la Base de Datos)
-Una vez que hayas ejecutado Docker por primera vez, el contenedor de PostgreSQL quedará guardado en tu Docker Desktop. Para las próximas veces, ya **no** necesitas usar la terminal para la base de datos. 
-
-Simplemente abre Docker Desktop, busca el grupo `caso_practico_semillero_ia` y haz clic en el botón de **Play (Start)**. ¡Eso levantará tu Base de Datos automáticamente!
+**Para próximas ocasiones (Encendido rápido):**
+Una vez que hayas ejecutado el comando de arriba por primera vez, el contenedor de PostgreSQL quedará guardado. Para las próximas veces, ya **no** necesitas usar la terminal para la base de datos. Simplemente abre Docker Desktop, busca el grupo `caso_practico_semillero_ia` y haz clic en el botón de **Play (Start)**.
 
 ![Encender desde Docker Desktop](docs/images/DOCKEER.png)
 
-> **Importante:** Una vez que la base de datos esté corriendo en Docker Desktop, deberás levantar el Backend y el Frontend manualmente en la terminal (como se explica en la **Opción B** a continuación).
+### Paso 2: Levantar el Código Manualmente (Backend y Frontend)
 
-### Opción B: De forma manual (Frontend y Backend por separado)
-> [!NOTE]
-> De igual manera, asegúrate de tener Docker Desktop abierto y corriendo en segundo plano (para la base de datos PostgreSQL).
-> Si prefieres levantar el código de cada parte por separado usando dos terminales:
+Una vez que la base de datos esté corriendo (Paso 1), debes levantar los servidores de Python y React por separado. Abre dos terminales nuevas:
 
 **Terminal 1: Para levantar el Backend**  
-Abre una terminal, ubícate en la raíz del proyecto y ejecuta estos comandos uno por uno:
+Ubícate en la raíz del proyecto y ejecuta estos comandos uno por uno:
 
 ```bash
 cd backend
@@ -261,17 +250,25 @@ python -m venv venv
 pip install -r requirements.txt
 python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
-*(El backend quedará corriendo en `http://localhost:8000`)*
 
 **Terminal 2: Para levantar el Frontend**  
-Abre **otra** terminal nueva, ubícate en la raíz del proyecto y ejecuta:
+Ubícate en la raíz del proyecto y ejecuta:
 
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-*(El frontend quedará corriendo en `http://localhost:3000`)*
+
+### Resumen de Servicios Activos
+
+Cuando hayas completado ambos pasos, tendrás tu ecosistema funcionando en estas direcciones:
+
+| Servicio | URL | Descripción |
+| :--- | :--- | :--- |
+| Backend API | http://localhost:8000/docs | Swagger UI interactivo de FastAPI |
+| Frontend UI | http://localhost:3000 | Interfaz de chat en el navegador |
+| PostgreSQL | `localhost:5432` | Base de datos relacional (vía Docker) |
 
 
 
