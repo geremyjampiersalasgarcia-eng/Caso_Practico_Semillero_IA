@@ -235,8 +235,10 @@ El archivo `.env` ya está excluido en el `.gitignore`, así que no hay riesgo d
 > [!NOTE]
 > Para usar esta opción, asegúrate de tener descargado e instalado [Docker Desktop](https://www.docker.com/products/docker-desktop/) en tu computadora y que la aplicación esté abierta corriendo en segundo plano.
 
+Abre una terminal en la **raíz del proyecto** (`Caso_Practico_Semillero_IA/`) y ejecuta el siguiente comando una sola vez:
+
 ```bash
-# Levantar todos los servicios de una sola vez
+# Este único comando levantará la Base de Datos, el Backend y el Frontend al mismo tiempo
 docker-compose up --build
 ```
 
