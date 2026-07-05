@@ -1,8 +1,10 @@
-# Mesa de Ayuda IA — Departamento de Ventas — Patito S.A.
+# Patito S.A.
+## Departamento de Ventas
+### Proyecto final del semillero
+
 **Grupo:** Net Ingenieros
 
-> **Prototipo funcional** de mesa de ayuda con agentes IA especializados para el equipo comercial de Patito S.A.
-> Proyecto final del Semillero de Inteligencia Artificial.
+> **Sistema de Inteligencia Artificial Avanzado** con agentes especializados para potenciar la mesa de ayuda del equipo comercial.
 
 Este proyecto consiste en un sistema de Inteligencia Artificial diseñado para asistir al Departamento de Ventas de la empresa ficticia Patito S.A. Utiliza una arquitectura Multi-Agente basada en LangGraph y procesamiento RAG (Retrieval-Augmented Generation) con ChromaDB y Google Gemini, permitiendo a los vendedores consultar información precisa sobre el catálogo de productos, precios, políticas comerciales y registrar oportunidades en el CRM mediante lenguaje natural o análisis de imágenes.
 
@@ -497,3 +499,16 @@ npm run dev
 ## Licencia
 
 Proyecto académico — Semillero de Inteligencia Artificial.
+
+---
+
+<div align="center">
+  <h3>✨ Desarrollado por el equipo Net Ingenieros ✨</h3>
+  
+  <b>Frank Marcelo Villalta Díaz</b> &nbsp;&middot;&nbsp;
+  <b>Eddy Fernando Romo Quinde</b> &nbsp;&middot;&nbsp;
+  <b>Geremy Jampier Salas Garcia</b>
+  
+  <br><br>
+  <sub><i>Desarrollado con LangChain, LangGraph y Google Gemini</i></sub>
+</div>
