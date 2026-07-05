@@ -104,5 +104,6 @@ export function useChat() {
     sendMessage,
     clearChat,
     loadConversation,
+    conversationId,
   };
 }

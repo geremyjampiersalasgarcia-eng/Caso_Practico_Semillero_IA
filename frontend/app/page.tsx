@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { api } from "@/lib/api";
 
 export default function Home() {
-  const { messages, isLoading, sendMessage, clearChat, loadConversation } = useChat();
+  const { messages, isLoading, sendMessage, clearChat, loadConversation, conversationId } = useChat();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentTime, setCurrentTime] = useState<string>("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -29,10 +29,10 @@ export default function Home() {
     }
   };
 
-  // Cargar historial inicial
+  // Cargar historial inicial y cuando cambie el conversationId (al crear uno nuevo)
   useEffect(() => {
     refreshHistory();
-  }, []);
+  }, [conversationId]);
 
   // Función para manejar el botón de Nuevo Chat
   const handleNewChat = () => {
