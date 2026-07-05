@@ -19,6 +19,7 @@ Este proyecto consiste en un sistema de Inteligencia Artificial diseñado para a
 * [Ejecutar el Proyecto](#-ejecutar-el-proyecto)
 * [Ejemplos de Uso](#-ejemplos-de-uso)
 * [Decisiones Técnicas](#decisiones-técnicas)
+* [Riesgos y Mejoras Futuras](#riesgos-y-mejoras-futuras)
 
 ---
 
@@ -455,6 +456,34 @@ npm run dev
 - **Agentes especializados** heredan y solo definen: nombre, descripción, colección, prompt
 
 
+
+---
+
+## Riesgos y Mejoras Futuras
+
+### Riesgos identificados
+
+| Riesgo | Impacto | Mitigación actual |
+|:---|:---|:---|
+| Alucinación del LLM | Respuestas inventadas | Prompt estricto + temp baja + validación "no encontré información" |
+| API Key expuesta | Seguridad | `.env` + `.gitignore` + `.env.example` sin credenciales |
+| Documentos pequeños | Chunks redundantes | Ajuste de chunk_size. Monitorear calidad de retrieval |
+| Costos de API Gemini | Consumo de tokens | Modelo Flash (económico), cacheo futuro |
+| Concurrencia | Escritura simultánea en registro_oportunidades.txt | File lock o migrar a BD en producción |
+| Latencia en consultas mixtas | 3 agentes + LLM consolidador | Ejecución paralela en LangGraph |
+
+### Mejoras futuras
+
+1. **Memoria conversacional:** Mantener contexto de la conversación entre turnos
+2. **Streaming:** Respuestas parciales en tiempo real (SSE)
+3. **Autenticación:** JWT/OAuth para controlar acceso por rol
+4. **Permisos por agente:** Control de qué usuarios pueden acceder a qué agentes
+5. **Monitoreo de calidad:** Dashboard con métricas de tokens, latencia, feedback
+6. **Evaluación RAG:** Métricas de relevancia (RAGAS, faithfulness, answer relevancy)
+7. **Cacheo de embeddings:** Evitar re-calcular embeddings para preguntas repetidas
+8. **File lock para registros:** Evitar corrupción en escritura concurrente
+9. **Historial de precios:** Versionar el catálogo por fechas
+10. **Tests automatizados:** Aumentar cobertura con preguntas de golden set
 
 ---
 
