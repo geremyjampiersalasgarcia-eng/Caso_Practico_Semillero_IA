@@ -77,7 +77,7 @@ export default function Home() {
         <Sidebar onNewChat={handleNewChat} onLoadChat={loadConversation} history={history} setHistory={setHistory} />
       </div>
       
-      <main className="flex flex-1 flex-col relative">
+      <main className="flex flex-1 flex-col relative bg-gradient-to-b from-blue-300/80 via-blue-200/50 to-blue-50/30">
         {/* Header (Glass) */}
         <header className="absolute top-0 left-0 right-0 z-10 flex h-16 items-center justify-between px-6 glass-panel border-x-0 border-t-0 bg-white/50">
           <div className="flex items-center gap-4">
@@ -127,9 +127,10 @@ export default function Home() {
                 <h2 className="text-4xl font-bold tracking-tight text-slate-800">
                   Mesa de Ayuda — Ventas
                 </h2>
-                <p className="max-w-xl text-lg text-slate-500 leading-relaxed">
-                  Soy tu asistente inteligente del Departamento de Ventas de Patito S.A. Pregúntame sobre productos, precios, políticas comerciales, proceso de venta o adjunta una imagen de un producto.
-                </p>
+                {/* Input Area (Centrado en el medio cuando está vacío) */}
+                <div className="w-full max-w-4xl mt-8">
+                  <ChatInput onSend={(msg, img, conf) => sendMessage(msg, img, conf)} isLoading={isLoading} />
+                </div>
               </div>
             ) : (
               messages.map((msg) => (
@@ -154,19 +155,18 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Input Area (Floating with blue gradient backdrop like Gemini) */}
-        <div className="absolute bottom-0 left-0 right-0">
-          {/* Gradient fade from blue to transparent going upward */}
-          <div className="absolute inset-0 bg-gradient-to-t from-blue-50/80 via-blue-50/40 to-transparent pointer-events-none" />
-          <div className="relative px-4 pt-8 pb-6">
-            <div className="mx-auto max-w-4xl relative">
-              <ChatInput onSend={(msg, img, conf) => sendMessage(msg, img, conf)} isLoading={isLoading} />
-              <div className="text-center text-xs text-slate-400 mt-3 font-medium">
-                Respuestas basadas únicamente en la base documental de Patito S.A. La IA puede cometer errores.
+        {/* Input Area (Fijo en la parte inferior cuando ya hay mensajes) */}
+        {messages.length > 0 && (
+          <div className="absolute bottom-0 left-0 right-0">
+            {/* Gradient fade from blue to transparent going upward */}
+            <div className="absolute inset-0 bg-gradient-to-t from-blue-50/80 via-blue-50/40 to-transparent pointer-events-none" />
+            <div className="relative px-4 pt-8 pb-6">
+              <div className="mx-auto max-w-4xl relative">
+                <ChatInput onSend={(msg, img, conf) => sendMessage(msg, img, conf)} isLoading={isLoading} />
               </div>
             </div>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );

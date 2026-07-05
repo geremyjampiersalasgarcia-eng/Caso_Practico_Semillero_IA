@@ -26,7 +26,7 @@ export function Sidebar({
   };
 
   return (
-    <div className="flex h-full w-[280px] flex-col border-r border-slate-200/60 bg-white/40 backdrop-blur-xl p-5 shadow-[4px_0_24px_rgb(0,0,0,0.02)] shrink-0">
+    <div className="flex h-full w-[280px] flex-col border-r border-slate-200/60 bg-gradient-to-b from-blue-300/40 via-blue-100/20 to-transparent backdrop-blur-xl p-5 shadow-[4px_0_24px_rgb(0,0,0,0.02)] shrink-0">
       <button 
         onClick={onNewChat}
         className="flex w-full items-center justify-center gap-2 rounded-2xl bg-white border border-slate-200 p-3 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:border-blue-200 hover:bg-blue-50/50 hover:text-blue-600 mb-8 hover:shadow-md"
