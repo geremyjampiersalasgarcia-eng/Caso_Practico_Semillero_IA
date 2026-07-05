@@ -228,6 +228,13 @@ Caso_Practico_Semillero_IA/
 │   ├── .env.example                      # Template de variables de entorno
 │   └── requirements.txt                  # Dependencias Python
 ├── frontend/                             # Interfaz Next.js + TypeScript
+│   ├── app/                              # Páginas principales y Layouts (App Router)
+│   ├── components/                       # Componentes React (UI, ChatInput, etc.)
+│   ├── hooks/                            # Custom hooks (e.g., useChat.ts)
+│   ├── lib/                              # Lógica de API (conexión con FastAPI)
+│   ├── types/                            # Definiciones de interfaces TypeScript
+│   ├── tailwind.config.ts                # Configuración de estilos CSS
+│   └── package.json                      # Dependencias de Node.js
 ├── 4_Ventas/                             # Documentos originales entregados
 ├── docs/                                 # Documentación técnica
 ├── docker-compose.yml                    # PostgreSQL con Docker
