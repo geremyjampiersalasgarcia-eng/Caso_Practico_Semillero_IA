@@ -7,8 +7,8 @@ const font = Outfit({ subsets: ["latin"] });
 
 
 export const metadata: Metadata = {
-  title: "Nexus IA",
-  description: "Asistente inteligente con RAG Multi-Agente",
+  title: "Patito IA — Mesa de Ayuda Ventas",
+  description: "Mesa de Ayuda IA con agentes especializados para el Departamento de Ventas de Patito S.A.",
 };
 
 export default function RootLayout({

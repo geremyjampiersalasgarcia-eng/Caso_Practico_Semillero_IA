@@ -1,123 +1,286 @@
+import os
 import time
-from typing import TypedDict, List, Dict, Any, Annotated
+from typing import TypedDict, List, Dict, Any, Optional, Annotated
+
 from langgraph.graph import StateGraph, END
 from app.core.classifier import classify_intent
 from app.agents.registry import agent_registry
+from app.agents.multimodal_agent import MultimodalAgent
+from app.agents.accion_agent import AccionAgent
 from app.schemas.agent import AgentResult
 from app.utils.logger import logger
 from app.core.llm import get_llm
 from langchain_core.messages import SystemMessage, HumanMessage
 import operator
 
-# 1. Definir el Estado del Grafo
+
+# --------------------------------------------------------------------------- #
+#  1. Estado del Grafo
+# --------------------------------------------------------------------------- #
+
 class GraphState(TypedDict):
     question: str
     category: str
+    image_data: Optional[str]            # Base64 de la imagen (si existe)
+    confirmation: Optional[bool]         # Confirmación del usuario para acción
     agent_results: Annotated[List[AgentResult], operator.add]
     final_answer: str
     sources: List[Dict[str, Any]]
     agents_invoked: Annotated[List[str], operator.add]
+    warnings: List[str]
     start_time: float
 
-# 2. Nodos del Grafo
+
+# --------------------------------------------------------------------------- #
+#  2. Nodos del Grafo
+# --------------------------------------------------------------------------- #
 
 def node_classify(state: GraphState):
-    """Nodo 1: Clasifica la intención de la pregunta"""
+    """Nodo 1: Clasifica la intención de la pregunta."""
     logger.info("Orquestador: Iniciando clasificación")
-    intent = classify_intent(state["question"])
-    return {"category": intent.category, "start_time": time.time()}
+    has_image = bool(state.get("image_data"))
+    intent = classify_intent(state["question"], has_image=has_image)
+    return {
+        "category": intent.category,
+        "start_time": time.time(),
+        "warnings": [],
+    }
 
-def node_agent_1(state: GraphState):
-    """Nodo 2a: Ejecuta Agente 1 (Placeholder)"""
-    try:
-        agent = agent_registry.get_agent("agente_1")
-        result = agent.process_query(state["question"])
-        return {"agent_results": [result], "agents_invoked": ["agente_1"]}
-    except Exception as e:
-        logger.error("Error en agente 1", error=str(e))
-        return {"agent_results": [], "agents_invoked": ["agente_1 (failed)"]}
 
-def node_agent_2(state: GraphState):
-    """Nodo 2b: Ejecuta Agente 2 (Placeholder)"""
+def node_catalogo(state: GraphState):
+    """Nodo: Ejecuta Agente de Catálogo y Precios."""
     try:
-        agent = agent_registry.get_agent("agente_2")
+        agent = agent_registry.get_agent("agente_catalogo")
         result = agent.process_query(state["question"])
-        return {"agent_results": [result], "agents_invoked": ["agente_2"]}
+        return {
+            "agent_results": [result],
+            "agents_invoked": ["agente_catalogo"],
+        }
     except Exception as e:
-        logger.error("Error en agente 2", error=str(e))
-        return {"agent_results": [], "agents_invoked": ["agente_2 (failed)"]}
+        logger.error("Error en agente catálogo", error=str(e))
+        return {
+            "agent_results": [],
+            "agents_invoked": ["agente_catalogo (error)"],
+        }
+
+
+def node_politicas(state: GraphState):
+    """Nodo: Ejecuta Agente de Políticas Comerciales."""
+    try:
+        agent = agent_registry.get_agent("agente_politicas")
+        result = agent.process_query(state["question"])
+        return {
+            "agent_results": [result],
+            "agents_invoked": ["agente_politicas"],
+        }
+    except Exception as e:
+        logger.error("Error en agente políticas", error=str(e))
+        return {
+            "agent_results": [],
+            "agents_invoked": ["agente_politicas (error)"],
+        }
+
+
+def node_proceso_ventas(state: GraphState):
+    """Nodo: Ejecuta Agente de Proceso de Venta y CRM."""
+    try:
+        agent = agent_registry.get_agent("agente_proceso_ventas")
+        result = agent.process_query(state["question"])
+        return {
+            "agent_results": [result],
+            "agents_invoked": ["agente_proceso_ventas"],
+        }
+    except Exception as e:
+        logger.error("Error en agente proceso ventas", error=str(e))
+        return {
+            "agent_results": [],
+            "agents_invoked": ["agente_proceso_ventas (error)"],
+        }
+
+
+def node_multimodal(state: GraphState):
+    """Nodo: Ejecuta Agente Multimodal de Imagen."""
+    try:
+        agent = agent_registry.get_agent("agente_multimodal")
+        # Cast al tipo específico que acepta image_data
+        assert isinstance(agent, MultimodalAgent)
+        result = agent.process_query(
+            state["question"],
+            image_data=state.get("image_data"),
+        )
+        return {
+            "agent_results": [result],
+            "agents_invoked": ["agente_multimodal"],
+        }
+    except Exception as e:
+        logger.error("Error en agente multimodal", error=str(e))
+        return {
+            "agent_results": [],
+            "agents_invoked": ["agente_multimodal (error)"],
+        }
+
+
+def node_accion(state: GraphState):
+    """Nodo: Ejecuta Agente de Acción (Registro)."""
+    try:
+        agent = agent_registry.get_agent("agente_accion")
+        # Cast al tipo específico que acepta confirmation
+        assert isinstance(agent, AccionAgent)
+        result = agent.process_query(
+            state["question"],
+            confirmation=state.get("confirmation"),
+        )
+        return {
+            "agent_results": [result],
+            "agents_invoked": ["agente_accion"],
+        }
+    except Exception as e:
+        logger.error("Error en agente acción", error=str(e))
+        return {
+            "agent_results": [],
+            "agents_invoked": ["agente_accion (error)"],
+        }
+
 
 def node_consolidate(state: GraphState):
-    """Nodo 3: Consolida resultados si hubo más de un agente, o pasa directo"""
+    """Nodo final: Consolida resultados de uno o más agentes."""
     results = state.get("agent_results", [])
-    
+    warnings = state.get("warnings", [])
+
     if not results:
-        return {"final_answer": "Hubo un error procesando la consulta con los agentes.", "sources": []}
-        
+        return {
+            "final_answer": "Hubo un error procesando la consulta con los agentes.",
+            "sources": [],
+            "warnings": warnings + ["Ningún agente pudo procesar la consulta."],
+        }
+
+    # Recopilar todas las fuentes
     all_sources = []
     for r in results:
         all_sources.extend(r.sources)
-        
+
+    # Si solo un agente respondió, su respuesta es la final
     if len(results) == 1:
-        # Solo un agente respondió, su respuesta es la final
-        return {"final_answer": results[0].answer, "sources": all_sources}
-        
+        return {
+            "final_answer": results[0].answer,
+            "sources": all_sources,
+            "warnings": warnings,
+        }
+
     # Múltiples agentes: Consolidar con LLM
-    logger.info("Orquestador: Consolidando respuestas múltiples")
+    logger.info("Orquestador: Consolidando respuestas de múltiples agentes")
     llm = get_llm()
-    
-    context = "\n\n".join([f"[{r.agent_name}]: {r.answer}" for r in results])
-    
-    prompt = f"""
-    Consolida las siguientes respuestas de diferentes agentes expertos en una respuesta única,
-    coherente y bien estructurada para el usuario.
-    
-    Respuestas de los agentes:
-    {context}
-    
-    Pregunta original del usuario: {state['question']}
-    """
-    
+
+    # Cargar prompt del orquestador
+    prompt_path = os.path.join(
+        os.path.dirname(__file__), "..", "prompts", "orchestrator_prompt.md"
+    )
+    try:
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            orchestrator_prompt = f.read()
+    except FileNotFoundError:
+        orchestrator_prompt = "Consolida las respuestas de los agentes de forma coherente."
+
+    context = "\n\n".join(
+        [f"### [{r.agent_name}]:\n{r.answer}" for r in results]
+    )
+
+    prompt = f"""{orchestrator_prompt}
+
+---
+
+### Respuestas de los agentes participantes:
+{context}
+
+### Pregunta original del usuario:
+{state['question']}
+
+Genera una respuesta consolidada, única y bien estructurada."""
+
     try:
         response = llm.invoke([HumanMessage(content=prompt)])
-        return {"final_answer": response.content, "sources": all_sources}
+        return {
+            "final_answer": response.content,
+            "sources": all_sources,
+            "warnings": warnings,
+        }
     except Exception as e:
         logger.error("Error consolidando", error=str(e))
-        return {"final_answer": "Error al consolidar las respuestas parciales.", "sources": all_sources}
+        # Fallback: concatenar las respuestas
+        fallback = "\n\n---\n\n".join(
+            [f"**{r.agent_name}:** {r.answer}" for r in results]
+        )
+        return {
+            "final_answer": fallback,
+            "sources": all_sources,
+            "warnings": warnings + ["Error al consolidar; se muestran las respuestas individuales."],
+        }
 
-# 3. Lógica de Enrutamiento (Conditional Edges)
+
+# --------------------------------------------------------------------------- #
+#  3. Lógica de Enrutamiento (Conditional Edges)
+# --------------------------------------------------------------------------- #
+
 def route_agents(state: GraphState):
+    """
+    Decide qué agente(s) invocar según la categoría clasificada.
+    Retorna una lista de nombres de nodo.
+    """
     cat = state["category"]
-    if cat == "agente_1":
-        return ["agent_1"]
-    elif cat == "agente_2":
-        return ["agent_2"]
-    else:
-        # Mixta: Invocar a ambos en paralelo
-        return ["agent_1", "agent_2"]
 
-# 4. Construir el Grafo
+    if cat == "catalogo_precios":
+        return ["catalogo"]
+    elif cat == "politicas_comerciales":
+        return ["politicas"]
+    elif cat == "proceso_ventas":
+        return ["proceso_ventas"]
+    elif cat == "multimodal":
+        return ["multimodal"]
+    elif cat == "accion_registro":
+        return ["accion"]
+    else:
+        # mixta: invocar los 3 agentes RAG principales en paralelo
+        return ["catalogo", "politicas", "proceso_ventas"]
+
+
+# --------------------------------------------------------------------------- #
+#  4. Construir el Grafo
+# --------------------------------------------------------------------------- #
+
 workflow = StateGraph(GraphState)
 
+# Agregar nodos
 workflow.add_node("classify", node_classify)
-workflow.add_node("agent_1", node_agent_1)
-workflow.add_node("agent_2", node_agent_2)
+workflow.add_node("catalogo", node_catalogo)
+workflow.add_node("politicas", node_politicas)
+workflow.add_node("proceso_ventas", node_proceso_ventas)
+workflow.add_node("multimodal", node_multimodal)
+workflow.add_node("accion", node_accion)
 workflow.add_node("consolidate", node_consolidate)
 
+# Punto de entrada
 workflow.set_entry_point("classify")
 
+# Enrutamiento condicional desde clasificación
 workflow.add_conditional_edges(
     "classify",
     route_agents,
     {
-        "agent_1": "agent_1",
-        "agent_2": "agent_2",
-    }
+        "catalogo": "catalogo",
+        "politicas": "politicas",
+        "proceso_ventas": "proceso_ventas",
+        "multimodal": "multimodal",
+        "accion": "accion",
+    },
 )
 
-# Ambos agentes convergen en consolidar
-workflow.add_edge("agent_1", "consolidate")
-workflow.add_edge("agent_2", "consolidate")
+# Todos los agentes convergen en el nodo de consolidación
+workflow.add_edge("catalogo", "consolidate")
+workflow.add_edge("politicas", "consolidate")
+workflow.add_edge("proceso_ventas", "consolidate")
+workflow.add_edge("multimodal", "consolidate")
+workflow.add_edge("accion", "consolidate")
 workflow.add_edge("consolidate", END)
 
+# Compilar el grafo
 orchestrator_app = workflow.compile()

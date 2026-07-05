@@ -25,7 +25,7 @@ app.add_middleware(
 )
 
 # 3. Registrar Manejador de Errores Global
-app.add_exception_handler(AppError, app_error_handler)
+app.add_exception_handler(AppError, app_error_handler)  # type: ignore
 
 # 4. Incluir Rutas
 app.include_router(api_router, prefix="/api/v1")
@@ -36,7 +36,7 @@ from app.agents import register_all_agents
 @app.on_event("startup")
 async def startup_event():
     logger.info("Iniciando aplicación. Creando tablas en base de datos si no existen...")
-    Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=engine)  # type: ignore
     logger.info("Registrando agentes del sistema...")
     register_all_agents()
     logger.info("Aplicación iniciada correctamente")

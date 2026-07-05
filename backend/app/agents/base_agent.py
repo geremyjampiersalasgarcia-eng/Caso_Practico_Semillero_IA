@@ -84,6 +84,6 @@ class BaseAgent(ABC):
         # 4. Retornar
         return AgentResult(
             agent_name=self.name,
-            answer=response.content,
+            answer=str(response.content),
             sources=sources
         )

@@ -28,9 +28,12 @@ class ChatService:
         # 2. Invocar Orquestador LangGraph
         initial_state = {
             "question": request.question,
+            "image_data": request.image,
+            "confirmation": request.confirmation,
             "agent_results": [],
             "agents_invoked": [],
-            "sources": []
+            "sources": [],
+            "warnings": [],
         }
         
         logger.info("Invocando orquestador", conversation_id=conv.id)
@@ -41,6 +44,7 @@ class ChatService:
         category = result_state.get("category", "unknown")
         agents_invoked = result_state.get("agents_invoked", [])
         raw_sources = result_state.get("sources", [])
+        warnings = result_state.get("warnings", [])
         
         # Formatear fuentes (pueden venir como dict o como objetos Pydantic)
         formatted_sources = []
@@ -89,5 +93,6 @@ class ChatService:
                 latency_ms=latency,
                 conversation_id=conv.id
             ),
-            sources=formatted_sources
+            sources=formatted_sources,
+            warnings=warnings,
         )

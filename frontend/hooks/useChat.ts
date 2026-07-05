@@ -7,7 +7,11 @@ export function useChat() {
   const [conversationId, setConversationId] = useState<string | undefined>();
   const [error, setError] = useState<string | null>(null);
 
-  const sendMessage = useCallback(async (content: string) => {
+  const sendMessage = useCallback(async (
+    content: string,
+    image?: string,
+    confirmation?: boolean,
+  ) => {
     if (!content.trim()) return;
 
     // Add user message to UI immediately
@@ -25,6 +29,8 @@ export function useChat() {
       const res = await api.sendMessage({
         question: content,
         conversation_id: conversationId,
+        image,
+        confirmation,
       });
 
       // Guardar el conversation_id para futuras llamadas
@@ -32,10 +38,16 @@ export function useChat() {
         setConversationId(res.meta.conversation_id);
       }
 
+      // Construir contenido del mensaje con warnings si existen
+      let botContent = res.answer;
+      if (res.warnings && res.warnings.length > 0) {
+        botContent += "\n\n⚠️ **Advertencias:** " + res.warnings.join(", ");
+      }
+
       const botMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: res.answer,
+        content: botContent,
         sources: res.sources.map(s => s.document_name),
         agents: res.meta.agents_used,
       };

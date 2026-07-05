@@ -17,6 +17,8 @@ export interface SourceInfo {
 export interface ChatRequest {
   question: string;
   conversation_id?: string;
+  image?: string;          // Base64 de imagen para agente multimodal
+  confirmation?: boolean;  // Confirmación para agente de acción
 }
 
 export interface ChatResponse {
@@ -27,6 +29,7 @@ export interface ChatResponse {
     conversation_id: string;
   };
   sources: SourceInfo[];
+  warnings: string[];
 }
 
 export interface ConversationListResponse {

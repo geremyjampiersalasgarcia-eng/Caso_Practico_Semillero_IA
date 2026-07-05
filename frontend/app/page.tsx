@@ -90,7 +90,7 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-blue-500" />
               <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
-                Nexus IA
+                Patito IA — Ventas
               </h1>
             </div>
           </div>
@@ -125,10 +125,10 @@ export default function Home() {
                   <Sparkles className="h-10 w-10 text-white" />
                 </div>
                 <h2 className="text-4xl font-bold tracking-tight text-slate-800">
-                  ¿Cómo te puedo ayudar hoy?
+                  Mesa de Ayuda — Ventas
                 </h2>
                 <p className="max-w-xl text-lg text-slate-500 leading-relaxed">
-                  Soy tu asistente inteligente. Pregúntame lo que necesites y te ayudaré a encontrar la respuesta rápidamente.
+                  Soy tu asistente inteligente del Departamento de Ventas de Patito S.A. Pregúntame sobre productos, precios, políticas comerciales, proceso de venta o adjunta una imagen de un producto.
                 </p>
               </div>
             ) : (
@@ -160,9 +160,9 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-blue-50/80 via-blue-50/40 to-transparent pointer-events-none" />
           <div className="relative px-4 pt-8 pb-6">
             <div className="mx-auto max-w-4xl relative">
-              <ChatInput onSend={sendMessage} isLoading={isLoading} />
+              <ChatInput onSend={(msg, img, conf) => sendMessage(msg, img, conf)} isLoading={isLoading} />
               <div className="text-center text-xs text-slate-400 mt-3 font-medium">
-                La IA puede cometer errores. Por favor, verifica la información importante.
+                Respuestas basadas únicamente en la base documental de Patito S.A. La IA puede cometer errores.
               </div>
             </div>
           </div>

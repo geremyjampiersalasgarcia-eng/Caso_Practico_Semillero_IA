@@ -1,1 +1,0 @@
-# Documento: Estándares de Arquitectura y Microservicios

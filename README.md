@@ -1,6 +1,10 @@
-# Caso Práctico Semillero IA
+# Mesa de Ayuda IA — Departamento de Ventas — Patito S.A.
+**Grupo:** Net Ingenieros
 
-![Interfaz de Nexus IA](docs/images/chat_interface.png)
+> **Prototipo funcional** de mesa de ayuda con agentes IA especializados para el equipo comercial de Patito S.A.
+> Proyecto final del Semillero de Inteligencia Artificial.
+
+Este proyecto consiste en un sistema de Inteligencia Artificial diseñado para asistir al Departamento de Ventas de la empresa ficticia Patito S.A. Utiliza una arquitectura Multi-Agente basada en LangGraph y procesamiento RAG (Retrieval-Augmented Generation) con ChromaDB y Google Gemini, permitiendo a los vendedores consultar información precisa sobre el catálogo de productos, precios, políticas comerciales y registrar oportunidades en el CRM mediante lenguaje natural o análisis de imágenes.
 
 ---
 
@@ -8,53 +12,49 @@
 
 * [Stack Tecnológico](#stack-tecnológico)
 * [Arquitectura](#arquitectura)
+* [Agentes del Sistema](#agentes-del-sistema)
 * [Estructura del Proyecto](#estructura-del-proyecto)
 * [Cómo empezar](#-cómo-empezar)
-* [Ejecutar el Proyecto](#-ejecutar-el-proyecto)
-* [Pruebas](#-pruebas)
-* [Endpoints de la API](#endpoints-de-la-api)
 * [Ingesta de Documentos](#-ingesta-de-documentos)
+* [Ejecutar el Proyecto](#-ejecutar-el-proyecto)
+* [Ejemplos de Uso](#-ejemplos-de-uso)
 * [Decisiones Técnicas](#decisiones-técnicas)
 
 ---
 
 ## Stack Tecnológico
 
-### Backend 
+### Backend
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Python](https://img.shields.io/badge/Python_3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)](https://www.langchain.com/)
-[![LangGraph](https://img.shields.io/badge/LangGraph_0.4-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)](https://langchain-ai.github.io/langgraph/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)](https://langchain-ai.github.io/langgraph/)
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-FF4F00?style=for-the-badge&logo=chroma&logoColor=white)](https://www.trychroma.com/)
-[![Gemini](https://img.shields.io/badge/Gemini_1.5-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com/)
+[![Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy_2.0-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white)](https://www.sqlalchemy.org/)
-[![Alembic](https://img.shields.io/badge/Alembic-6BA81E?style=for-the-badge&logo=alembic&logoColor=white)](https://alembic.sqlalchemy.org/)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 
-### Frontend 
+### Frontend
 [![Next.js](https://img.shields.io/badge/Next.js_14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-000000?style=for-the-badge&logo=shadcnui&logoColor=white)](https://ui.shadcn.com/)
 
 ### Justificación de Tecnologías Clave
 
 | Componente | Elección | Por qué |
 | :--- | :--- | :--- |
-| **Lenguaje** | Python 3.11 | Estándar empresarial para IA / RAG. Ecosistema robusto de NLP. |
-| **Web framework** | FastAPI + uvicorn | Tipado estricto, documentación automática (Swagger), alto rendimiento asíncrono. |
-| **Orquestación** | LangGraph 0.4 | Permite modelar el flujo de agentes como un grafo explícito (State Graph), ideal para enrutamiento condicional y flujos cíclicos. |
-| **Vector store** | ChromaDB (local) | Persistente, rápido de configurar y no requiere servicios externos para el prototipo. |
-| **Base de Datos** | PostgreSQL + SQLAlchemy | Almacenamiento robusto y estructurado para historial de conversaciones y auditoría. |
-| **LLM & Embeddings** | Google Gemini 1.5 Flash / embeddings-004 | Alta velocidad de inferencia, excelente ventana de contexto, ideal para agentes. |
-| **Frontend UI** | Next.js + Tailwind + Shadcn UI | Desarrollo ágil con componentes pre-estilizados de alta calidad y SSR/CSR híbrido. |
+| **Lenguaje** | Python 3.11 | Estándar para IA/NLP. Ecosistema robusto con LangChain y Google AI. |
+| **Framework web** | FastAPI + Uvicorn | Tipado estricto, docs automáticas (Swagger), alto rendimiento asíncrono. |
+| **Agentes** | LangChain | Framework estándar para agentes, tools y chains. Requerido por el semillero. |
+| **Orquestación** | LangGraph (StateGraph) | Flujo de agentes como grafo explícito con enrutamiento condicional. |
+| **Vector store** | ChromaDB (local) | Persistente, rápido, sin servicios externos. Una colección por agente. |
+| **LLM & Embeddings** | Google Gemini (via `langchain-google-genai`) | `ChatGoogleGenerativeAI` para agentes, `GoogleGenerativeAIEmbeddings` para vectores. |
+| **Visión** | Gemini Vision | Capacidad multimodal nativa para análisis de imágenes de productos. |
+| **Base de datos** | PostgreSQL + Docker | Historial de conversaciones y auditoría robusta. |
+| **Frontend** | Next.js + Tailwind + Shadcn UI | Interfaz de chat moderna y responsive. |
 
 ---
 
 ## Arquitectura
-
-El sistema sigue una arquitectura de microservicios separando el frontend del backend, con un flujo interno orquestado por LangGraph.
 
 ### Diagrama de alto nivel
 
@@ -62,69 +62,117 @@ El sistema sigue una arquitectura de microservicios separando el frontend del ba
 Browser ──► Web UI (Next.js)  │  TypeScript + Tailwind + Shadcn
                 │
                 ▼
-         HTTP (POST /api/v1/chat, GET /api/v1/health)
+         HTTP (POST /api/v1/chat)
                 │
                 ▼
-┌───────────────────────────────────────────────────┐
-│  FastAPI                                          │
-│  app.main  ──►  api/v1/router  ──►  endpoints     │
-│                                                   │
-│  ┌─────────────────────────────────────────────┐  │
-│  │  LangGraph StateGraph (orchestrator.py)     │  │
-│  │                                             │  │
-│  │  START                                      │  │
-│  │   ├► classify  (Clasificador, LLM temp=0)   │  │
-│  │   │    ├► agente_1 ──┐                      │  │
-│  │   │    ├► agente_2 ──┤──► consolidate ► END │  │
-│  │   │    ├► agente_N ──┘                      │  │
-│  │   │    └► mixta (N agentes)                 │  │
-│  └─────────────────────────────────────────────┘  │
-│                     │                             │
-│                     ▼                             │
-│           ChromaDB (colección por agente)          │
-│           Retriever + Embeddings Gemini            │
-│                                                   │
-│           PostgreSQL (historial + auditoría)       │
-└───────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────┐
+│  FastAPI  (app.main)                                          │
+│                                                               │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │  LangGraph StateGraph (orchestrator.py)                 │  │
+│  │                                                         │  │
+│  │  START                                                  │  │
+│  │   └► classify (Gemini, temp=0)                          │  │
+│  │       ├► catalogo_precios   → Agente Catálogo      ──┐  │  │
+│  │       ├► politicas_comerc   → Agente Políticas     ──┤  │  │
+│  │       ├► proceso_ventas     → Agente Proc. Ventas  ──┤  │  │
+│  │       ├► multimodal         → Agente Imagen        ──┤  │  │
+│  │       ├► accion_registro    → Agente Acción        ──┤  │  │
+│  │       └► mixta              → 3 agentes RAG        ──┤  │  │
+│  │                                                      │  │  │
+│  │                                    consolidate ◄─────┘  │  │
+│  │                                        │                │  │
+│  │                                       END               │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                                                               │
+│  ChromaDB (3 colecciones: col_catalogo, col_politicas,        │
+│            col_proceso_ventas)                                │
+│  PostgreSQL (historial + auditoría)                           │
+└───────────────────────────────────────────────────────────────┘
 ```
 
-### Diagrama de flujo detallado
+### Diagrama de flujo (Mermaid)
 
 ```mermaid
 graph TD
-    User([Usuario]) -->|HTTP POST| API["FastAPI"]
+    User([Usuario]) -->|HTTP POST + pregunta| API["FastAPI /api/v1/chat"]
 
     subgraph Orquestador LangGraph
-        API --> Classify["Clasificador de Intencion"]
+        API --> Classify["Clasificador de Intención"]
         Classify --> Router{Router}
 
-        Router -->|Tema A| AgentA["Agente A"]
-        Router -->|Tema B| AgentB["Agente B"]
-        Router -->|Multiple| AgentC["Agente C"]
+        Router -->|catalogo_precios| AgCat["Agente Catálogo y Precios"]
+        Router -->|politicas_comerciales| AgPol["Agente Políticas Comerciales"]
+        Router -->|proceso_ventas| AgProc["Agente Proceso de Venta y CRM"]
+        Router -->|multimodal| AgImg["Agente Multimodal de Imagen"]
+        Router -->|accion_registro| AgAcc["Agente de Acción - Registro"]
+        Router -->|mixta| AgCat & AgPol & AgProc
 
-        AgentA --> Consolidate["Consolidador"]
-        AgentB --> Consolidate
-        AgentC --> Consolidate
+        AgCat --> Consolidate["Consolidador"]
+        AgPol --> Consolidate
+        AgProc --> Consolidate
+        AgImg --> Consolidate
+        AgAcc --> Consolidate
     end
 
     subgraph Capa RAG
-        AgentA --> VectorDB[(ChromaDB)]
-        AgentB --> VectorDB
-        AgentC --> VectorDB
-        VectorDB --> Docs["Documentos Locales"]
+        AgCat --> VDB1[(col_catalogo)]
+        AgPol --> VDB2[(col_politicas)]
+        AgProc --> VDB3[(col_proceso_ventas)]
+        AgImg --> VDB1
+        VDB1 --> Doc1["01_Catalogo.txt"]
+        VDB2 --> Doc2["02_Politicas.txt"]
+        VDB3 --> Doc3["03_Proceso.txt"]
     end
 
     Consolidate --> API
     API -->|JSON Response| User
-
     API --> DB[(PostgreSQL)]
 ```
 
 ### Flujo de Inferencia Paso a Paso
 
-A continuación se presenta el flujo detallado de inferencia y procesamiento secuencial de una consulta dentro de la arquitectura de agentes RAG del proyecto:
+1. El usuario realiza una pregunta (opcionalmente adjunta imagen).
+2. El **orquestador** recibe la pregunta.
+3. El **clasificador** (Gemini con temp=0) determina la intención:
+   - `catalogo_precios`, `politicas_comerciales`, `proceso_ventas`, `multimodal`, `accion_registro` o `mixta`.
+4. Si hay imagen adjunta → se redirige automáticamente al **agente multimodal**.
+5. Si se detecta solicitud de registro → se redirige al **agente de acción**.
+6. Se invoca uno o más **agentes especializados** (LangChain).
+7. Cada agente consulta su **base de conocimiento embebida** (retriever sobre ChromaDB).
+8. Cada agente genera una respuesta parcial con fuentes citadas.
+9. El **consolidador** integra las respuestas en una sola coherente.
+10. El sistema retorna: **respuesta final**, **agentes participantes**, **fuentes utilizadas** y **advertencias** (si aplica).
 
-![Flujo de Inferencia: Arquitectura Multi-Agente RAG](docs/images/pipeline_infographic.png)
+---
+
+## Agentes del Sistema
+
+### 1. Agente de Catálogo y Precios (`agente_catalogo`)
+- **Función:** Productos, especificaciones, precios de lista, disponibilidad.
+- **Base de conocimiento:** `01_Catalogo_Productos_Precios.txt` → `col_catalogo`
+- **Ejemplo:** *"¿Cuál es el precio de lista y la disponibilidad del producto Patito Pro 2026?"*
+
+### 2. Agente de Políticas Comerciales (`agente_politicas`)
+- **Función:** Descuentos, niveles de autorización, crédito, garantías, devoluciones.
+- **Base de conocimiento:** `02_Politicas_Comerciales_Descuentos_Credito.txt` → `col_politicas`
+- **Ejemplo:** *"¿Qué descuento máximo puedo ofrecer a un cliente nuevo sin aprobación del gerente?"*
+
+### 3. Agente de Proceso de Venta y CRM (`agente_proceso_ventas`)
+- **Función:** Etapas del embudo, registro en CRM, requisitos para cerrar ventas.
+- **Base de conocimiento:** `03_Proceso_Ventas_CRM.txt` → `col_proceso_ventas`
+- **Ejemplo:** *"¿Qué información debo registrar en el CRM antes de marcar una oportunidad como ganada?"*
+
+### 4. Agente Multimodal de Imagen (`agente_multimodal`)
+- **Función:** Analiza imágenes de productos con Gemini Vision y cruza con el catálogo.
+- **Base de conocimiento:** Cruza con `col_catalogo`
+- **Ejemplo:** *"Adjunto la foto de un producto: ¿cuál es, cuál es su precio de lista y está disponible?"*
+
+### 5. Agente de Acción — Registro (`agente_accion`)
+- **Función:** Registra oportunidades/cotizaciones en `registro_oportunidades.txt`.
+- **Validación:** Cliente, contacto, producto, cantidad, precio con descuento, condición de pago, monto total.
+- **Control:** Si falta algún dato → lo solicita. Si descuento > 10% → advierte autorización. Pide confirmación antes de escribir.
+- **Ejemplo:** *"Registra una oportunidad: cliente Comercial ABC, 10 unidades de Patito Pro 2026, 8% de descuento, pago de contado."*
 
 ---
 
@@ -132,62 +180,66 @@ A continuación se presenta el flujo detallado de inferencia y procesamiento sec
 
 ```text
 Caso_Practico_Semillero_IA/
-├── backend/                        # Núcleo de servicios, RAG y agentes IA (Python/FastAPI)
-│   ├── alembic/                    # Gestión de migraciones de base de datos
-│   ├── app/                        # Aplicación principal
-│   │   ├── agents/                 # Agentes especializados y clase base
-│   │   ├── api/v1/endpoints/       # Rutas REST: Chat, Documents, Health
-│   │   ├── core/                   # Orquestador LangGraph, cliente LLM y excepciones
-│   │   ├── db/                     # Sesión de base de datos relacional
-│   │   ├── models/                 # Modelos ORM (Conversaciones, Mensajes, Auditoría)
-│   │   ├── prompts/                # System prompts para cada agente y clasificador
-│   │   ├── rag/                    # Pipeline RAG: Loader, Splitter, Embeddings, Retriever, Vectorstore
-│   │   ├── repositories/           # Capa de acceso a datos para PostgreSQL
-│   │   ├── schemas/                # DTOs de Pydantic v2 (ChatRequest, AgentResult)
-│   │   ├── services/               # Lógica de negocio (ChatService)
-│   │   └── utils/                  # Logging estructurado (structlog) y métricas
-│   ├── data/                       # Almacenamiento de documentos crudos y persistencia ChromaDB
-│   ├── scripts/                    # Scripts de indexación de documentos y pruebas
-│   └── tests/                      # Pruebas unitarias, de integración y end-to-end
-├── frontend/                       # Interfaz de chat (Next.js 14 + TypeScript)
-│   ├── app/                        # App Router y estilos globales
-│   ├── components/chat/            # Componentes del chat (ChatWindow, MessageBubble, InputBox)
-│   ├── hooks/                      # Hooks para gestión de estado del chat
-│   ├── lib/                        # Clientes de API y utilidades
-│   ├── tests/                      # Pruebas de interfaz
-│   └── types/                      # Interfaces TypeScript reflejando los schemas del backend
-├── docs/                           # Documentación técnica, ADRs, riesgos y guías
-├── .github/workflows/              # Flujos de CI/CD de GitHub Actions
-├── docker-compose.yml              # Orquestación de infraestructura local
-├── docker-compose.override.yml     # Configuraciones específicas para desarrollo local
-├── LICENSE                         # Licencia MIT
-├── *.md                            # Documentos de control (AGENTS.md, STATUS.md, WORKFLOW.md, etc.)
-└── README.md                       # Documentación maestra del sistema
+├── backend/                              # Backend Python / FastAPI
+│   ├── app/
+│   │   ├── agents/                       # Agentes especializados
+│   │   │   ├── base_agent.py             # Clase base (RAG + LLM)
+│   │   │   ├── catalogo_agent.py         # Agente de Catálogo y Precios
+│   │   │   ├── politicas_agent.py        # Agente de Políticas Comerciales
+│   │   │   ├── proceso_ventas_agent.py   # Agente de Proceso de Venta y CRM
+│   │   │   ├── multimodal_agent.py       # Agente Multimodal de Imagen
+│   │   │   ├── accion_agent.py           # Agente de Acción (Registro)
+│   │   │   ├── registry.py              # Patrón Registry
+│   │   │   └── __init__.py              # Registro de todos los agentes
+│   │   ├── core/                         # Motor de IA
+│   │   │   ├── orchestrator.py           # LangGraph StateGraph (orquestador)
+│   │   │   ├── classifier.py            # Clasificador de intención (Gemini)
+│   │   │   └── llm.py                   # Cliente Gemini (LLM + Embeddings)
+│   │   ├── prompts/                      # System prompts (Markdown)
+│   │   │   ├── catalogo_prompt.md
+│   │   │   ├── politicas_prompt.md
+│   │   │   ├── proceso_ventas_prompt.md
+│   │   │   ├── multimodal_prompt.md
+│   │   │   ├── accion_prompt.md
+│   │   │   ├── classifier_prompt.md
+│   │   │   └── orchestrator_prompt.md
+│   │   ├── rag/                          # Pipeline RAG
+│   │   │   ├── loader.py                # Carga TXT/PDF
+│   │   │   ├── splitter.py              # Chunking (RecursiveCharacterTextSplitter)
+│   │   │   ├── embeddings.py            # GoogleGenerativeAIEmbeddings
+│   │   │   ├── retriever.py             # Búsqueda semántica en ChromaDB
+│   │   │   └── vectorstore.py           # Gestión de colecciones ChromaDB
+│   │   ├── api/v1/                       # Endpoints REST
+│   │   ├── services/                     # Lógica de negocio (ChatService)
+│   │   ├── models/                       # ORM (Conversaciones, Auditoría)
+│   │   ├── schemas/                      # DTOs Pydantic v2
+│   │   └── utils/                        # Logging (structlog)
+│   ├── data/
+│   │   ├── raw/                          # Documentos base de conocimiento
+│   │   │   ├── 01_Catalogo_Productos_Precios.txt
+│   │   │   ├── 02_Politicas_Comerciales_Descuentos_Credito.txt
+│   │   │   └── 03_Proceso_Ventas_CRM.txt
+│   │   ├── chroma_db/                    # Persistencia ChromaDB
+│   │   └── registro_oportunidades.txt    # Archivo de registro del agente de acción
+│   ├── scripts/
+│   │   └── ingest.py                    # Script de ingesta por colección
+│   ├── tests/                            # Pruebas
+│   ├── .env.example                      # Template de variables de entorno
+│   └── requirements.txt                  # Dependencias Python
+├── frontend/                             # Interfaz Next.js + TypeScript
+├── 4_Ventas/                             # Documentos originales entregados
+├── docs/                                 # Documentación técnica
+├── docker-compose.yml                    # PostgreSQL con Docker
+├── AGENTS.md                             # Definición de agentes
+└── README.md                             # Este archivo
 ```
-
-### 📂 ¿Qué hace cada carpeta a detalle?
-
-**1. Núcleo del Backend (`backend/app/`)**
-- **`agents/`**: Aquí viven las clases concretas de cada agente experto (Arquitectura, Seguridad, etc.). Heredan de una base común y cada uno busca solo en su propia colección de documentos para evitar cruzar información.
-- **`core/`**: Es el motor de la inteligencia. Contiene `orchestrator.py` (el grafo de LangGraph que decide quién habla), `classifier.py` (Gemini decidiendo la intención del usuario) y la conexión global al LLM.
-- **`rag/`**: Contiene la lógica pura de ingesta y búsqueda vectorial. Tiene scripts para cargar PDFs/TXTs, partirlos en trozos lógicos (`splitter.py`) y buscarlos semánticamente en ChromaDB (`retriever.py`).
-- **`api/v1/`**: Define las rutas (endpoints) que expone FastAPI. Aquí es donde el Frontend envía las peticiones HTTP (`/chat`, `/health`).
-- **`models/` & `repositories/`**: Abstracciones para conectar y guardar en PostgreSQL el historial de chats y el registro de auditoría. 
-
-**2. Interfaz de Usuario (`frontend/`)**
-- **`app/`**: Utiliza el "App Router" de Next.js. Define la estructura HTML de la página, el layout global y los estilos base (`globals.css`).
-- **`components/chat/`**: Contiene los bloques visuales de React. Por ejemplo, `MessageBubble.tsx` pinta lo que dice el agente y `SourcesBadge.tsx` pinta los botoncitos con los documentos citados.
-- **`hooks/`**: (`useChat.ts`) Toda la lógica pesada de React está separada aquí. Maneja el estado de si la IA "está escribiendo", la lista de mensajes y los errores de red, manteniendo los componentes visuales limpios.
-- **`types/`**: Contratos en TypeScript que son espejos exactos de los esquemas (Pydantic) del Backend, garantizando que el Frontend no falle al leer respuestas JSON.
-
-**3. Documentación y Control (`docs/`)**
-- Son los "Steering Docs". En vez de dejar la arquitectura a la imaginación, aquí se documenta formalmente la calidad del código (`CODE_QUALITY.md`), cómo armar los prompts (`PROMPTS.md`) y las decisiones técnicas (`DECISIONS.md`). Son leídos tanto por desarrolladores humanos como por agentes IA locales para mantener el contexto del repositorio.
 
 ---
 
 ## 🚀 Cómo empezar
 
 ### 1. Clonar el repositorio
+
 ```bash
 git clone https://github.com/geremyjampiersalasgarcia-eng/Caso_Practico_Semillero_IA.git
 cd Caso_Practico_Semillero_IA
@@ -195,25 +247,59 @@ cd Caso_Practico_Semillero_IA
 
 ### 2. Configurar Variables de Entorno (IMPORTANTE)
 
-El proyecto utiliza variables de entorno para manejar credenciales de forma segura. **NUNCA** debes subir tus API keys al repositorio.
+**La GOOGLE_API_KEY es obligatoria** para que funcionen los agentes, embeddings y el clasificador.
 
-**Para el Backend (API Key de Gemini):**
-1. Necesitas una clave API de Google Gemini. Si no la tienes, ve a [Google AI Studio](https://aistudio.google.com/app/apikey) y haz clic en "Create API Key".
-2. Navega a la carpeta del backend:
-   ```bash
-   cd backend
-   ```
-3. Copia el archivo de ejemplo para crear tu propio archivo `.env` local:
-   ```bash
-   cp .env.example .env
-   ```
-   *(En Windows puedes usar `copy .env.example .env`)*
-4. Abre el nuevo archivo `.env` en tu editor de código y pega tu clave generada:
-   ```env
-   GOOGLE_API_KEY=tu_api_key_aqui
-   ```
+```bash
+cd backend
+cp .env.example .env
+# En Windows: copy .env.example .env
+```
 
-El archivo `.env` del backend ya está excluido en el `.gitignore`, así que no hay riesgo de subir tu clave accidentalmente a GitHub.
+Abre el archivo `.env` y pega tu clave de Google Gemini:
+
+```env
+GOOGLE_API_KEY=tu_api_key_aqui
+```
+
+> 💡 **Obtén tu API Key gratuita en:** [https://aistudio.google.com/apikey](https://aistudio.google.com/apikey)
+
+El archivo `.env` está excluido en `.gitignore` — no hay riesgo de subir tu clave a GitHub.
+
+### 3. Instalar dependencias de Python
+
+```bash
+cd backend
+python -m venv venv
+.\venv\Scripts\activate       # Windows
+# source venv/bin/activate    # Linux/Mac
+pip install -r requirements.txt
+```
+
+---
+
+## 📥 Ingesta de Documentos
+
+**Este paso es obligatorio antes de usar el sistema.** Genera los embeddings e índices vectoriales por agente.
+
+```bash
+cd backend
+python scripts/ingest.py
+```
+
+**Flujo de ingesta:**
+
+1. `loader.py` lee los 3 archivos TXT de `data/raw/`
+2. `splitter.py` los divide en chunks de ~1000 caracteres con 200 de overlap (RecursiveCharacterTextSplitter)
+3. `embeddings.py` genera vectores con `GoogleGenerativeAIEmbeddings` (modelo `models/gemini-embedding-2`)
+4. `vectorstore.py` almacena cada documento en **su propia colección** ChromaDB:
+
+| Documento | Colección ChromaDB |
+|:---|:---|
+| `01_Catalogo_Productos_Precios.txt` | `col_catalogo` |
+| `02_Politicas_Comerciales_Descuentos_Credito.txt` | `col_politicas` |
+| `03_Proceso_Ventas_CRM.txt` | `col_proceso_ventas` |
+
+> **Nota:** Para re-indexar, simplemente ejecuta `python scripts/ingest.py` de nuevo. El script limpia las colecciones antes de re-indexar.
 
 ---
 
@@ -222,37 +308,22 @@ El archivo `.env` del backend ya está excluido en el `.gitignore`, así que no 
 ### Paso 1: Levantar la Base de Datos (con Docker)
 
 > [!NOTE]
-> Asegúrate de tener descargado e instalado [Docker Desktop](https://www.docker.com/products/docker-desktop/) en tu computadora y que la aplicación esté abierta corriendo en segundo plano.
-
-Abre una terminal en la **raíz del proyecto** (`Caso_Practico_Semillero_IA/`) y ejecuta el siguiente comando una sola vez:
+> Asegúrate de tener [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado y corriendo.
 
 ```bash
-# Este comando inicializará y levantará el contenedor de la Base de Datos
+# Desde la raíz del proyecto
 docker-compose up -d postgres
 ```
 
-**Para próximas ocasiones (Encendido rápido):**
-Una vez que hayas ejecutado el comando de arriba por primera vez, el contenedor de PostgreSQL quedará guardado. Para las próximas veces, ya **no** necesitas usar la terminal para la base de datos. Simplemente abre Docker Desktop, busca el grupo `caso_practico_semillero_ia` y haz clic en el botón de **Play (Start)**.
-
-![Encender desde Docker Desktop](docs/images/DOCKEER.png)
-
-### Paso 2: Levantar el Código Manualmente (Backend y Frontend)
-
-Una vez que la base de datos esté corriendo (Paso 1), debes levantar los servidores de Python y Next.js por separado. Abre dos terminales nuevas:
-
-**Terminal 1: Para levantar el Backend**  
-Ubícate en la raíz del proyecto y ejecuta estos comandos uno por uno:
+### Paso 2: Levantar el Backend
 
 ```bash
 cd backend
-python -m venv venv
 .\venv\Scripts\activate
-pip install -r requirements.txt
 python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-**Terminal 2: Para levantar el Frontend**  
-Ubícate en la raíz del proyecto y ejecuta:
+### Paso 3: Levantar el Frontend
 
 ```bash
 cd frontend
@@ -260,40 +331,13 @@ npm install
 npm run dev
 ```
 
-### Resumen de Servicios Activos
-
-Cuando hayas completado ambos pasos, tendrás tu ecosistema funcionando en estas direcciones:
+### Servicios Activos
 
 | Servicio | URL | Descripción |
 | :--- | :--- | :--- |
-| Backend API | http://localhost:8000/docs | Swagger UI interactivo de FastAPI |
-| Frontend UI | http://localhost:3000 | Interfaz de chat en el navegador |
-| PostgreSQL | `localhost:5432` | Base de datos relacional (vía Docker) |
-
-
-
----
-
-## 🧪 Pruebas
-
-```bash
-# Ejecutar todas las pruebas del backend
-cd backend && pytest -v --cov=app
-
-# Solo pruebas unitarias
-pytest tests/unit/ -v
-
-# Solo pruebas de integración
-pytest tests/integration/ -v
-
-# Solo pruebas end-to-end
-pytest tests/e2e/ -v
-
-# Pruebas del frontend
-cd frontend && npm test
-```
-
-Se espera un mínimo de **80% de cobertura** de líneas en el backend.
+| Backend API | http://localhost:8000/docs | Swagger UI interactivo |
+| Frontend UI | http://localhost:3000 | Interfaz de chat |
+| PostgreSQL | `localhost:5432` | Base de datos (vía Docker) |
 
 ---
 
@@ -301,36 +345,119 @@ Se espera un mínimo de **80% de cobertura** de líneas en el backend.
 
 | Método | Endpoint | Descripción |
 | :--- | :--- | :--- |
-| `POST` | `/api/v1/chat` | Envía un mensaje al orquestador de agentes y devuelve la respuesta consolidada con fuentes. |
-| `GET` | `/api/v1/conversations` | Lista el historial de todas las conversaciones guardadas en la base de datos. |
-| `GET` | `/api/v1/conversations/{id}` | Carga el detalle completo (mensajes y fuentes) de una conversación pasada. |
-| `DELETE` | `/api/v1/conversations/{id}` | Elimina una conversación de manera permanente. |
-| `GET` | `/api/v1/health` | Verifica el estado del servicio y conexión a BD/ChromaDB. |
-| `GET` | `/api/v1/documents` | Lista los documentos indexados en el sistema RAG. |
+| `POST` | `/api/v1/chat` | Envía pregunta al orquestador. Acepta `question`, `image` (base64), `confirmation` (bool). |
+| `GET` | `/api/v1/conversations` | Lista historial de conversaciones. |
+| `GET` | `/api/v1/conversations/{id}` | Detalle de una conversación. |
+| `DELETE` | `/api/v1/conversations/{id}` | Elimina una conversación. |
+| `GET` | `/api/v1/health` | Estado del servicio. |
+| `GET` | `/api/v1/documents` | Lista documentos indexados. |
+
+### Ejemplo de request `POST /api/v1/chat`
+
+```json
+{
+  "question": "¿Cuál es el precio del Patito Pro 2026?",
+  "conversation_id": null,
+  "image": null,
+  "confirmation": null
+}
+```
+
+### Ejemplo con imagen (agente multimodal):
+
+```json
+{
+  "question": "¿Qué producto es este y cuánto cuesta?",
+  "image": "data:image/jpeg;base64,/9j/4AAQ..."
+}
+```
+
+### Ejemplo con registro (agente de acción):
+
+```json
+{
+  "question": "Registra una oportunidad: cliente Comercial ABC, 10 unidades Patito Pro 2026, 8% descuento, contado",
+  "confirmation": true
+}
+```
 
 ---
 
-## 📥 Ingesta de Documentos
+## 💬 Ejemplos de Uso
 
-La indexación de documentos en ChromaDB se realiza mediante un script offline (no es un endpoint en caliente):
+### Consulta de Catálogo
+**Pregunta:** *¿Cuál es el precio de lista y la disponibilidad del producto Patito Pro 2026?*
 
-```bash
-# Indexar todos los documentos de data/raw/ en ChromaDB
-python scripts/ingest.py
-```
+**Respuesta esperada:** El Patito Pro 2026 tiene un precio de lista de **USD 1,299**, está **EN STOCK** y cuenta con procesador de alto rendimiento, 16 GB RAM, 512 GB SSD. Incluye garantía estándar de 12 meses. (Fuente: Catálogo de Productos y Lista de Precios).
 
-**Flujo de ingesta:**
-1. `loader.py` lee los archivos TXT/PDF de `data/raw/`
-2. `splitter.py` los divide en fragmentos optimizados (chunks de ~1000 caracteres)
-3. `embeddings.py` genera los vectores con Gemini `gemini-embedding-2`
-4. `vectorstore.py` almacena los vectores en la colección correspondiente de ChromaDB
+---
 
-> **Nota:** Para agregar nuevos documentos, simplemente colócalos en `data/raw/` y re-ejecuta `python scripts/ingest.py`.
+### Consulta de Políticas
+**Pregunta:** *¿Qué descuento máximo puedo ofrecer a un cliente nuevo sin aprobación del gerente?*
+
+**Respuesta esperada:** Hasta **10%** de descuento. El vendedor puede autorizarlo directamente sin aprobación adicional. (Fuente: Políticas Comerciales).
+
+---
+
+### Consulta de Proceso de Venta
+**Pregunta:** *¿Qué información debo registrar en el CRM antes de marcar una oportunidad como ganada?*
+
+**Respuesta esperada:** Orden de compra/contrato firmado, datos de facturación, productos/cantidades/precios finales, condición de pago, monto total, fecha de cierre y fecha de entrega comprometida. (Fuente: Manual del Proceso de Ventas y CRM).
+
+---
+
+### Consulta Mixta
+**Pregunta:** *Un cliente nuevo quiere comprar 50 unidades del Patito Pro 2026 a crédito y pide un descuento especial. ¿Cuál es el precio, qué descuento y condiciones de crédito puedo ofrecer, y qué debo registrar en el CRM?*
+
+**Agentes participantes:** Catálogo + Políticas + Proceso Ventas (mixta)
+
+**Respuesta esperada:** Integra precio del Patito Pro 2026 (USD 1,299), que el descuento hasta 10% lo autoriza el vendedor (más requiere gerente), que clientes nuevos normalmente pagan de contado la primera compra (crédito requiere análisis), y los datos que deben registrarse en el CRM antes del cierre.
+
+---
+
+### Registro de Oportunidad
+**Pregunta:** *Registra una oportunidad: cliente Comercial ABC, 10 unidades de Patito Pro 2026, 8% de descuento, pago de contado.*
+
+**Agente:** Acción
+
+**Respuesta esperada:** Presenta resumen con datos calculados (precio con descuento: USD 1,195.08, monto total: USD 11,950.80), pide confirmación, y al confirmar genera registro con ID único (OPP-20260705-A3F2B1) en `registro_oportunidades.txt`.
 
 ---
 
 ## Decisiones Técnicas
 
-* **Arquitectura Clean/Hexagonal**: Se han separado las capas de presentación (`api`), negocio (`services`/`core`/`agents`), y acceso a datos (`rag`/`repositories`).
-* **Patrón de Registro de Agentes (Registry)**: Permite inyectar nuevos agentes especializados sin modificar el código base del orquestador.
-* **Trazabilidad Pura**: Cada respuesta incluye un bloque de `sources` que detalla qué agente intervino, qué documento consultó y qué sección exacta extrajo, mitigando alucinaciones.
+### Estrategia de Chunking
+- **Tamaño:** 1000 caracteres con 200 de overlap
+- **Splitter:** `RecursiveCharacterTextSplitter` con separadores `["\n\n", "\n", ".", " "]`
+- **Justificación:** Los documentos son cortos (~1000-1500 bytes cada uno), por lo que chunks de 1000 chars capturan secciones completas. El overlap de 200 asegura contexto entre chunks.
+
+### Modelo de Embeddings
+- **Modelo:** `models/gemini-embedding-2` (Google)
+- **Justificación:** Requerido por el semillero. Alta calidad para texto en español.
+
+### Modelo LLM
+- **Modelo:** Configurable vía `LLM_MODEL_NAME` en `.env` (default: `gemini-1.5-flash`)
+- **Temperatura:** 0.1 para agentes (baja alucinación), 0.0 para clasificador (determinismo)
+- **Justificación:** Flash es rápido y económico para prototipo. Soporta visión multimodal.
+
+### Retrieval (top-k)
+- **top-k:** 4 fragmentos por consulta
+- **Justificación:** Con documentos pequeños, 4 chunks cubren la mayoría del contenido relevante sin exceder el contexto.
+
+### Vector Store
+- **ChromaDB local** con persistencia en `data/chroma_db/`
+- **Una colección por agente:** Aislamiento de bases de conocimiento
+- **Justificación:** Simple, sin servicios externos, ideal para prototipo.
+
+### Patrón de Agentes
+- **Registry Pattern:** Permite agregar nuevos agentes sin modificar el orquestador
+- **BaseAgent (ABC):** Clase base con flujo RAG estándar (retrieve → prompt → LLM → result)
+- **Agentes especializados** heredan y solo definen: nombre, descripción, colección, prompt
+
+
+
+---
+
+## Licencia
+
+Proyecto académico — Semillero de Inteligencia Artificial.
