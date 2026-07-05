@@ -503,12 +503,14 @@ Proyecto académico — Semillero de Inteligencia Artificial.
 ---
 
 <div align="center">
-  <h3>✨ Desarrollado por el equipo Net Ingenieros ✨</h3>
+  <h3> Desarrollado por el equipo Net Ingenieros </h3>
   
-  <b>Frank Marcelo Villalta Díaz</b> &nbsp;&middot;&nbsp;
-  <b>Eddy Fernando Romo Quinde</b> &nbsp;&middot;&nbsp;
-  <b>Geremy Jampier Salas Garcia</b>
+  <p>
+    <img src="https://img.icons8.com/fluency/48/user-male-circle.png" width="22" height="22" style="vertical-align: middle; margin-right: 5px;" /> <b>Frank Marcelo Villalta Díaz</b> <br>
+    <img src="https://img.icons8.com/fluency/48/user-male-circle.png" width="22" height="22" style="vertical-align: middle; margin-right: 5px;" /> <b>Eddy Fernando Romo Quinde</b> <br>
+    <img src="https://img.icons8.com/fluency/48/user-male-circle.png" width="22" height="22" style="vertical-align: middle; margin-right: 5px;" /> <b>Geremy Jampier Salas Garcia</b>
+  </p>
   
-  <br><br>
+  <br>
   <sub><i>Desarrollado con LangChain, LangGraph y Google Gemini</i></sub>
 </div>
