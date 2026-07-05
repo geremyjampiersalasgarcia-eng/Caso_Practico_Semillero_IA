@@ -37,11 +37,15 @@ Este proyecto consiste en un sistema de Inteligencia Artificial diseñado para a
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-FF4F00?style=for-the-badge&logo=chroma&logoColor=white)](https://www.trychroma.com/)
 [![Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white)](https://www.sqlalchemy.org/)
+[![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=for-the-badge&logo=pydantic&logoColor=white)](https://docs.pydantic.dev/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 
 ### Frontend
 [![Next.js](https://img.shields.io/badge/Next.js_14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-000000?style=for-the-badge&logo=shadcnui&logoColor=white)](https://ui.shadcn.com/)
 
 ### Justificación de Tecnologías Clave
 
@@ -239,12 +243,22 @@ Caso_Practico_Semillero_IA/
 │   ├── types/                            # Definiciones de interfaces TypeScript
 │   ├── tailwind.config.ts                # Configuración de estilos CSS
 │   └── package.json                      # Dependencias de Node.js
-├── 4_Ventas/                             # Documentos originales entregados
 ├── docs/                                 # Documentación técnica
 ├── docker-compose.yml                    # PostgreSQL con Docker
 ├── AGENTS.md                             # Definición de agentes
 └── README.md                             # Este archivo
 ```
+
+### Descripción de Directorios
+
+- **`backend/`**: Contiene todo el núcleo de Inteligencia Artificial y el servidor (FastAPI).
+  - **`app/agents/`**: Aquí residen los "cerebros" individuales. Cada archivo define a un agente especialista (Catálogo, Políticas, Acción, etc.) y su respectivo comportamiento.
+  - **`app/core/`**: Contiene el motor principal basado en LangGraph (`orchestrator.py`), que actúa como el jefe que recibe la pregunta, la clasifica (`classifier.py`) y dirige el tráfico hacia los agentes adecuados.
+  - **`app/rag/`**: Módulos responsables de leer los archivos de texto, dividirlos, generar sus vectores (embeddings) con Gemini y conectarse a ChromaDB.
+  - **`data/`**: Carpeta de almacenamiento local. Guarda los documentos de texto originales (`raw/`), la base de datos vectorial generada (`chroma_db/`) y el archivo de salida de cotizaciones (`registro_oportunidades.txt`).
+  - **`scripts/`**: Scripts de utilidad, destacando `ingest.py`, el cual debe ejecutarse por primera vez para poblar el conocimiento de los agentes.
+- **`frontend/`**: La interfaz de usuario moderna desarrollada en React/Next.js. Maneja la comunicación con el backend, el renderizado de los mensajes, el historial de chats y el diseño visual con TailwindCSS.
+- **`docs/`**: Destinada a almacenar diagramas, capturas de pantalla y documentación complementaria del proyecto.
 
 ---
 
