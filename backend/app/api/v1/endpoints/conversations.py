@@ -23,8 +23,8 @@ def get_conversation(conversation_id: str, db: Session = Depends(get_db)):
     if not conv:
         raise HTTPException(status_code=404, detail="Conversation not found")
     
-    # Ordenar mensajes por ID
-    messages_sorted = sorted(conv.messages, key=lambda m: m.id)
+    # Ordenar mensajes por fecha de creación (para evitar desorden por UUID)
+    messages_sorted = sorted(conv.messages, key=lambda m: m.created_at)
     conv.messages = messages_sorted
     return conv
 
