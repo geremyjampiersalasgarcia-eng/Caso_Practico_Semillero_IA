@@ -8,6 +8,8 @@
 
 Este proyecto consiste en un sistema de Inteligencia Artificial diseñado para asistir al Departamento de Ventas de la empresa ficticia Patito S.A. Utiliza una arquitectura Multi-Agente basada en LangGraph y procesamiento RAG (Retrieval-Augmented Generation) con ChromaDB y Google Gemini, permitiendo a los vendedores consultar información precisa sobre el catálogo de productos, precios, políticas comerciales y registrar oportunidades en el CRM mediante lenguaje natural o análisis de imágenes.
 
+![Interfaz del Sistema](docs/images/FRONTEND.png)
+
 ---
 
 ## Tabla de contenido
@@ -324,6 +326,8 @@ python scripts/ingest.py
 # Desde la raíz del proyecto
 docker-compose up -d postgres
 ```
+
+![Docker Corriendo](docs/images/DOCKER%20CORRIENDO.png)
 
 ### Paso 2: Levantar el Backend
 
