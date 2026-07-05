@@ -32,7 +32,7 @@ class ChatResponse(BaseModel):
 
 
 class MessageResponse(BaseModel):
-    id: int
+    id: str
     role: str
     content: str
     sources: List[dict] = []
