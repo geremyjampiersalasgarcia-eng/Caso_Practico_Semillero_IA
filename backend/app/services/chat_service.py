@@ -25,9 +25,13 @@ class ChatService:
             content=request.question
         )
 
+        # Recuperar historial
+        history = [{"role": m.role, "content": m.content} for m in sorted(conv.messages, key=lambda x: x.created_at) if m.role in ["user", "assistant"]]
+
         # 2. Invocar Orquestador LangGraph
         initial_state = {
             "question": request.question,
+            "history": history,
             "image_data": request.image,
             "confirmation": request.confirmation,
             "agent_results": [],

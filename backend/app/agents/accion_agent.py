@@ -104,7 +104,7 @@ class AccionAgent(BaseAgent):
         )
 
     def process_query(
-        self, question: str, confirmation: Optional[bool] = None
+        self, question: str, confirmation: Optional[bool] = None, history: Optional[list] = None
     ) -> AgentResult:
         logger.info("Agente de acción procesando solicitud", agent=self.name)
 
@@ -149,10 +149,20 @@ class AccionAgent(BaseAgent):
 Confirmación actual del usuario: {"SÍ, CONFIRMADO" if confirmation else "NO HA CONFIRMADO"}
 """
 
-        messages = [
-            SystemMessage(content=instructions),
-            HumanMessage(content=question)
-        ]
+        messages = [SystemMessage(content=instructions)]
+        if history:
+            from langchain_core.messages import AIMessage
+            for msg in history:
+                if msg["role"] == "user":
+                    messages.append(HumanMessage(content=msg["content"]))
+                elif msg["role"] == "assistant":
+                    messages.append(AIMessage(content=msg["content"]))
+        else:
+            messages.append(HumanMessage(content=question))
+            
+        # Si la pregunta actual no es la última en el historial (a veces el historial ya la incluye)
+        if not history or history[-1]["content"] != question:
+            messages.append(HumanMessage(content=question))
 
         try:
             # Invocar al LLM, permitiendo function calling

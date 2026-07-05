@@ -21,6 +21,7 @@ import operator
 class GraphState(TypedDict):
     question: str
     category: str
+    history: List[Dict[str, str]]        # Historial de mensajes previos
     image_data: Optional[str]            # Base64 de la imagen (si existe)
     confirmation: Optional[bool]         # Confirmación del usuario para acción
     agent_results: Annotated[List[AgentResult], operator.add]
@@ -39,6 +40,19 @@ def node_classify(state: GraphState):
     """Nodo 1: Clasifica la intención de la pregunta."""
     logger.info("Orquestador: Iniciando clasificación")
     has_image = bool(state.get("image_data"))
+    
+    # Si viene el flag de confirmación explícito del frontend, 
+    # o si el usuario escribe una variante de confirmación corta
+    q_lower = state.get("question", "").strip().lower()
+    is_confirmation_text = q_lower in ["sí", "si", "sí, registrar", "si, registrar", "confirmar", "confirmo", "sí, registrar."]
+    
+    if state.get("confirmation") or is_confirmation_text:
+        return {
+            "category": "accion_registro",
+            "start_time": time.time(),
+            "warnings": [],
+        }
+
     intent = classify_intent(state["question"], has_image=has_image)
     return {
         "category": intent.category,
@@ -129,6 +143,7 @@ def node_accion(state: GraphState):
         result = agent.process_query(
             state["question"],
             confirmation=state.get("confirmation"),
+            history=state.get("history")
         )
         return {
             "agent_results": [result],
