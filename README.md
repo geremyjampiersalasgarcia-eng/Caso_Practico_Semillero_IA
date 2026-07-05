@@ -337,7 +337,8 @@ python scripts/ingest.py
 > Asegúrate de tener [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado y corriendo.
 
 ```bash
-# Desde la raíz del proyecto
+# Asegúrate de estar en la carpeta raíz principal (Caso_Practico_Semillero_IA)
+# NO dentro de backend/ ni frontend/
 docker-compose up -d postgres
 ```
 
