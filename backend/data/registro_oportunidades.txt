@@ -3,3 +3,17 @@ REGISTRO DE OPORTUNIDADES — CRM Patito S.A.
 Sistema de Registro Automatizado
 ==============================================================
 
+
+============================================================
+ID: OPP-20260706-1231A3
+Fecha: 2026-07-06 10:43:24
+Cliente: Comercial ABC
+Contacto: Geremy
+Producto: Patito Pro 2026
+Cantidad: 10
+Precio unitario (con descuento): 21.16
+Descuento aplicado: 8.0%
+Condición de pago: Contado
+Monto total: 211.6
+Estado: Registrada
+============================================================

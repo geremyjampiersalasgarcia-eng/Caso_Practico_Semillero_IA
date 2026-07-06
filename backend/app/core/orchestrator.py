@@ -53,6 +53,26 @@ def node_classify(state: GraphState):
             "warnings": [],
         }
 
+    # Validar si estamos a mitad de un flujo de registro mirando el historial
+    history = state.get("history", [])
+    if history:
+        # Buscar el último mensaje del asistente (recorriendo de atrás hacia adelante)
+        last_assistant_msg = None
+        for msg in reversed(history):
+            if msg.get("role") == "assistant":
+                last_assistant_msg = msg
+                break
+                
+        if last_assistant_msg:
+            last_content = last_assistant_msg.get("content", "").lower()
+            if "registrar la oportunidad" in last_content or "para continuar" in last_content:
+                logger.info("Orquestador: Detectado flujo de registro en curso desde el historial")
+                return {
+                    "category": "accion_registro",
+                    "start_time": time.time(),
+                    "warnings": [],
+                }
+
     intent = classify_intent(state["question"], has_image=has_image)
     return {
         "category": intent.category,
