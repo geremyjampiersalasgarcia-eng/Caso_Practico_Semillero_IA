@@ -453,6 +453,29 @@ npm run dev
 
 ---
 
+## 📎 Archivos de Prueba (Entregables)
+
+### Imagen de prueba para el Agente Multimodal
+Para probar el agente multimodal de imagen, se incluye una imagen de prueba de un producto en el repositorio:
+
+```
+docs/images/producto.webp
+```
+
+**Cómo usarla:** En la interfaz web, haz clic en el ícono de adjuntar imagen (📎), selecciona el archivo `producto.webp` y escribe una pregunta como:
+> *"¿Qué producto es este? ¿Está en el catálogo y cuánto cuesta?"*
+
+### Archivo de registro del Agente de Acción
+El agente de acción genera registros en el siguiente archivo:
+
+```
+backend/data/registro_oportunidades.txt
+```
+
+Este archivo se crea automáticamente cuando el usuario confirma el registro de una oportunidad. Cada registro incluye un identificador único (ej. `OPP-20260705-A3F2B1`), fecha/hora y todos los datos de la oportunidad.
+
+---
+
 ## Decisiones Técnicas
 
 ### Estrategia de Chunking
