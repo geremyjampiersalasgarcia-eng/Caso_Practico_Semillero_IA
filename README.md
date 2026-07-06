@@ -104,18 +104,20 @@ Browser ──► Web UI (Next.js)  │  TypeScript + Tailwind + Shadcn
 
 ```mermaid
 graph TD
-    User([Usuario]) -->|HTTP POST + pregunta| API["FastAPI /api/v1/chat"]
+    User([Usuario]) -->|HTTP POST| API["FastAPI /api/v1/chat"]
 
-    subgraph Orquestador LangGraph
-        API --> Classify["Clasificador de Intención"]
+    subgraph Orquestador_LangGraph
+        API --> Classify["Clasificador de Intencion"]
         Classify --> Router{Router}
 
-        Router -->|catalogo_precios| AgCat["Agente Catálogo y Precios"]
-        Router -->|politicas_comerciales| AgPol["Agente Políticas Comerciales"]
+        Router -->|catalogo_precios| AgCat["Agente Catalogo y Precios"]
+        Router -->|politicas_comerciales| AgPol["Agente Politicas Comerciales"]
         Router -->|proceso_ventas| AgProc["Agente Proceso de Venta y CRM"]
         Router -->|multimodal| AgImg["Agente Multimodal de Imagen"]
-        Router -->|accion_registro| AgAcc["Agente de Acción - Registro"]
-        Router -->|mixta| AgCat & AgPol & AgProc
+        Router -->|accion_registro| AgAcc["Agente de Accion - Registro"]
+        Router -->|mixta| AgCat
+        Router -->|mixta| AgPol
+        Router -->|mixta| AgProc
 
         AgCat --> Consolidate["Consolidador"]
         AgPol --> Consolidate
@@ -124,7 +126,7 @@ graph TD
         AgAcc --> Consolidate
     end
 
-    subgraph Capa RAG
+    subgraph Capa_RAG
         AgCat --> VDB1[(col_catalogo)]
         AgPol --> VDB2[(col_politicas)]
         AgProc --> VDB3[(col_proceso_ventas)]
