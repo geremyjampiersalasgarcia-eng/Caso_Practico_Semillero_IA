@@ -17,3 +17,17 @@ Condición de pago: Contado
 Monto total: 211.6
 Estado: Registrada
 ============================================================
+
+============================================================
+ID: OPP-20260706-5D65DC
+Fecha: 2026-07-06 10:52:45
+Cliente: Empresa XYZ
+Contacto: Torres
+Producto: Patito Pro 2026
+Cantidad: 10
+Precio unitario (con descuento): 46.0
+Descuento aplicado: 8.0%
+Condición de pago: Contado
+Monto total: 460.0
+Estado: Registrada
+============================================================

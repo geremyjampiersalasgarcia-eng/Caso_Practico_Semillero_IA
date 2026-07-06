@@ -446,12 +446,22 @@ npm run dev
 
 ---
 
-### Registro de Oportunidad
-**Pregunta:** *Registra una oportunidad: cliente Comercial ABC, 10 unidades de Patito Pro 2026, 8% de descuento, pago de contado.*
+### Registro de Oportunidad (Flujo Multi-paso)
+**Ejemplos de Preguntas Iniciales de Prueba:** 
+1. *Registra una oportunidad: cliente Comercial ABC, 10 unidades de Patito Pro 2026, 8% de descuento, pago de contado.*
+2. *Quiero registrar una venta para la Empresa XYZ. Van a comprar 5 unidades a $50 dólares cada una con pago a crédito de 30 días.*
+3. *Guarda en el CRM una oportunidad para el cliente Hospital San José, el contacto es María, son 20 licencias.*
+4. *Necesito registrar a Tech Solutions, contacto Luis, compraron 100 unidades del Patito Basic al contado con 5% de descuento, el precio base era $10.*
 
 **Agente:** Acción
 
-**Respuesta esperada:** Presenta resumen con datos calculados (precio con descuento: USD 1,195.08, monto total: USD 11,950.80), pide confirmación, y al confirmar genera registro con ID único (OPP-20260705-A3F2B1) en `registro_oportunidades.txt`.
+**Flujo esperado (Ejemplo con la pregunta 1):**
+1. El agente detecta que faltan datos obligatorios según las reglas del CRM.
+2. **Respuesta del agente:** *Pide el nombre del contacto y el precio unitario original.*
+3. **Usuario responde:** *Contacto: Geremy, el precio es $23.*
+4. **Respuesta del agente:** Presenta resumen con datos calculados (precio con descuento: $21.16, monto total: $211.60) y pide confirmación.
+5. **Usuario responde:** *Sí, registrar.*
+6. **Acción final:** Se ejecuta la herramienta (Function Calling) y genera un registro con ID único (ej. OPP-20260706-A3F2B1) en `data/registro_oportunidades.txt`.
 
 ---
 
