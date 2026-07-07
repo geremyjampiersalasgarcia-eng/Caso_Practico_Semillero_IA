@@ -377,6 +377,14 @@ cd backend
 python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
+> 💡 **Autoconfiguración de Base de Datos:** Al levantar el backend por primera vez, SQLAlchemy creará automáticamente en PostgreSQL las siguientes tablas sin necesidad de scripts manuales:
+> | Tabla | Descripción |
+> |:---|:---|
+> | `conversations` | Historial de chats (IDs y títulos autogenerados). |
+> | `messages` | Mensajes, fuentes RAG y anexos (imágenes Base64). |
+> | `oportunidades` | Registros del CRM (Cotizaciones del Agente de Acción). |
+> | `audit_logs` | Telemetría (latencia, agentes invocados, intención). |
+
 ### Paso 3: Levantar el Frontend
 
 ```bash
