@@ -5,7 +5,7 @@ import { Sidebar } from "@/components/chat/Sidebar";
 import { MessageBubble } from "@/components/chat/MessageBubble";
 import { ChatInput } from "@/components/chat/ChatInput";
 import { useChat } from "@/hooks/useChat";
-import { Sparkles, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { api } from "@/lib/api";
 
@@ -88,7 +88,7 @@ export default function Home() {
               <Menu className="h-5 w-5" />
             </button>
             <div className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-blue-500" />
+              <img src="/logo.png" alt="Logo" className="h-6 w-6 object-contain" />
               <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
                 Patito IA — Ventas
               </h1>
@@ -121,8 +121,8 @@ export default function Home() {
           <div className="mx-auto max-w-4xl space-y-8">
             {messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-6 animate-in fade-in zoom-in duration-700">
-                <div className="h-20 w-20 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-400 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                  <Sparkles className="h-10 w-10 text-white" />
+                <div className="h-20 w-20 rounded-full bg-white flex items-center justify-center shadow-lg shadow-blue-500/10 overflow-hidden">
+                  <img src="/logo.png" alt="Logo" className="h-16 w-16 object-contain" />
                 </div>
                 <h2 className="text-4xl font-bold tracking-tight text-slate-800">
                   Mesa de Ayuda — Ventas
@@ -140,10 +140,8 @@ export default function Home() {
             
             {isLoading && (
               <div className="flex items-center gap-4 py-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-400 p-[2px] shadow-sm">
-                  <div className="h-full w-full bg-white rounded-full flex items-center justify-center">
-                    <Sparkles className="h-5 w-5 text-blue-500 animate-pulse" />
-                  </div>
+                <div className="h-10 w-10 rounded-full bg-white p-1 shadow-sm overflow-hidden flex items-center justify-center">
+                  <img src="/logo.png" alt="Logo" className="h-7 w-7 object-contain animate-pulse" />
                 </div>
                 <div className="flex space-x-1.5">
                   <div className="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>

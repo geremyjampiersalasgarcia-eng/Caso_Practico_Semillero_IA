@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Sparkles, User } from "lucide-react";
+import { User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -20,10 +20,8 @@ export function MessageBubble({ role, content }: MessageBubbleProps) {
       )}
     >
       {!isUser && (
-        <div className="flex h-10 w-10 shrink-0 select-none items-center justify-center rounded-full bg-gradient-to-tr from-blue-500 to-indigo-400 p-[2px] shadow-sm mt-1">
-          <div className="h-full w-full bg-white rounded-full flex items-center justify-center">
-            <Sparkles className="h-5 w-5 text-blue-500" />
-          </div>
+        <div className="flex h-10 w-10 shrink-0 select-none items-center justify-center rounded-full bg-white shadow-sm mt-1 overflow-hidden">
+          <img src="/logo.png" alt="Logo" className="h-7 w-7 object-contain" />
         </div>
       )}
 
