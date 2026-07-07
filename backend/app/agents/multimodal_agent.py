@@ -1,5 +1,6 @@
 import base64
 import os
+import time
 from typing import Any, List, Optional
 
 from app.agents.base_agent import BaseAgent
@@ -80,10 +81,7 @@ class MultimodalAgent(BaseAgent):
         message_content.append(
             {
                 "type": "text",
-                "text": (
-                    f"Analiza esta imagen y responde la siguiente pregunta: "
-                    f"{question}"
-                ),
+                "text": "Describe detalladamente el producto que ves en la imagen e intenta identificar su nombre según los productos conocidos de Patito S.A."
             }
         )
 
@@ -146,6 +144,7 @@ información relevante del catálogo. Si no puedes identificar el producto con c
 indícalo claramente."""
 
         try:
+            time.sleep(2)  # Prevenir Rate Limits de Gemini Free Tier (15 RPM)
             final_response = llm.invoke(
                 [HumanMessage(content=consolidation_prompt)]
             )

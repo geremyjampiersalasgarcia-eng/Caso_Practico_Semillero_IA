@@ -19,6 +19,7 @@ export function useChat() {
       id: Date.now().toString(),
       role: "user",
       content,
+      image,
     };
     
     setMessages((prev) => [...prev, userMsg]);

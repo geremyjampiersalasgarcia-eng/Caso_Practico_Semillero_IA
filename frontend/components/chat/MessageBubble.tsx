@@ -7,9 +7,10 @@ import remarkGfm from "remark-gfm";
 interface MessageBubbleProps {
   role: "user" | "assistant";
   content: string;
+  image?: string;
 }
 
-export function MessageBubble({ role, content }: MessageBubbleProps) {
+export function MessageBubble({ role, content, image }: MessageBubbleProps) {
   const isUser = role === "user";
 
   return (
@@ -34,6 +35,11 @@ export function MessageBubble({ role, content }: MessageBubbleProps) {
         )}
       >
         <div className="prose prose-slate max-w-none break-words prose-p:leading-relaxed prose-pre:bg-slate-50 prose-pre:border prose-pre:border-slate-100 prose-pre:text-slate-700 prose-headings:font-bold">
+          {image && (
+            <div className="mb-4 overflow-hidden rounded-2xl border border-slate-200">
+              <img src={image} alt="Imagen subida" className="max-w-full object-contain max-h-64" />
+            </div>
+          )}
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {content}
           </ReactMarkdown>

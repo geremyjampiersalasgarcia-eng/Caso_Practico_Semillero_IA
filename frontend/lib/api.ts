@@ -6,6 +6,7 @@ export interface ChatMessage {
   content: string;
   sources?: string[];
   agents?: string[];
+  image?: string;
 }
 
 export interface SourceInfo {

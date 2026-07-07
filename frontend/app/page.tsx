@@ -134,7 +134,7 @@ export default function Home() {
               </div>
             ) : (
               messages.map((msg) => (
-                <MessageBubble key={msg.id} role={msg.role} content={msg.content} />
+                <MessageBubble key={msg.id} role={msg.role} content={msg.content} image={msg.image} />
               ))
             )}
             
