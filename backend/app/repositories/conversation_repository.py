@@ -20,7 +20,7 @@ class ConversationRepository:
         self.db.refresh(new_conv)
         return new_conv
 
-    def add_message(self, conversation_id: str, role: str, content: str, sources: Optional[list] = None, agents: Optional[list] = None) -> Message:
+    def add_message(self, conversation_id: str, role: str, content: str, sources: Optional[list] = None, agents: Optional[list] = None, image_data: Optional[str] = None) -> Message:
         # Check if conversation needs a title (first user message)
         conv = self.db.query(Conversation).filter(Conversation.id == conversation_id).first()
         if conv and role == "user" and not conv.title:
@@ -35,7 +35,8 @@ class ConversationRepository:
             role=role,
             content=content,
             sources=sources or [],
-            agents_used=agents or []
+            agents_used=agents or [],
+            image_data=image_data
         )
         self.db.add(msg)
         self.db.commit()

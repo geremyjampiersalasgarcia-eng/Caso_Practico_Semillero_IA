@@ -22,7 +22,8 @@ class ChatService:
         self.conv_repo.add_message(
             conversation_id=conv.id,
             role="user",
-            content=request.question
+            content=request.question,
+            image_data=request.image
         )
 
         # Recuperar historial

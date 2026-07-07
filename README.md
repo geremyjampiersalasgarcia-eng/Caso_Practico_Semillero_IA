@@ -491,10 +491,11 @@ npm run dev
 ## 📎 Archivos de Prueba (Entregables)
 
 ### Imagen de prueba para el Agente Multimodal
-Para probar el agente multimodal de imagen, se incluye una imagen de prueba de un producto en el repositorio:
+Para probar el agente multimodal de imagen, se incluyen imágenes de prueba en el repositorio:
 
 ```
 docs/images/producto.webp
+docs/images/artículo2.jpg
 ```
 
 **Cómo usarla:** En la interfaz web, haz clic en el ícono de adjuntar imagen (📎), selecciona el archivo `producto.webp` y escribe una pregunta como:

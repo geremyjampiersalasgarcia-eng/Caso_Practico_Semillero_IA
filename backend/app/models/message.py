@@ -16,6 +16,7 @@ class Message(Base):
     
     role: Mapped[str] = mapped_column(String) # "user" o "assistant"
     content: Mapped[str] = mapped_column(Text)
+    image_data: Mapped[str] = mapped_column(Text, nullable=True)
     
     # JSON genérico compatible con PostgreSQL y SQLite
     sources: Mapped[dict] = mapped_column(JSON, nullable=True, default=list) 

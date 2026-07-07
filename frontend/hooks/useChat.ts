@@ -81,6 +81,7 @@ export function useChat() {
         id: m.id.toString(),
         role: m.role,
         content: m.content,
+        image: m.image_data,
         sources: m.sources ? m.sources.map(s => s.document_name) : [],
         agents: m.agents_used || [],
       }));

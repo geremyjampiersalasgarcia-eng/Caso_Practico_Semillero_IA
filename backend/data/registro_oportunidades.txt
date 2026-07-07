@@ -59,3 +59,17 @@ Condición de pago: Contado
 Monto total: 310.25
 Estado: Registrada
 ============================================================
+
+============================================================
+ID: OPP-20260707-B817F1
+Fecha: 2026-07-07 12:50:43
+Cliente: Comercial López S.A.
+Contacto: María Fernández
+Producto: Impresora Multifuncional Patito X200
+Cantidad: 15
+Precio unitario (con descuento): 322.0
+Descuento aplicado: 8.0%
+Condición de pago: Crédito a 30 días
+Monto total: 4830.0
+Estado: Registrada
+============================================================

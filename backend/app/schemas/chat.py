@@ -35,6 +35,7 @@ class MessageResponse(BaseModel):
     id: str
     role: str
     content: str
+    image_data: Optional[str] = None
     sources: List[dict] = []
     agents_used: List[str] = []
     created_at: datetime

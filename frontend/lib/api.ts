@@ -43,6 +43,7 @@ export interface MessageResponse {
   id: number;
   role: "user" | "assistant";
   content: string;
+  image_data?: string;
   sources: SourceInfo[];
   agents_used: string[];
   created_at: string;
