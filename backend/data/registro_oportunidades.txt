@@ -73,3 +73,17 @@ Condición de pago: Crédito a 30 días
 Monto total: 4830.0
 Estado: Registrada
 ============================================================
+
+============================================================
+ID: OPP-20260707-DE9C82
+Fecha: 2026-07-07 13:09:52
+Cliente: Comercial MMC
+Contacto: Pablo
+Producto: Patito Pro 2026
+Cantidad: 10
+Precio unitario (con descuento): 25.11
+Descuento aplicado: 7.0%
+Condición de pago: Contado
+Monto total: 251.1
+Estado: Registrada
+============================================================
