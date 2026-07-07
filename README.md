@@ -333,6 +333,16 @@ python scripts/ingest.py
 
 ## 🐳 Ejecutar el Proyecto
 
+> [!WARNING]
+> **ORDEN ESTRICTO DE EJECUCIÓN**
+> Para evitar errores de conexión o fallos silenciosos, los servicios **DEBEN** levantarse en la siguiente secuencia exacta:
+> 1. **Docker (PostgreSQL)** → Esperar a que el contenedor esté *Healthy* (listo para conexiones), no solo *Running*.
+> 2. **Backend (FastAPI)** → Levantar el servidor Uvicorn.
+> 3. **Ingesta de datos (`ingest.py`)** → Ejecutar *después* de que la BD esté lista.
+> 4. **Frontend (Next.js)** → Último paso.
+> 
+> *Nota común:* Si ejecutas `docker-compose up -d`, la consola te devuelve el control casi al instante, pero Postgres tarda unos segundos más en aceptar conexiones reales. Asegúrate de esperar un momento antes de encender el backend.
+
 ### Paso 1: Levantar la Base de Datos (con Docker)
 
 > [!NOTE]
@@ -574,6 +584,14 @@ Dado el tamaño de nuestros documentos originales, la fragmentación genera muy 
 8. **File lock para registros:** Evitar corrupción en escritura concurrente
 9. **Historial de precios:** Versionar el catálogo por fechas
 10. **Tests automatizados:** Aumentar cobertura con preguntas de golden set
+
+---
+
+## 🛠️ Troubleshooting (Solución de Problemas)
+
+- **Error de conexión a Postgres al iniciar el backend:** Esperá 5-10 segundos después de ejecutar `docker-compose up -d postgres` antes de levantar el backend. El contenedor tarda unos instantes en inicializarse y estar listo para aceptar conexiones.
+- **Error 429 de Gemini (Rate Limit):** Si usas la capa gratuita (free tier) de Google AI Studio, puedes alcanzar el límite de peticiones por minuto. Esperá unos segundos entre preguntas.
+- **Error "collection not found" en ChromaDB:** Olvidaste correr el script de ingesta. Debes ejecutar `python scripts/ingest.py` dentro de la carpeta `backend` antes de levantar el servidor.
 
 ---
 
