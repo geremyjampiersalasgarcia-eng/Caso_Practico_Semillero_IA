@@ -266,6 +266,17 @@ Caso_Practico_Semillero_IA/
 
 ---
 
+## 🛠️ Requisitos Previos
+
+Para ejecutar y explorar este proyecto en tu entorno local, se recomienda contar con las siguientes herramientas:
+
+- **Editor de Código:** [Visual Studio Code](https://code.visualstudio.com/) (o similar) indispensable para editar los archivos, configurar el archivo `.env` fácilmente y utilizar la terminal integrada.
+- **Python 3.11+** (Para ejecutar el backend y los agentes de IA).
+- **Node.js y npm** (Para levantar la interfaz gráfica del frontend).
+- **Docker Desktop** (Opcional, pero recomendado para levantar la base de datos PostgreSQL con un solo comando).
+
+---
+
 ## 🚀 Cómo empezar
 
 ### 1. Clonar el repositorio
@@ -503,6 +514,15 @@ Además, para garantizar persistencia, **cada oportunidad se inserta simultánea
 ---
 
 ## Decisiones Técnicas
+
+### Arquitectura de Software vs. Jupyter Notebook
+A diferencia de enfoques académicos que agrupan todo el código en un único archivo Jupyter Notebook, este proyecto fue diseñado deliberadamente como una **Arquitectura de Software Profesional y Escalable**, separando las responsabilidades en componentes (Frontend, Backend, Base de Datos, Vector Store). 
+
+**¿Por qué se tomó esta decisión?**
+1. **Realismo Empresarial:** En la industria, las soluciones de IA no se despliegan en notebooks. Se integran a través de APIs REST (FastAPI) y se consumen desde interfaces de usuario (React/Next.js) para que los usuarios no técnicos puedan interactuar con ellas.
+2. **Modularidad y Mantenimiento:** Separar los agentes (`agents/`), la orquestación (`core/`) y la conexión a la base de datos (`rag/`, `db/`) permite que múltiples desarrolladores trabajen en paralelo sin conflictos, y facilita la escritura de pruebas unitarias.
+3. **Persistencia Robusta:** Un notebook pierde su estado al reiniciarse. Este sistema utiliza PostgreSQL y ChromaDB montados en volúmenes para garantizar que el historial y la memoria de la empresa persistan de forma segura a lo largo del tiempo.
+4. **Tolerancia a Fallos:** Se implementó un diseño tolerante a fallos donde si PostgreSQL (Docker) no está disponible, el sistema detecta la falla y hace un *fallback* automático a SQLite, garantizando la continuidad del servicio sin requerir intervención manual.
 
 ### Uso de LangChain en el Proyecto
 El framework **LangChain** es el pilar de la solución de IA y se utiliza extensivamente en múltiples capas del sistema:
