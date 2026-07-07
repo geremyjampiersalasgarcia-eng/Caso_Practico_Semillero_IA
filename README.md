@@ -1,4 +1,4 @@
-# 🤖 Sistema Multi-Agente de IA para Ventas (Mesa de Ayuda RAG)
+# Sistema Multi-Agente de IA para Ventas (Mesa de Ayuda RAG)
 
 **Proyecto Final — Semillero de Inteligencia Artificial**  
 **Grupo:** Net Ingenieros  
