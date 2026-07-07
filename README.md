@@ -1,8 +1,8 @@
-# Patito S.A.
-## Departamento de Ventas
-### Proyecto final del semillero
+# 🤖 Sistema Multi-Agente de IA para Ventas (Mesa de Ayuda RAG)
 
-**Grupo:** Net Ingenieros
+**Proyecto Final — Semillero de Inteligencia Artificial**  
+**Grupo:** Net Ingenieros  
+**Caso de Estudio:** Departamento de Ventas de Patito S.A.
 
 > **Sistema de Inteligencia Artificial Avanzado** con agentes especializados para potenciar la mesa de ayuda del equipo comercial.
 
