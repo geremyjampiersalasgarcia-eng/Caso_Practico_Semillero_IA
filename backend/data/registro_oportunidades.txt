@@ -31,3 +31,31 @@ Condición de pago: Contado
 Monto total: 460.0
 Estado: Registrada
 ============================================================
+
+============================================================
+ID: OPP-20260707-C36E7D
+Fecha: 2026-07-07 10:54:10
+Cliente: Comercial DDC
+Contacto: Geremy
+Producto: Patito Pro 2026
+Cantidad: 15
+Precio unitario (con descuento): 21.16
+Descuento aplicado: 8.0%
+Condición de pago: Contado
+Monto total: 317.4
+Estado: Registrada
+============================================================
+
+============================================================
+ID: OPP-20260707-28CF66
+Fecha: 2026-07-07 11:01:20
+Cliente: Comercial KKC
+Contacto: German
+Producto: Patito Pro 2026
+Cantidad: 5
+Precio unitario (con descuento): 62.05
+Descuento aplicado: 15.0%
+Condición de pago: Contado
+Monto total: 310.25
+Estado: Registrada
+============================================================

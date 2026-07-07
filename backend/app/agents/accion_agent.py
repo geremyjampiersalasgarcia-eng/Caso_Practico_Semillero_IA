@@ -10,6 +10,8 @@ from app.schemas.agent import AgentResult
 from app.utils.logger import logger
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.tools import tool
+from app.db.session import get_db
+from app.models.opportunity import Oportunidad
 
 
 REGISTRO_FILE = os.path.join(
@@ -65,13 +67,44 @@ Monto total: {monto_total}
 Estado: Registrada"""
 
     try:
+        # 1. Guardar en TXT
         os.makedirs(os.path.dirname(REGISTRO_FILE), exist_ok=True)
         with open(REGISTRO_FILE, "a", encoding="utf-8") as f:
             f.write(f"\n{'='*60}\n")
             f.write(registro)
             f.write(f"\n{'='*60}\n")
+            
+        # 2. Guardar en PostgreSQL
+        db_generator = get_db()
+        db = next(db_generator)
+        try:
+            nueva_oportunidad = Oportunidad(
+                id=opp_id,
+                fecha=now,
+                cliente=cliente,
+                contacto=contacto,
+                producto=producto,
+                cantidad=cantidad,
+                precio_con_descuento=precio_con_descuento,
+                porcentaje_descuento=porcentaje_descuento,
+                condicion_pago=condicion_pago,
+                monto_total=monto_total,
+                estado="Registrada"
+            )
+            db.add(nueva_oportunidad)
+            db.commit()
+            logger.info("Oportunidad guardada en PostgreSQL", opp_id=opp_id)
+        except Exception as db_err:
+            db.rollback()
+            logger.error("Error guardando oportunidad en BD", error=str(db_err))
+        finally:
+            try:
+                next(db_generator) # Para gatillar el finally con db.close() del generador
+            except StopIteration:
+                pass
+                
         logger.info("Herramienta de registro ejecutada exitosamente", opp_id=opp_id)
-        return f"Registro guardado con éxito. El identificador de la oportunidad es: {opp_id}"
+        return f"Registro guardado con éxito (TXT y Base de Datos). El identificador es: {opp_id}"
     except Exception as e:
         logger.error("Error escribiendo archivo de registro", error=str(e))
         return f"ERROR interno del sistema al intentar guardar el archivo: {str(e)}"
