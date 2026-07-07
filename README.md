@@ -380,7 +380,7 @@ npm run dev
 | :--- | :--- | :--- |
 | Backend API | http://localhost:8000/docs | Swagger UI interactivo |
 | Frontend UI | http://localhost:3000 | Interfaz de chat |
-| PostgreSQL | `localhost:5432` | Base de datos (vía Docker) |
+| PostgreSQL | `localhost:5433` | Base de datos (vía Docker) |
 
 ---
 
