@@ -36,8 +36,16 @@ class BaseAgent(ABC):
         pass
 
     def _load_prompt(self) -> str:
-        with open(self.system_prompt_path, "r", encoding="utf-8") as f:
-            return f.read()
+        try:
+            with open(self.system_prompt_path, "r", encoding="utf-8") as f:
+                return f.read()
+        except FileNotFoundError:
+            logger.error(
+                "Archivo de prompt no encontrado",
+                agent=self.name,
+                path=self.system_prompt_path,
+            )
+            return "Eres un asistente especializado del departamento de ventas de Patito S.A. Responde únicamente con base en el contexto proporcionado."
 
     def process_query(self, question: str) -> AgentResult:
         """
@@ -49,8 +57,25 @@ class BaseAgent(ABC):
         """
         logger.info("Agente procesando consulta", agent=self.name)
         
-        # 1. RAG Retrieval
-        contexts = retrieve_context(question, self.collection_name)
+        # 1. RAG Retrieval (con manejo de errores si ChromaDB está caído)
+        contexts = []
+        try:
+            contexts = retrieve_context(question, self.collection_name)
+        except Exception as e:
+            logger.error(
+                "Error al recuperar contexto de ChromaDB",
+                agent=self.name,
+                error=str(e),
+            )
+            return AgentResult(
+                agent_name=self.name,
+                answer=(
+                    "⚠️ No se pudo conectar a la base de conocimiento (ChromaDB). "
+                    "Verifica que el servicio esté activo y que se haya ejecutado "
+                    "`python scripts/ingest.py` correctamente."
+                ),
+                sources=[],
+            )
         
         # Extraer texto de los fragmentos y armar las fuentes
         context_text = ""
@@ -64,7 +89,7 @@ class BaseAgent(ABC):
             
             sources.append({
                 "document_name": doc_name,
-                "content_snippet": snippet[:200] + "...", # Guardamos un preview para la UI
+                "content_snippet": (snippet[:200] + "...") if len(snippet) > 200 else snippet,
                 "relevance_score": metadata.get("score", 0.0)
             })
 
@@ -77,9 +102,32 @@ class BaseAgent(ABC):
             HumanMessage(content=question)
         ]
         
-        # 3. Invocar LLM
-        llm = get_llm()
-        response = llm.invoke(messages)
+        # 3. Invocar LLM (con manejo de errores si Gemini falla)
+        try:
+            llm = get_llm()
+            response = llm.invoke(messages)
+        except Exception as e:
+            logger.error(
+                "Error al invocar el LLM (Gemini)",
+                agent=self.name,
+                error=str(e),
+            )
+            error_msg = str(e)
+            if "429" in error_msg or "rate" in error_msg.lower():
+                answer = (
+                    "⚠️ Se alcanzó el límite de peticiones de la API de Gemini (Rate Limit). "
+                    "Espera unos segundos e intenta de nuevo."
+                )
+            else:
+                answer = (
+                    "⚠️ Ocurrió un error al comunicarse con el modelo de IA. "
+                    "Intenta de nuevo en unos segundos."
+                )
+            return AgentResult(
+                agent_name=self.name,
+                answer=answer,
+                sources=sources,
+            )
         
         # 4. Retornar
         return AgentResult(
@@ -87,3 +135,4 @@ class BaseAgent(ABC):
             answer=str(response.content),
             sources=sources
         )
+
