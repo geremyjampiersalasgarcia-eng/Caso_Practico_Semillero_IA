@@ -8,9 +8,7 @@
 
 Este proyecto consiste en un sistema de Inteligencia Artificial diseñado para asistir al Departamento de Ventas de la empresa ficticia Patito S.A. Utiliza una arquitectura Multi-Agente basada en LangGraph y procesamiento RAG (Retrieval-Augmented Generation) con ChromaDB y Google Gemini, permitiendo a los vendedores consultar información precisa sobre el catálogo de productos, precios, políticas comerciales y registrar oportunidades en el CRM mediante lenguaje natural o análisis de imágenes.
 
-<video controls src="docs/video/video-demostracion.mp4" width="100%" autoplay loop muted>
-  Tu navegador no soporta videos. <a href="docs/video/video-demostracion.mp4">Descargar video</a>.
-</video>
+https://github.com/geremyjampiersalasgarcia-eng/Caso_Practico_Semillero_IA/raw/main/docs/video/video-demostracion.mp4
 
 ---
 
