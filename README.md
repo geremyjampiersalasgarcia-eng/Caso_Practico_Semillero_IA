@@ -320,12 +320,7 @@ pip install -r requirements.txt
 
 ## 📥 Ingesta de Documentos
 
-**Este paso es obligatorio antes de usar el sistema.** Genera los embeddings e índices vectoriales por agente.
-
-```bash
-cd backend
-python scripts/ingest.py
-```
+**Este paso genera los embeddings e índices vectoriales por agente.** (Las instrucciones de ejecución están en la siguiente sección).
 
 **Flujo de ingesta:**
 
@@ -385,7 +380,17 @@ python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 > | `oportunidades` | Registros del CRM (Cotizaciones del Agente de Acción). |
 > | `audit_logs` | Telemetría (latencia, agentes invocados, intención). |
 
-### Paso 3: Levantar el Frontend
+### Paso 3: Ingesta de Documentos
+
+Abre una **nueva terminal** (dejando el backend corriendo en la otra), y ejecuta el script para poblar ChromaDB:
+
+```bash
+cd backend
+# .\venv\Scripts\activate  (Si usas Windows, activa el entorno primero)
+python scripts/ingest.py
+```
+
+### Paso 4: Levantar el Frontend
 
 ```bash
 cd frontend
