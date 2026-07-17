@@ -367,7 +367,7 @@ pip install -r requirements.txt
 ```bash
 # Asegúrate de estar en la carpeta raíz principal (Caso_Practico_Semillero_IA)
 # NO dentro de backend/ ni frontend/
-docker-compose up -d
+docker-compose up -d postgres phoenix
 ```
 
 ![Docker Corriendo](docs/images/DOCKER%20CORRIENDO.png)
@@ -635,7 +635,7 @@ Dado el tamaño de nuestros documentos originales, la fragmentación genera muy 
 
 ## 🛠️ Troubleshooting (Solución de Problemas)
 
-- **Error de conexión a Postgres al iniciar el backend:** Esperá 5-10 segundos después de ejecutar `docker-compose up -d` antes de levantar el backend. El contenedor tarda unos instantes en inicializarse y estar listo para aceptar conexiones.
+- **Error de conexión a Postgres al iniciar el backend:** Esperá 5-10 segundos después de ejecutar `docker-compose up -d postgres phoenix` antes de levantar el backend. El contenedor tarda unos instantes en inicializarse y estar listo para aceptar conexiones.
 - **Error 429 de Gemini (Rate Limit):** Si usas la capa gratuita (free tier) de Google AI Studio, puedes alcanzar el límite de peticiones por minuto rápidamente (15 RPM). Esto es **completamente normal** en esta arquitectura porque LangGraph dispara múltiples peticiones a la API por cada pregunta del usuario (clasificación -> enrutamiento -> respuesta final de 1 o más agentes). Para evitarlo, espera unos 10-15 segundos entre cada pregunta en el chat.
 - **Error 404 This model is no longer available:** Ocurre si usas una versión de modelo antigua o deprecada. Para evitar problemas con versiones, asegúrate de que tu `.env` tenga `LLM_MODEL_NAME=gemini-flash-lite-latest`.
 - **Error "collection not found" en ChromaDB:** Olvidaste correr el script de ingesta. Debes ejecutar `python scripts/ingest.py` dentro de la carpeta `backend` antes de levantar el servidor.
@@ -656,7 +656,7 @@ Este proyecto implementa los **4 pilares** que necesita cualquier sistema de IA 
 ### Pasos para probar en tu entorno:
 
 1. **Instalar dependencias:** `pip install -r requirements.txt` (incluye OpenTelemetry y Phoenix).
-2. **Levantar Servicios (Docker):** `docker-compose up -d` (Esto levanta tanto PostgreSQL como Phoenix en http://localhost:6006).
+2. **Levantar Servicios (Docker):** `docker-compose up -d postgres phoenix` (Esto levanta tanto PostgreSQL como Phoenix en http://localhost:6006).
 3. **Aplicar migraciones BD:** Ocurre automáticamente al iniciar el servidor FastAPI (`uvicorn app.main:app`).
 4. **Probar el flujo completo:**
    Envía peticiones a `POST /api/v1/chat` (o usa el frontend) y verifica las trazas (spans) capturadas automáticamente en Phoenix.
