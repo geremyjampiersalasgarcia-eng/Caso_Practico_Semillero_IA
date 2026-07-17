@@ -334,7 +334,7 @@ pip install -r requirements.txt
 
 1. `loader.py` lee los 3 archivos TXT de `data/raw/`
 2. `splitter.py` los divide en chunks de ~1000 caracteres con 200 de overlap (RecursiveCharacterTextSplitter)
-3. `embeddings.py` genera vectores con `GoogleGenerativeAIEmbeddings` (modelo `models/gemini-embedding-2`)
+3. `embeddings.py` genera vectores con `GoogleGenerativeAIEmbeddings` (modelo `models/gemini-embedding-001`)
 4. `vectorstore.py` almacena cada documento en **su propia colección** ChromaDB:
 
 | Documento | Colección ChromaDB |
@@ -577,13 +577,13 @@ Dado el tamaño de nuestros documentos originales, la fragmentación genera muy 
 > **Nota sobre el Overlap (solapamiento):** Gracias al overlap de 200 caracteres, los últimos 200 caracteres del Chunk 1 se repiten al inicio del Chunk 2. Esto garantiza que si una regla o precio justo cae en la línea de corte, no se pierda el contexto para el LLM.
 
 ### Modelo de Embeddings
-- **Modelo:** `models/gemini-embedding-2` (Google)
+- **Modelo:** `models/gemini-embedding-001` (Google)
 - **Justificación:** Requerido por el semillero. Alta calidad para texto en español.
 
 ### Modelo LLM
-- **Modelo:** Configurable vía `LLM_MODEL_NAME` en `.env` (default: `gemini-1.5-flash`)
+- **Modelo:** Configurable vía `LLM_MODEL_NAME` en `.env` (default: `gemini-flash-lite-latest`)
 - **Temperatura:** 0.1 para agentes (baja alucinación), 0.0 para clasificador (determinismo)
-- **Justificación:** Flash es rápido y económico para prototipo. Soporta visión multimodal.
+- **Justificación:** Flash Lite es rápido, económico y con mayor cuota de RPM en la capa gratuita. Soporta visión multimodal.
 
 ### Retrieval (top-k)
 - **top-k:** 4 fragmentos por consulta
