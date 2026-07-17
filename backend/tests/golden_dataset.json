@@ -1,0 +1,22 @@
+[
+    {
+        "question": "¿Tienen la Patito Pro 2026?",
+        "expected_intent": "catalogo_precios"
+    },
+    {
+        "question": "¿Me pueden hacer un descuento del 15%?",
+        "expected_intent": "politicas_comerciales"
+    },
+    {
+        "question": "Quiero comprar 3 licencias",
+        "expected_intent": "proceso_ventas"
+    },
+    {
+        "question": "Sí, quiero registrar la oportunidad a nombre de Carlos Pérez de la empresa TechCorp",
+        "expected_intent": "accion_registro"
+    },
+    {
+        "question": "¿Cuál es el precio del paquete Premium y tienen descuentos?",
+        "expected_intent": "mixta"
+    }
+]

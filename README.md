@@ -204,10 +204,14 @@ Caso_Practico_Semillero_IA/
 │   │   │   ├── accion_agent.py           # Agente de Acción (Registro)
 │   │   │   ├── registry.py              # Patrón Registry
 │   │   │   └── __init__.py              # Registro de todos los agentes
-│   │   ├── core/                         # Motor de IA
+│   │   ├── core/                         # Motor de IA y Seguridad
 │   │   │   ├── orchestrator.py           # LangGraph StateGraph (orquestador)
 │   │   │   ├── classifier.py            # Clasificador de intención (Gemini)
-│   │   │   └── llm.py                   # Cliente Gemini (LLM + Embeddings)
+│   │   │   ├── llm.py                   # Cliente Gemini (LLM + Embeddings)
+│   │   │   └── security.py              # Capa 3 de Sandboxing para prompts
+│   │   ├── evaluation/                   # Módulo de Evaluación (Juez LLM)
+│   │   │   ├── evaluator_agent.py       # Agente Juez con Pydantic
+│   │   │   └── schemas.py               # Rúbricas de evaluación
 │   │   ├── prompts/                      # System prompts (Markdown)
 │   │   │   ├── catalogo_prompt.md
 │   │   │   ├── politicas_prompt.md
@@ -235,7 +239,10 @@ Caso_Practico_Semillero_IA/
 │   │   ├── chroma_db/                    # Persistencia ChromaDB
 │   │   └── registro_oportunidades.txt    # Archivo de registro del agente de acción
 │   ├── scripts/
-│   │   └── ingest.py                    # Script de ingesta por colección
+│   │   ├── ingest.py                    # Script de ingesta por colección
+│   │   ├── evaluate.py                  # Script batch de evaluación (Juez LLM)
+│   │   ├── test_production.py           # Pruebas e2e simulando entorno prod
+│   │   └── healthcheck.py               # Verificación rápida de servicios
 │   ├── tests/                            # Pruebas
 │   ├── .env.example                      # Template de variables de entorno
 │   └── requirements.txt                  # Dependencias Python
@@ -257,10 +264,11 @@ Caso_Practico_Semillero_IA/
 
 - **`backend/`**: Contiene todo el núcleo de Inteligencia Artificial y el servidor (FastAPI).
   - **`app/agents/`**: Aquí residen los "cerebros" individuales. Cada archivo define a un agente especialista (Catálogo, Políticas, Acción, etc.) y su respectivo comportamiento.
-  - **`app/core/`**: Contiene el motor principal basado en LangGraph (`orchestrator.py`), que actúa como el jefe que recibe la pregunta, la clasifica (`classifier.py`) y dirige el tráfico hacia los agentes adecuados.
+  - **`app/core/`**: Contiene el motor principal basado en LangGraph (`orchestrator.py`), el clasificador (`classifier.py`), y los mecanismos de protección contra Inyección de Prompts (`security.py`).
+  - **`app/evaluation/`**: Sistema de "Juez LLM" para calificar automáticamente las respuestas del sistema según una rúbrica Pydantic estricta.
   - **`app/rag/`**: Módulos responsables de leer los archivos de texto, dividirlos, generar sus vectores (embeddings) con Gemini y conectarse a ChromaDB.
   - **`data/`**: Carpeta de almacenamiento local. Guarda los documentos de texto originales (`raw/`), la base de datos vectorial generada (`chroma_db/`) y el archivo de salida de cotizaciones (`registro_oportunidades.txt`).
-  - **`scripts/`**: Scripts de utilidad, destacando `ingest.py`, el cual debe ejecutarse por primera vez para poblar el conocimiento de los agentes.
+  - **`scripts/`**: Scripts de utilidad, incluyendo `ingest.py` (cargar vectores), `evaluate.py` (correr el Juez LLM) y `test_production.py` (probar endpoints).
 - **`frontend/`**: La interfaz de usuario moderna desarrollada en React/Next.js. Maneja la comunicación con el backend, el renderizado de los mensajes, el historial de chats y el diseño visual con TailwindCSS.
 - **`docs/`**: Destinada a almacenar diagramas, capturas de pantalla y documentación complementaria del proyecto.
 
@@ -359,7 +367,7 @@ pip install -r requirements.txt
 ```bash
 # Asegúrate de estar en la carpeta raíz principal (Caso_Practico_Semillero_IA)
 # NO dentro de backend/ ni frontend/
-docker-compose up -d postgres
+docker-compose up -d
 ```
 
 ![Docker Corriendo](docs/images/DOCKER%20CORRIENDO.png)
@@ -627,9 +635,39 @@ Dado el tamaño de nuestros documentos originales, la fragmentación genera muy 
 
 ## 🛠️ Troubleshooting (Solución de Problemas)
 
-- **Error de conexión a Postgres al iniciar el backend:** Esperá 5-10 segundos después de ejecutar `docker-compose up -d postgres` antes de levantar el backend. El contenedor tarda unos instantes en inicializarse y estar listo para aceptar conexiones.
-- **Error 429 de Gemini (Rate Limit):** Si usas la capa gratuita (free tier) de Google AI Studio, puedes alcanzar el límite de peticiones por minuto. Esperá unos segundos entre preguntas.
+- **Error de conexión a Postgres al iniciar el backend:** Esperá 5-10 segundos después de ejecutar `docker-compose up -d` antes de levantar el backend. El contenedor tarda unos instantes en inicializarse y estar listo para aceptar conexiones.
+- **Error 429 de Gemini (Rate Limit):** Si usas la capa gratuita (free tier) de Google AI Studio, puedes alcanzar el límite de peticiones por minuto rápidamente (15 RPM). Esto es **completamente normal** en esta arquitectura porque LangGraph dispara múltiples peticiones a la API por cada pregunta del usuario (clasificación -> enrutamiento -> respuesta final de 1 o más agentes). Para evitarlo, espera unos 10-15 segundos entre cada pregunta en el chat.
+- **Error 404 This model is no longer available:** Ocurre si usas una versión de modelo antigua o deprecada. Para evitar problemas con versiones, asegúrate de que tu `.env` tenga `LLM_MODEL_NAME=gemini-flash-lite-latest`.
 - **Error "collection not found" en ChromaDB:** Olvidaste correr el script de ingesta. Debes ejecutar `python scripts/ingest.py` dentro de la carpeta `backend` antes de levantar el servidor.
+
+---
+
+##  Pilares E-O-C-S y Próximos Pasos
+
+Este proyecto implementa los **4 pilares** que necesita cualquier sistema de IA en producción, integrados directamente en la arquitectura central.
+
+| Pilar | Implementación Actual | Ubicación |
+|:---|:---|:---|
+| **Evaluación** | Script Batch de Juez LLM que califica conversaciones con rúbrica Pydantic y guarda en DB | `scripts/evaluate.py`, `app/models/evaluation.py` |
+| **Observabilidad** | OTLP Exporter en `lifespan` + LangChainInstrumentor. Trazas completas en UI | `app/main.py` + Phoenix UI (`localhost:6006`) |
+| **Costos** | Extracción de tokens desde Gemini, cálculo de `$USD` y endpoint de agregación | `app/services/chat_service.py`, `app/api/v1/endpoints/metrics.py` |
+| **Seguridad** | 4 Capas: FastAPI Dependency (Capa 1), Hardening Prompts (Capa 2), Server-side Sandboxing (Capa 3), Output Validation (Capa 4) | `app/api/v1/dependencies.py`, `app/agents/accion_agent.py`, `app/services/chat_service.py` |
+
+### Pasos para probar en tu entorno:
+
+1. **Instalar dependencias:** `pip install -r requirements.txt` (incluye OpenTelemetry y Phoenix).
+2. **Levantar Servicios (Docker):** `docker-compose up -d` (Esto levanta tanto PostgreSQL como Phoenix en http://localhost:6006).
+3. **Aplicar migraciones BD:** Ocurre automáticamente al iniciar el servidor FastAPI (`uvicorn app.main:app`).
+4. **Probar el flujo completo:**
+   Envía peticiones a `POST /api/v1/chat` (o usa el frontend) y verifica las trazas (spans) capturadas automáticamente en Phoenix.
+5. **Consultar métricas de costos:**
+   Realiza una petición GET a `/api/v1/metrics/costs?days=7` para ver los costos agregados por intención.
+6. **Ejecutar Juez LLM (Evaluación Offline):**
+   Usa el nuevo script batch para calificar conversaciones reales guardadas en la BD:
+   ```bash
+   python scripts/evaluate.py
+   ```
+   *Esto guardará las métricas resultantes en la tabla `evaluations`.*
 
 ---
 

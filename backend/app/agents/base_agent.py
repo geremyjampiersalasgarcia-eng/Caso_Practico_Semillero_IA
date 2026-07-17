@@ -129,10 +129,19 @@ class BaseAgent(ABC):
                 sources=sources,
             )
         
+        # Extraer tokens
+        tokens_input = 0
+        tokens_output = 0
+        if hasattr(response, "usage_metadata") and response.usage_metadata:
+            tokens_input = response.usage_metadata.get("input_tokens", 0)
+            tokens_output = response.usage_metadata.get("output_tokens", 0)
+        
         # 4. Retornar
         return AgentResult(
             agent_name=self.name,
             answer=str(response.content),
-            sources=sources
+            sources=sources,
+            tokens_input=tokens_input,
+            tokens_output=tokens_output
         )
 

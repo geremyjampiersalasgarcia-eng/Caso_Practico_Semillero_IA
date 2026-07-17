@@ -19,6 +19,7 @@ def get_llm(temperature: Optional[float] = None) -> ChatGoogleGenerativeAI:
             model=settings.LLM_MODEL_NAME,
             google_api_key=settings.GOOGLE_API_KEY,
             temperature=temp,
+            max_retries=0,
         )
         return llm
     except Exception as e:

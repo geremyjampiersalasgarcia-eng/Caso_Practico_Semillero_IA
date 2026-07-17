@@ -30,6 +30,8 @@ class GraphState(TypedDict):
     agents_invoked: Annotated[List[str], operator.add]
     warnings: List[str]
     start_time: float
+    tokens_input: Annotated[int, operator.add]
+    tokens_output: Annotated[int, operator.add]
 
 
 # --------------------------------------------------------------------------- #
@@ -89,6 +91,8 @@ def node_catalogo(state: GraphState):
         return {
             "agent_results": [result],
             "agents_invoked": ["agente_catalogo"],
+            "tokens_input": getattr(result, "tokens_input", 0),
+            "tokens_output": getattr(result, "tokens_output", 0),
         }
     except Exception as e:
         logger.error("Error en agente catálogo", error=str(e))
@@ -106,6 +110,8 @@ def node_politicas(state: GraphState):
         return {
             "agent_results": [result],
             "agents_invoked": ["agente_politicas"],
+            "tokens_input": getattr(result, "tokens_input", 0),
+            "tokens_output": getattr(result, "tokens_output", 0),
         }
     except Exception as e:
         logger.error("Error en agente políticas", error=str(e))
@@ -123,6 +129,8 @@ def node_proceso_ventas(state: GraphState):
         return {
             "agent_results": [result],
             "agents_invoked": ["agente_proceso_ventas"],
+            "tokens_input": getattr(result, "tokens_input", 0),
+            "tokens_output": getattr(result, "tokens_output", 0),
         }
     except Exception as e:
         logger.error("Error en agente proceso ventas", error=str(e))
@@ -145,6 +153,8 @@ def node_multimodal(state: GraphState):
         return {
             "agent_results": [result],
             "agents_invoked": ["agente_multimodal"],
+            "tokens_input": getattr(result, "tokens_input", 0),
+            "tokens_output": getattr(result, "tokens_output", 0),
         }
     except Exception as e:
         logger.error("Error en agente multimodal", error=str(e))
@@ -168,6 +178,8 @@ def node_accion(state: GraphState):
         return {
             "agent_results": [result],
             "agents_invoked": ["agente_accion"],
+            "tokens_input": getattr(result, "tokens_input", 0),
+            "tokens_output": getattr(result, "tokens_output", 0),
         }
     except Exception as e:
         logger.error("Error en agente acción", error=str(e))
@@ -234,10 +246,19 @@ Genera una respuesta consolidada, única y bien estructurada."""
 
     try:
         response = llm.invoke([HumanMessage(content=prompt)])
+        
+        tokens_input = 0
+        tokens_output = 0
+        if hasattr(response, "usage_metadata") and response.usage_metadata:
+            tokens_input = response.usage_metadata.get("input_tokens", 0)
+            tokens_output = response.usage_metadata.get("output_tokens", 0)
+            
         return {
             "final_answer": response.content,
             "sources": all_sources,
             "warnings": warnings,
+            "tokens_input": tokens_input,
+            "tokens_output": tokens_output
         }
     except Exception as e:
         logger.error("Error consolidando", error=str(e))
@@ -249,6 +270,8 @@ Genera una respuesta consolidada, única y bien estructurada."""
             "final_answer": fallback,
             "sources": all_sources,
             "warnings": warnings + ["Error al consolidar; se muestran las respuestas individuales."],
+            "tokens_input": 0,
+            "tokens_output": 0
         }
 
 

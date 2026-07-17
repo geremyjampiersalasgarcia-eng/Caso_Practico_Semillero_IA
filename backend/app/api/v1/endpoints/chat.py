@@ -7,8 +7,14 @@ from app.utils.logger import logger
 
 router = APIRouter()
 
+from app.api.v1.dependencies import validar_input
+
+def get_validated_request(request: ChatRequest) -> ChatRequest:
+    validar_input(request.question)
+    return request
+
 @router.post("/", response_model=ChatResponse)
-def process_chat(request: ChatRequest, db: Session = Depends(get_db)):
+def process_chat(request: ChatRequest = Depends(get_validated_request), db: Session = Depends(get_db)):
     """
     Recibe una pregunta del usuario, invoca al orquestador y devuelve la respuesta final
     con las fuentes utilizadas.

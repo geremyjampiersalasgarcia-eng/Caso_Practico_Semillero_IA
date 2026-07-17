@@ -25,3 +25,9 @@ class AuditLog(Base):
     
     # Opcional: ID de la conversación a la que pertenece
     conversation_id: Mapped[str] = mapped_column(String, nullable=True)
+
+    # Observabilidad y Costos
+    trace_id: Mapped[str] = mapped_column(String, nullable=True)
+    tokens_input: Mapped[int] = mapped_column(Integer, nullable=True)
+    tokens_output: Mapped[int] = mapped_column(Integer, nullable=True)
+    cost_usd: Mapped[float] = mapped_column(Float, nullable=True)

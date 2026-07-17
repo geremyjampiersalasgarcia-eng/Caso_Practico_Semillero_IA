@@ -87,3 +87,17 @@ Condición de pago: Contado
 Monto total: 251.1
 Estado: Registrada
 ============================================================
+
+============================================================
+ID: OPP-20260717-3D8BE9
+Fecha: 2026-07-17 11:46:29
+Cliente: Comercial kkk
+Contacto: Geremy
+Producto: Patito Pro 2026
+Cantidad: 10
+Precio unitario (con descuento): 23.0
+Descuento aplicado: 8.0%
+Condición de pago: contado
+Monto total: 230.0
+Estado: Registrada
+============================================================

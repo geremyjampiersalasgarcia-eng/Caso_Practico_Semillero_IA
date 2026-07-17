@@ -206,6 +206,25 @@ Confirmación actual del usuario: {"SÍ, CONFIRMADO" if confirmation else "NO HA
                 logger.info("El LLM decidió ejecutar la herramienta", tool_calls=response.tool_calls)
                 tool_call = response.tool_calls[0]
                 
+                # ═══ CAPA 3: SANDBOXING — Validación server-side ═══
+                # El LLM NO tiene la última palabra. Solo ejecutamos si confirmation=True
+                # vino explícitamente del frontend/usuario, no confiando en que el LLM decidió bien.
+                if confirmation is not True:
+                    logger.warning(
+                        "Sandboxing: LLM quiso ejecutar tool sin confirmation=True, bloqueado.",
+                        agent=self.name
+                    )
+                    return AgentResult(
+                        agent_name=self.name,
+                        answer=(
+                            "📋 He preparado todos los datos para el registro. "
+                            "Sin embargo, por seguridad necesito tu **confirmación explícita** "
+                            "antes de guardar en el CRM.\n\n"
+                            "Responde **'Sí, registrar'** o usa el botón de confirmación."
+                        ),
+                        sources=sources,
+                    )
+                
                 # Ejecutar la herramienta localmente
                 tool_output = registrar_oportunidad_crm.invoke(tool_call["args"])  # type: ignore
                 

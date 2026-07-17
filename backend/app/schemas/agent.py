@@ -7,6 +7,8 @@ class AgentResult(BaseModel):
     agent_name: str
     answer: str
     sources: List[SourceInfo] = []
+    tokens_input: int = 0
+    tokens_output: int = 0
 
 class AgentInfo(BaseModel):
     """Información de registro estático de un agente"""

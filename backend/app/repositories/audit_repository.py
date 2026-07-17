@@ -12,7 +12,11 @@ class AuditRepository:
                    sources_retrieved: List[Dict],
                    latency_ms: float,
                    tokens_used: int = 0,
-                   conversation_id: Optional[str] = None) -> AuditLog:
+                   conversation_id: Optional[str] = None,
+                   trace_id: Optional[str] = None,
+                   tokens_input: Optional[int] = None,
+                   tokens_output: Optional[int] = None,
+                   cost_usd: Optional[float] = None) -> AuditLog:
                        
         log = AuditLog(
             intent_category=intent_category,
@@ -20,7 +24,11 @@ class AuditRepository:
             sources_retrieved=sources_retrieved,
             latency_ms=latency_ms,
             tokens_used=tokens_used,
-            conversation_id=conversation_id
+            conversation_id=conversation_id,
+            trace_id=trace_id,
+            tokens_input=tokens_input,
+            tokens_output=tokens_output,
+            cost_usd=cost_usd
         )
         
         self.db.add(log)

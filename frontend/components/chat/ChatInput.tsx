@@ -148,7 +148,7 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
           <div className="hidden sm:flex h-10 items-center shrink-0 relative">
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100/80 text-sm font-semibold text-slate-600 mr-2 cursor-default border border-slate-200/50">
               <Sparkles className="h-3.5 w-3.5 text-blue-500" />
-              <span>Gemini 2.5 Flash</span>
+              <span>Gemini Flash Lite</span>
             </div>
           </div>
 
