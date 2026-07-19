@@ -281,7 +281,7 @@ Para ejecutar y explorar este proyecto en tu entorno local, se recomienda contar
 - **Editor de Código:** [Visual Studio Code](https://code.visualstudio.com/) (o similar) indispensable para editar los archivos, configurar el archivo `.env` fácilmente y utilizar la terminal integrada.
 - **Python 3.11+** (Para ejecutar el backend y los agentes de IA).
 - **Node.js y npm** (Para levantar la interfaz gráfica del frontend).
-- **Docker Desktop** (Opcional, pero recomendado para levantar la base de datos PostgreSQL con un solo comando).
+- **Docker Desktop** (Requerido para levantar la base de datos PostgreSQL y el servidor de observabilidad Phoenix).
 
 ---
 
@@ -352,12 +352,10 @@ pip install -r requirements.txt
 > [!WARNING]
 > **ORDEN ESTRICTO DE EJECUCIÓN**
 > Para evitar errores de conexión o fallos silenciosos, los servicios **DEBEN** levantarse en la siguiente secuencia exacta:
-> 1. **Docker (PostgreSQL)** → Esperar a que el contenedor esté *Healthy* (listo para conexiones), no solo *Running*.
+> 1. **Docker (PostgreSQL y Phoenix)** → Esperar a que los contenedores estén *Healthy* (listos para conexiones), no solo *Running*.
 > 2. **Backend (FastAPI)** → Levantar el servidor Uvicorn.
 > 3. **Ingesta de datos (`ingest.py`)** → Ejecutar *después* de que la BD esté lista.
 > 4. **Frontend (Next.js)** → Último paso.
-> 
-> *Nota común:* Si ejecutas `docker-compose up -d`, la consola te devuelve el control casi al instante, pero Postgres tarda unos segundos más en aceptar conexiones reales. Asegúrate de esperar un momento antes de encender el backend.
 
 ### Paso 1: Levantar la Base de Datos (con Docker)
 
@@ -655,14 +653,12 @@ Este proyecto implementa los **4 pilares** que necesita cualquier sistema de IA 
 
 ### Pasos para probar en tu entorno:
 
-1. **Instalar dependencias:** `pip install -r requirements.txt` (incluye OpenTelemetry y Phoenix).
-2. **Levantar Servicios (Docker):** `docker-compose up -d postgres phoenix` (Esto levanta tanto PostgreSQL como Phoenix en http://localhost:6006).
-3. **Aplicar migraciones BD:** Ocurre automáticamente al iniciar el servidor FastAPI (`uvicorn app.main:app`).
-4. **Probar el flujo completo:**
-   Envía peticiones a `POST /api/v1/chat` (o usa el frontend) y verifica las trazas (spans) capturadas automáticamente en Phoenix.
-5. **Consultar métricas de costos:**
+1. **Aplicar migraciones BD:** Ocurre automáticamente al iniciar el servidor FastAPI (`uvicorn app.main:app`).
+2. **Probar el flujo completo:**
+   Envía peticiones a `POST /api/v1/chat` (o usa el frontend) y verifica las trazas (spans) capturadas automáticamente en Phoenix en http://localhost:6006.
+3. **Consultar métricas de costos:**
    Realiza una petición GET a `/api/v1/metrics/costs?days=7` para ver los costos agregados por intención.
-6. **Ejecutar Juez LLM (Evaluación Offline):**
+4. **Ejecutar Juez LLM (Evaluación Offline):**
    Usa el nuevo script batch para calificar conversaciones reales guardadas en la BD:
    ```bash
    python scripts/evaluate.py
