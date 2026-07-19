@@ -143,6 +143,68 @@ graph TD
     API --> DB[(PostgreSQL)]
 ```
 
+### Diagrama del Pipeline RAG — Ingesta y Consulta (Mermaid)
+
+```mermaid
+graph LR
+    subgraph Fase_1_Ingesta["Fase 1: Ingesta Offline (python scripts/ingest.py)"]
+        TXT1["01_Catalogo_Productos_Precios.txt"] --> Loader["loader.py\n(TextLoader, encoding UTF-8)"]
+        TXT2["02_Politicas_Comerciales.txt"] --> Loader
+        TXT3["03_Proceso_Ventas_CRM.txt"] --> Loader
+        Loader --> |"Documentos crudos"| Splitter["splitter.py\n(RecursiveCharacterTextSplitter)"]
+        Splitter --> |"chunks de ~1000 chars\n+ overlap 200"| Embeddings["embeddings.py\n(GoogleGenerativeAIEmbeddings\nmodelo: gemini-embedding-001)"]
+        Embeddings --> |"vectores numericos\nde alta dimensionalidad"| VDB1[("col_catalogo")]
+        Embeddings --> VDB2[("col_politicas")]
+        Embeddings --> VDB3[("col_proceso_ventas")]
+    end
+
+    subgraph Fase_2_Consulta["Fase 2: Consulta en Tiempo Real (POST /api/v1/chat)"]
+        Pregunta(["Pregunta del vendedor"]) --> EmbQ["Gemini Embedding\n(misma funcion de embeddings)"]
+        EmbQ --> |"vector de la pregunta"| Similitud["Busqueda por\nSimilitud Coseno"]
+        VDB1 --> Similitud
+        VDB2 --> Similitud
+        VDB3 --> Similitud
+        Similitud --> |"top-k = 4\nfragmentos relevantes"| Prompt["Construccion del Prompt\n(System Prompt + Contexto RAG\n+ Pregunta del usuario)"]
+        Prompt --> LLM["Gemini LLM\n(gemini-flash-lite-latest\ntemp=0.1)"]
+        LLM --> |"Respuesta generada\ncon citacion de fuentes"| Respuesta(["Respuesta fundamentada\nen documentos oficiales"])
+    end
+```
+
+### Diagrama de Seguridad y Observabilidad (Mermaid)
+
+```mermaid
+graph TD
+    Msg(["Mensaje del Usuario\n(texto o imagen)"]) --> Frontend["Frontend Next.js\n(localhost:3000)"]
+    Frontend --> |"HTTP POST\n/api/v1/chat"| Capa1
+
+    subgraph Guardrails["4 Capas de Seguridad (Guardrails)"]
+        Capa1["Capa 1: Validacion API\n(FastAPI Dependency)\nVerifica headers, formato JSON,\ntamano del payload"] --> |"Request valido"| Capa2
+        Capa1 --> |"Request invalido"| Reject1(["HTTP 400/422\nError de validacion"])
+        Capa2["Capa 2: Hardening de Prompts\n(System Prompt blindado)\nInstrucciones inmutables\ninyectadas en cada agente"] --> Capa3
+        Capa3["Capa 3: Sandboxing Server-Side\n(security.py)\nDeteccion de patrones de\ninyeccion de prompts"] --> |"Consulta limpia"| Orquestador
+        Capa3 --> |"Inyeccion detectada\n(ej: eres hacker)"| Reject2(["Respuesta corporativa:\nNo es posible procesar\ntu peticion"])
+    end
+
+    subgraph Procesamiento["Procesamiento Multi-Agente (LangGraph)"]
+        Orquestador["Orquestador\n(orchestrator.py)"] --> Clasificador["Clasificador de Intencion\n(Gemini temp=0.0)"]
+        Clasificador --> Router{{"Router Condicional"}}
+        Router --> |"catalogo / politicas\nproceso / multimodal\naccion / mixta"| Agentes["Agentes Especializados\n(5 agentes RAG + Accion)"]
+        Agentes --> Capa4["Capa 4: Validacion de Output\nVerifica que la respuesta\nno contenga alucinaciones"]
+    end
+
+    subgraph Observabilidad["Observabilidad Empresarial (Pilares E-O-C-S)"]
+        Orquestador --> |"LangChainInstrumentor\n(OpenTelemetry OTLP)"| Phoenix["Arize Phoenix\n(localhost:6006)"]
+        Phoenix --> Trazas["Trazas Completas\n(spans por cada nodo\ndel grafo LangGraph)"]
+        Phoenix --> Tokens["Consumo de Tokens\n(input + output\npor cada llamada a Gemini)"]
+        Phoenix --> Latencia["Latencia por Agente\n(tiempo de respuesta\nen milisegundos)"]
+        Agentes --> |"Metricas de costo\n(USD por consulta)"| PostgreSQL[("PostgreSQL\n(tablas: conversations,\nmetrics, evaluations)")]
+        Capa4 --> |"Evaluacion offline\nbatch automatico"| Juez["Juez LLM\n(evaluate.py)\nCalifica: relevancia,\nprecision, completitud"]
+        Juez --> |"Resultados guardados"| PostgreSQL
+    end
+
+    Capa4 --> |"JSON Response"| Frontend
+```
+
 ### Flujo de Inferencia Paso a Paso
 
 1. El usuario realiza una pregunta (opcionalmente adjunta imagen).
@@ -293,6 +355,9 @@ Para ejecutar y explorar este proyecto en tu entorno local, se recomienda contar
 git clone https://github.com/geremyjampiersalasgarcia-eng/Caso_Practico_Semillero_IA.git
 cd Caso_Practico_Semillero_IA
 ```
+
+> [!TIP]
+> Si no deseas usar Git, también puedes **descargar todo el proyecto como archivo ZIP** directamente desde GitHub: ve al repositorio, haz clic en el botón verde **"Code"** y selecciona **"Download ZIP"**. Luego descomprime la carpeta y continúa con el paso 2.
 
 ### 2. Configurar Variables de Entorno (IMPORTANTE)
 
