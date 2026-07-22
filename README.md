@@ -10,7 +10,7 @@ Este proyecto consiste en un sistema de Inteligencia Artificial diseñado para a
 
 ![Interfaz del Sistema](docs/images/FRONTEND.png)
 
-> 🎬 **[Ver video de demostración de la interfaz](docs/video/video-demostracion.mp4)** *(clic en "View raw" para reproducir)*
+> 🎬 **[Ver video de demostración completo (Explicación del Proyecto)](https://drive.google.com/file/d/1zAH33G5HU19qey2O28vIfI0UoLvow1jU/view?usp=sharing)**
 
 ---
 
