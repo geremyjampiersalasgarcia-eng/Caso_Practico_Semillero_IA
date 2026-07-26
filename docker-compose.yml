@@ -38,8 +38,8 @@ services:
     environment:
       DATABASE_URL: postgresql://mesa_ayuda_user:mesa_ayuda_pass_2024@postgres:5432/mesa_ayuda_db
       GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
-      LLM_MODEL_NAME: gemini-1.5-flash
-      EMBEDDING_MODEL_NAME: models/text-embedding-004
+      LLM_MODEL_NAME: gemini-flash-lite-latest
+      EMBEDDING_MODEL_NAME: models/gemini-embedding-001
       LLM_TEMPERATURE: "0.1"
       CHROMA_PERSIST_DIR: data/chroma_db
       CHUNK_SIZE: "1000"

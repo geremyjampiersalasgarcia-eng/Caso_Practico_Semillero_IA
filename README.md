@@ -1,4 +1,4 @@
-# Sistema Multi-Agente de IA para Ventas (Mesa de Ayuda RAG)
+#  Sistema Multi-Agente de IA para Ventas (Mesa de Ayuda RAG)
 
 **Proyecto Final — Semillero de Inteligencia Artificial**  
 **Desarrollador:** Geremy Jampier Salas Garcia  
@@ -20,34 +20,59 @@ Este proyecto consiste en un sistema de Inteligencia Artificial diseñado para a
 * [Arquitectura](#arquitectura)
 * [Agentes del Sistema](#agentes-del-sistema)
 * [Estructura del Proyecto](#estructura-del-proyecto)
+* [Requisitos Previos](#-requisitos-previos)
 * [Cómo empezar](#-cómo-empezar)
 * [Ingesta de Documentos](#-ingesta-de-documentos)
 * [Ejecutar el Proyecto](#-ejecutar-el-proyecto)
+* [Endpoints de la API](#endpoints-de-la-api)
 * [Ejemplos de Uso](#-ejemplos-de-uso)
+* [Testing y Calidad de Código](#-testing-y-calidad-de-código)
+* [Observabilidad y Evaluación (Pilares E-O-C-S)](#-pilares-e-o-c-s-y-próximos-pasos)
+* [CI/CD — Integración Continua](#-cicd--integración-continua)
 * [Decisiones Técnicas](#decisiones-técnicas)
 * [Riesgos y Mejoras Futuras](#riesgos-y-mejoras-futuras)
+* [Troubleshooting](#️-troubleshooting-solución-de-problemas)
+* [Licencia](#licencia)
 
 ---
 
 ## Stack Tecnológico
 
 ### Backend
-[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Python](https://img.shields.io/badge/Python_3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Uvicorn](https://img.shields.io/badge/Uvicorn-2F4F4F?style=for-the-badge&logo=gunicorn&logoColor=white)](https://www.uvicorn.org/)
 [![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)](https://www.langchain.com/)
 [![LangGraph](https://img.shields.io/badge/LangGraph-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)](https://langchain-ai.github.io/langgraph/)
-[![ChromaDB](https://img.shields.io/badge/ChromaDB-FF4F00?style=for-the-badge&logo=chroma&logoColor=white)](https://www.trychroma.com/)
 [![Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com/)
+[![ChromaDB](https://img.shields.io/badge/ChromaDB-FF4F00?style=for-the-badge&logo=chroma&logoColor=white)](https://www.trychroma.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white)](https://www.sqlalchemy.org/)
-[![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=for-the-badge&logo=pydantic&logoColor=white)](https://docs.pydantic.dev/)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Alembic](https://img.shields.io/badge/Alembic-6BA81E?style=for-the-badge&logo=alembic&logoColor=white)](https://alembic.sqlalchemy.org/)
+[![Pydantic](https://img.shields.io/badge/Pydantic_v2-E92063?style=for-the-badge&logo=pydantic&logoColor=white)](https://docs.pydantic.dev/)
 
 ### Frontend
 [![Next.js](https://img.shields.io/badge/Next.js_14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React_18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-000000?style=for-the-badge&logo=shadcnui&logoColor=white)](https://ui.shadcn.com/)
+
+### Observabilidad
+[![Arize Phoenix](https://img.shields.io/badge/Arize_Phoenix-FF6F00?style=for-the-badge&logo=apache-spark&logoColor=white)](https://phoenix.arize.com/)
+[![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-7B5EA7?style=for-the-badge&logo=opentelemetry&logoColor=white)](https://opentelemetry.io/)
+
+### Infraestructura y DevOps
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/features/actions)
+
+### Calidad de Código
+[![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)](https://docs.pytest.org/)
+[![Ruff](https://img.shields.io/badge/Ruff-D7FF64?style=for-the-badge&logo=ruff&logoColor=black)](https://docs.astral.sh/ruff/)
+[![Black](https://img.shields.io/badge/Black-000000?style=for-the-badge&logo=python&logoColor=white)](https://black.readthedocs.io/)
+[![Mypy](https://img.shields.io/badge/Mypy-2A6DB2?style=for-the-badge&logo=python&logoColor=white)](https://mypy-lang.org/)
+[![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)](https://eslint.org/)
+[![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)](https://prettier.io/)
 
 ### Justificación de Tecnologías Clave
 
@@ -58,10 +83,19 @@ Este proyecto consiste en un sistema de Inteligencia Artificial diseñado para a
 | **Agentes** | LangChain | Framework estándar para agentes, tools y chains. Requerido por el semillero. |
 | **Orquestación** | LangGraph (StateGraph) | Flujo de agentes como grafo explícito con enrutamiento condicional. |
 | **Vector store** | ChromaDB (local) | Persistente, rápido, sin servicios externos. Una colección por agente. |
-| **LLM & Embeddings** | Google Gemini (via `langchain-google-genai`) | `ChatGoogleGenerativeAI` para agentes, `GoogleGenerativeAIEmbeddings` para vectores. |
+| **LLM** | Google Gemini (`gemini-flash-lite-latest`) | Rápido, económico, alta cuota RPM en capa gratuita. Soporta visión multimodal. |
+| **Embeddings** | Google Gemini (`models/gemini-embedding-001`) | Alta calidad para texto en español. Integración nativa con LangChain. |
 | **Visión** | Gemini Vision | Capacidad multimodal nativa para análisis de imágenes de productos. |
-| **Base de datos** | PostgreSQL + Docker | Historial de conversaciones y auditoría robusta. |
-| **Frontend** | Next.js + Tailwind + Shadcn UI | Interfaz de chat moderna y responsive. |
+| **Base de datos** | PostgreSQL + Docker | Historial de conversaciones y auditoría robusta. Fallback automático a SQLite. |
+| **ORM** | SQLAlchemy + Alembic | Mapeo objeto-relacional con soporte para migraciones de esquema. |
+| **Frontend** | Next.js 14 + React 18 + Tailwind + Shadcn UI | Interfaz de chat moderna, responsive, con App Router y Server Components. |
+| **Markdown** | react-markdown + remark-gfm | Renderizado de respuestas con formato rico (tablas, negritas, listas). |
+| **Íconos** | lucide-react | Biblioteca de íconos consistente y ligera para la interfaz. |
+| **Observabilidad** | Arize Phoenix + OpenTelemetry | Trazas completas, consumo de tokens y latencia por agente en UI web. |
+| **Logging** | structlog | Logging estructurado (JSON) para análisis en producción. |
+| **Testing** | Pytest + pytest-cov + pytest-asyncio | Testing unitario, integración y e2e con cobertura. |
+| **Linting** | Ruff + Black + Mypy + ESLint + Prettier | Calidad de código, formateo automático y chequeo de tipos. |
+| **CI/CD** | GitHub Actions | 3 workflows automáticos (backend, frontend, Docker build). |
 
 ---
 
@@ -70,7 +104,7 @@ Este proyecto consiste en un sistema de Inteligencia Artificial diseñado para a
 ### Diagrama de alto nivel
 
 ```text
-Browser ──► Web UI (Next.js)  │  TypeScript + Tailwind + Shadcn
+Browser ──► Web UI (Next.js)  │  TypeScript + React + Tailwind + Shadcn
                 │
                 ▼
          HTTP (POST /api/v1/chat)
@@ -98,7 +132,8 @@ Browser ──► Web UI (Next.js)  │  TypeScript + Tailwind + Shadcn
 │                                                               │
 │  ChromaDB (3 colecciones: col_catalogo, col_politicas,        │
 │            col_proceso_ventas)                                │
-│  PostgreSQL (historial + auditoría)                           │
+│  PostgreSQL (historial + auditoría + oportunidades)           │
+│  SQLite (fallback automático si Docker no está disponible)    │
 └───────────────────────────────────────────────────────────────┘
 ```
 
@@ -244,9 +279,10 @@ graph TD
 - **Ejemplo:** *"Adjunto la foto de un producto: ¿cuál es, cuál es su precio de lista y está disponible?"*
 
 ### 5. Agente de Acción — Registro (`agente_accion`)
-- **Función:** Registra oportunidades/cotizaciones en `registro_oportunidades.txt`.
+- **Función:** Registra oportunidades/cotizaciones en `registro_oportunidades.txt` y en la tabla `oportunidades` de PostgreSQL.
 - **Validación:** Cliente, contacto, producto, cantidad, precio con descuento, condición de pago, monto total.
 - **Control:** Si falta algún dato → lo solicita. Si descuento > 10% → advierte autorización. Pide confirmación antes de escribir.
+- **Herramienta:** Usa `@tool` de LangChain (Function Calling) para ejecutar el registro de forma segura.
 - **Ejemplo:** *"Registra una oportunidad: cliente Comercial ABC, 10 unidades de Patito Pro 2026, 8% de descuento, pago de contado."*
 
 ---
@@ -257,24 +293,30 @@ graph TD
 Caso_Practico_Semillero_IA/
 ├── backend/                              # Backend Python / FastAPI
 │   ├── app/
-│   │   ├── agents/                       # Agentes especializados
-│   │   │   ├── base_agent.py             # Clase base (RAG + LLM)
-│   │   │   ├── catalogo_agent.py         # Agente de Catálogo y Precios
-│   │   │   ├── politicas_agent.py        # Agente de Políticas Comerciales
-│   │   │   ├── proceso_ventas_agent.py   # Agente de Proceso de Venta y CRM
-│   │   │   ├── multimodal_agent.py       # Agente Multimodal de Imagen
-│   │   │   ├── accion_agent.py           # Agente de Acción (Registro)
-│   │   │   ├── registry.py              # Patrón Registry
-│   │   │   └── __init__.py              # Registro de todos los agentes
-│   │   ├── core/                         # Motor de IA y Seguridad
-│   │   │   ├── orchestrator.py           # LangGraph StateGraph (orquestador)
-│   │   │   ├── classifier.py            # Clasificador de intención (Gemini)
-│   │   │   ├── llm.py                   # Cliente Gemini (LLM + Embeddings)
-│   │   │   └── security.py              # Capa 3 de Sandboxing para prompts
-│   │   ├── evaluation/                   # Módulo de Evaluación (Juez LLM)
-│   │   │   ├── evaluator_agent.py       # Agente Juez con Pydantic
-│   │   │   └── schemas.py               # Rúbricas de evaluación
-│   │   ├── prompts/                      # System prompts (Markdown)
+│   │   ├── __init__.py
+│   │   ├── main.py                      # Punto de entrada (lifespan, CORS, Phoenix)
+│   │   ├── config.py                    # Configuración global (Pydantic Settings)
+│   │   ├── dependencies.py              # Dependencies de nivel app
+│   │   ├── agents/                      # Agentes especializados
+│   │   │   ├── __init__.py              # register_all_agents()
+│   │   │   ├── base_agent.py            # Clase base abstracta (RAG + LLM)
+│   │   │   ├── catalogo_agent.py        # Agente de Catálogo y Precios
+│   │   │   ├── politicas_agent.py       # Agente de Políticas Comerciales
+│   │   │   ├── proceso_ventas_agent.py  # Agente de Proceso de Venta y CRM
+│   │   │   ├── multimodal_agent.py      # Agente Multimodal de Imagen
+│   │   │   ├── accion_agent.py          # Agente de Acción (Registro + @tool)
+│   │   │   └── registry.py             # Patrón Registry (lookup de agentes)
+│   │   ├── core/                        # Motor de IA y Seguridad
+│   │   │   ├── __init__.py
+│   │   │   ├── orchestrator.py          # LangGraph StateGraph (orquestador)
+│   │   │   ├── classifier.py           # Clasificador de intención (Gemini)
+│   │   │   ├── llm.py                  # Cliente Gemini (LLM + Embeddings)
+│   │   │   ├── security.py             # Capa 3 de Sandboxing para prompts
+│   │   │   └── exceptions.py           # Excepciones personalizadas (AppError)
+│   │   ├── evaluation/                  # Módulo de Evaluación (Juez LLM)
+│   │   │   ├── __init__.py
+│   │   │   └── rubrica.py              # Rúbrica Pydantic (6 métricas)
+│   │   ├── prompts/                     # System prompts (Markdown)
 │   │   │   ├── catalogo_prompt.md
 │   │   │   ├── politicas_prompt.md
 │   │   │   ├── proceso_ventas_prompt.md
@@ -282,57 +324,165 @@ Caso_Practico_Semillero_IA/
 │   │   │   ├── accion_prompt.md
 │   │   │   ├── classifier_prompt.md
 │   │   │   └── orchestrator_prompt.md
-│   │   ├── rag/                          # Pipeline RAG
-│   │   │   ├── loader.py                # Carga TXT/PDF
-│   │   │   ├── splitter.py              # Chunking (RecursiveCharacterTextSplitter)
-│   │   │   ├── embeddings.py            # GoogleGenerativeAIEmbeddings
-│   │   │   ├── retriever.py             # Búsqueda semántica en ChromaDB
-│   │   │   └── vectorstore.py           # Gestión de colecciones ChromaDB
-│   │   ├── api/v1/                       # Endpoints REST
-│   │   ├── services/                     # Lógica de negocio (ChatService)
-│   │   ├── models/                       # ORM (Conversaciones, Auditoría)
-│   │   ├── schemas/                      # DTOs Pydantic v2
-│   │   └── utils/                        # Logging (structlog)
+│   │   ├── rag/                         # Pipeline RAG
+│   │   │   ├── __init__.py
+│   │   │   ├── loader.py               # Carga TXT/PDF (TextLoader, PyPDF)
+│   │   │   ├── splitter.py             # Chunking (RecursiveCharacterTextSplitter)
+│   │   │   ├── embeddings.py           # Wrapper de GoogleGenerativeAIEmbeddings
+│   │   │   ├── retriever.py            # Búsqueda semántica en ChromaDB
+│   │   │   └── vectorstore.py          # Gestión de colecciones ChromaDB
+│   │   ├── api/                         # Endpoints REST
+│   │   │   ├── __init__.py
+│   │   │   ├── deps.py                 # Dependencies compartidas de API
+│   │   │   └── v1/
+│   │   │       ├── __init__.py
+│   │   │       ├── router.py           # Router principal v1
+│   │   │       ├── dependencies.py     # Validación de input (Capa 1)
+│   │   │       └── endpoints/
+│   │   │           ├── __init__.py
+│   │   │           ├── chat.py         # POST /chat
+│   │   │           ├── conversations.py # GET/DELETE /conversations
+│   │   │           ├── documents.py    # POST /documents/ingest
+│   │   │           ├── health.py       # GET /health
+│   │   │           └── metrics.py      # GET /metrics/costs
+│   │   ├── services/                    # Lógica de negocio
+│   │   │   ├── __init__.py
+│   │   │   └── chat_service.py         # ChatService (orquesta flujo completo)
+│   │   ├── repositories/               # Patrón Repository (acceso a BD)
+│   │   │   ├── __init__.py
+│   │   │   ├── conversation_repository.py  # CRUD de conversaciones
+│   │   │   └── audit_repository.py         # Logs de auditoría
+│   │   ├── models/                      # ORM SQLAlchemy
+│   │   │   ├── __init__.py
+│   │   │   ├── base.py                 # Base declarativa
+│   │   │   ├── conversation.py         # Tabla: conversations
+│   │   │   ├── message.py              # Tabla: messages
+│   │   │   ├── opportunity.py          # Tabla: oportunidades
+│   │   │   ├── audit_log.py            # Tabla: audit_logs
+│   │   │   └── evaluation.py           # Tabla: evaluations
+│   │   ├── schemas/                     # DTOs Pydantic v2
+│   │   │   ├── __init__.py
+│   │   │   ├── chat.py                 # Request/Response del chat
+│   │   │   ├── health.py               # Response del health check
+│   │   │   └── agent.py                # Schema de agentes
+│   │   ├── db/                          # Conexión a Base de Datos
+│   │   │   ├── __init__.py
+│   │   │   └── session.py              # Engine + SessionLocal (PG → SQLite fallback)
+│   │   └── utils/                       # Utilidades
+│   │       ├── __init__.py
+│   │       ├── logger.py               # Logging estructurado (structlog)
+│   │       └── metrics.py              # (Pendiente) Cálculo de tokens y costos
 │   ├── data/
-│   │   ├── raw/                          # Documentos base de conocimiento
+│   │   ├── raw/                         # Documentos base de conocimiento
 │   │   │   ├── 01_Catalogo_Productos_Precios.txt
 │   │   │   ├── 02_Politicas_Comerciales_Descuentos_Credito.txt
 │   │   │   └── 03_Proceso_Ventas_CRM.txt
-│   │   ├── chroma_db/                    # Persistencia ChromaDB
-│   │   └── registro_oportunidades.txt    # Archivo de registro del agente de acción
+│   │   ├── chroma_db/                   # Persistencia ChromaDB (auto-generado)
+│   │   └── registro_oportunidades.txt   # Archivo de registro del agente de acción
 │   ├── scripts/
-│   │   ├── ingest.py                    # Script de ingesta por colección
-│   │   ├── evaluate.py                  # Script batch de evaluación (Juez LLM)
-│   │   ├── test_production.py           # Pruebas e2e simulando entorno prod
-│   │   └── healthcheck.py               # Verificación rápida de servicios
-│   ├── tests/                            # Pruebas
-│   ├── .env.example                      # Template de variables de entorno
-│   └── requirements.txt                  # Dependencias Python
-├── frontend/                             # Interfaz Next.js + TypeScript
-│   ├── app/                              # Páginas principales y Layouts (App Router)
-│   ├── components/                       # Componentes React (UI, ChatInput, etc.)
-│   ├── hooks/                            # Custom hooks (e.g., useChat.ts)
-│   ├── lib/                              # Lógica de API (conexión con FastAPI)
-│   ├── types/                            # Definiciones de interfaces TypeScript
-│   ├── tailwind.config.ts                # Configuración de estilos CSS
-│   └── package.json                      # Dependencias de Node.js
-├── docs/                                 # Documentación técnica
-├── docker-compose.yml                    # PostgreSQL con Docker
-├── AGENTS.md                             # Definición de agentes
-└── README.md                             # Este archivo
+│   │   ├── ingest.py                   # Script de ingesta por colección
+│   │   ├── evaluate.py                 # Script batch de evaluación (Juez LLM)
+│   │   ├── test_production.py          # Pruebas e2e simulando entorno prod
+│   │   ├── healthcheck.py              # (Pendiente) Verificación rápida de servicios
+│   │   └── seed_db.py                  # (Pendiente) Poblado de datos iniciales en BD
+│   ├── tests/                           # Suite de pruebas
+│   │   ├── conftest.py                 # Fixtures compartidas (Pytest)
+│   │   ├── golden_dataset.json         # Dataset dorado para regresión
+│   │   ├── test_golden_regression.py   # Test de regresión con golden set
+│   │   ├── unit/                       # Tests unitarios
+│   │   │   ├── test_agents.py
+│   │   │   ├── test_classifier.py
+│   │   │   └── test_retriever.py
+│   │   ├── integration/                # Tests de integración
+│   │   │   └── test_chat_endpoint.py
+│   │   └── e2e/                        # Tests end-to-end
+│   │       └── test_full_flow.py
+│   ├── alembic/                         # Migraciones de BD (Alembic)
+│   │   ├── env.py
+│   │   └── versions/                   # Scripts de migración
+│   ├── alembic.ini                      # Configuración de Alembic
+│   ├── Dockerfile                       # Imagen Docker del backend
+│   ├── .dockerignore                    # Exclusiones para Docker build
+│   ├── .env.example                     # Template de variables de entorno
+│   ├── .env.test                        # Variables de entorno para tests
+│   ├── requirements.txt                 # Dependencias Python (producción)
+│   ├── requirements-dev.txt             # Dependencias Python (desarrollo)
+│   └── pyproject.toml                   # Config: Black, Ruff, Mypy, Pytest
+├── frontend/                            # Interfaz Next.js + TypeScript
+│   ├── app/                             # App Router (páginas y layouts)
+│   │   ├── layout.tsx                  # Layout raíz
+│   │   ├── page.tsx                    # Página principal (Chat)
+│   │   ├── globals.css                 # Estilos globales
+│   │   ├── icon.png                    # Favicon
+│   │   └── api/                        # API routes de Next.js
+│   ├── components/                      # Componentes React
+│   │   ├── chat/                       # Componentes del chat
+│   │   │   ├── ChatInput.tsx           # Input con adjuntar imagen
+│   │   │   ├── ChatWindow.tsx          # Ventana de mensajes
+│   │   │   ├── InputBox.tsx            # Caja de texto
+│   │   │   ├── MessageBubble.tsx       # Burbuja de mensaje
+│   │   │   ├── Sidebar.tsx             # Sidebar de conversaciones
+│   │   │   ├── SourcesBadge.tsx        # Badge de fuentes RAG
+│   │   │   └── TypingIndicator.tsx     # Indicador de escritura
+│   │   └── ui/                         # Componentes UI reutilizables
+│   │       ├── Button.tsx              # Botón estilizado
+│   │       └── Input.tsx               # Input estilizado
+│   ├── hooks/                           # Custom hooks
+│   │   └── useChat.ts                  # Hook principal de chat
+│   ├── lib/                             # Lógica de conexión
+│   │   ├── api.ts                      # Cliente HTTP (FastAPI)
+│   │   └── utils.ts                    # Utilidades (clsx, tailwind-merge)
+│   ├── types/                           # Definiciones TypeScript
+│   │   └── chat.ts                     # Interfaces de chat
+│   ├── public/                          # Assets estáticos
+│   ├── tests/                           # Tests del frontend
+│   │   ├── ChatWindow.test.tsx         # Test de componente
+│   │   └── api.test.ts                 # Test de cliente API
+│   ├── Dockerfile                       # Imagen Docker del frontend
+│   ├── .env.example                     # Template de env del frontend
+│   ├── next.config.js                   # Configuración de Next.js
+│   ├── tailwind.config.ts               # Configuración de Tailwind CSS
+│   ├── tsconfig.json                    # Configuración de TypeScript
+│   ├── postcss.config.js                # Configuración de PostCSS
+│   ├── .eslintrc.json                   # Configuración de ESLint
+│   ├── .prettierrc                      # Configuración de Prettier
+│   └── package.json                     # Dependencias de Node.js
+├── docs/                                # Documentación técnica
+│   ├── images/                         # Capturas de pantalla y pruebas
+│   │   ├── FRONTEND.png               # Screenshot de la interfaz
+│   │   ├── DOCKER CORRIENDO.png       # Screenshot de Docker
+│   │   ├── producto.webp              # Imagen de prueba (multimodal)
+│   │   └── artículo2.jpg              # Imagen de prueba (multimodal)
+│   └── video/                          # Videos de demostración
+├── .github/
+│   └── workflows/                      # CI/CD con GitHub Actions
+│       ├── ci-backend.yml             # (Pendiente) Lint + tests del backend
+│       ├── ci-frontend.yml            # (Pendiente) Lint + build del frontend
+│       └── docker-build.yml           # (Pendiente) Build de imágenes Docker
+├── docker-compose.yml                   # Orquestación: PostgreSQL + Phoenix + Backend + Frontend
+├── docker-compose.override.yml          # Override para desarrollo local
+├── .editorconfig                        # Configuración del editor (indentación, charset)
+├── .gitignore                           # Archivos excluidos del repositorio
+├── LICENSE                              # Licencia MIT
+├── CHANGELOG.md                         # Registro de cambios
+└── README.md                            # Este archivo
 ```
 
 ### Descripción de Directorios
 
 - **`backend/`**: Contiene todo el núcleo de Inteligencia Artificial y el servidor (FastAPI).
   - **`app/agents/`**: Aquí residen los "cerebros" individuales. Cada archivo define a un agente especialista (Catálogo, Políticas, Acción, etc.) y su respectivo comportamiento.
-  - **`app/core/`**: Contiene el motor principal basado en LangGraph (`orchestrator.py`), el clasificador (`classifier.py`), y los mecanismos de protección contra Inyección de Prompts (`security.py`).
-  - **`app/evaluation/`**: Sistema de "Juez LLM" para calificar automáticamente las respuestas del sistema según una rúbrica Pydantic estricta.
+  - **`app/core/`**: Contiene el motor principal basado en LangGraph (`orchestrator.py`), el clasificador (`classifier.py`), las excepciones personalizadas (`exceptions.py`) y los mecanismos de protección contra Inyección de Prompts (`security.py`).
+  - **`app/evaluation/`**: Sistema de "Juez LLM" con rúbrica Pydantic estricta (`rubrica.py`) que califica 6 métricas: precisión de precios, citación de fuentes, autorización de descuentos, completitud CRM, tono y longitud.
   - **`app/rag/`**: Módulos responsables de leer los archivos de texto, dividirlos, generar sus vectores (embeddings) con Gemini y conectarse a ChromaDB.
+  - **`app/repositories/`**: Implementa el **Patrón Repository** para separar el acceso a datos de la lógica de negocio, con repositorios para conversaciones (`conversation_repository.py`) y auditoría (`audit_repository.py`).
+  - **`app/db/`**: Gestión de la conexión a base de datos con SQLAlchemy (`session.py`). Implementa fallback automático de PostgreSQL a SQLite si Docker no está disponible.
   - **`data/`**: Carpeta de almacenamiento local. Guarda los documentos de texto originales (`raw/`), la base de datos vectorial generada (`chroma_db/`) y el archivo de salida de cotizaciones (`registro_oportunidades.txt`).
-  - **`scripts/`**: Scripts de utilidad, incluyendo `ingest.py` (cargar vectores), `evaluate.py` (correr el Juez LLM) y `test_production.py` (probar endpoints).
-- **`frontend/`**: La interfaz de usuario moderna desarrollada en React/Next.js. Maneja la comunicación con el backend, el renderizado de los mensajes, el historial de chats y el diseño visual con TailwindCSS.
-- **`docs/`**: Destinada a almacenar diagramas, capturas de pantalla y documentación complementaria del proyecto.
+  - **`scripts/`**: Scripts de utilidad, incluyendo `ingest.py` (cargar vectores), `evaluate.py` (correr el Juez LLM), `test_production.py` (probar endpoints) y `seed_db.py` (datos de prueba).
+  - **`tests/`**: Suite completa de pruebas organizada en capas: tests unitarios, de integración, e2e y regresión con golden dataset.
+- **`frontend/`**: La interfaz de usuario moderna desarrollada en React/Next.js. Maneja la comunicación con el backend, el renderizado de los mensajes con Markdown enriquecido (react-markdown + remark-gfm), el historial de chats y el diseño visual con TailwindCSS + Shadcn UI.
+- **`docs/`**: Almacena diagramas, capturas de pantalla, imágenes de prueba para el agente multimodal y documentación complementaria del proyecto.
+- **`.github/workflows/`**: Pipelines de **Integración Continua** con GitHub Actions para lint, testing y build Docker automáticos.
 
 ---
 
@@ -342,7 +492,7 @@ Para ejecutar y explorar este proyecto en tu entorno local, se recomienda contar
 
 - **Editor de Código:** [Visual Studio Code](https://code.visualstudio.com/) (o similar) indispensable para editar los archivos, configurar el archivo `.env` fácilmente y utilizar la terminal integrada.
 - **Python 3.11+** (Para ejecutar el backend y los agentes de IA).
-- **Node.js y npm** (Para levantar la interfaz gráfica del frontend).
+- **Node.js 20+ y npm** (Para levantar la interfaz gráfica del frontend).
 - **Docker Desktop** (Requerido para levantar la base de datos PostgreSQL y el servidor de observabilidad Phoenix).
 
 ---
@@ -359,7 +509,7 @@ cd Caso_Practico_Semillero_IA
 > [!TIP]
 > Si no deseas usar Git, también puedes **descargar todo el proyecto como archivo ZIP** directamente desde GitHub: ve al repositorio, haz clic en el botón verde **"Code"** y selecciona **"Download ZIP"**. Luego descomprime la carpeta y continúa con el paso 2.
 
-### 2. Configurar Variables de Entorno (IMPORTANTE)
+### 2. Configurar Variables de Entorno del Backend (IMPORTANTE)
 
 **La GOOGLE_API_KEY es obligatoria** para que funcionen los agentes, embeddings y el clasificador.
 
@@ -379,7 +529,21 @@ GOOGLE_API_KEY=tu_api_key_aqui
 
 El archivo `.env` está excluido en `.gitignore` — no hay riesgo de subir tu clave a GitHub.
 
-### 3. Instalar dependencias de Python
+### 3. Configurar Variables de Entorno del Frontend
+
+```bash
+cd frontend
+cp .env.example .env.local
+# En Windows: copy .env.example .env.local
+```
+
+El archivo ya viene preconfigurado con la URL del backend por defecto:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+```
+
+### 4. Instalar dependencias de Python
 
 ```bash
 cd backend
@@ -389,6 +553,13 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
+> [!TIP]
+> **Para desarrollo** (linting, formateo, type checking), instala las dependencias adicionales:
+> ```bash
+> pip install -r requirements-dev.txt
+> ```
+> Esto incluye **Ruff** (linter), **Black** (formatter), **Mypy** (type checker) y sus dependencias.
+
 ---
 
 ## 📥 Ingesta de Documentos
@@ -397,7 +568,7 @@ pip install -r requirements.txt
 
 **Flujo de ingesta:**
 
-1. `loader.py` lee los 3 archivos TXT de `data/raw/`
+1. `loader.py` lee los 3 archivos TXT de `data/raw/` (también soporta PDF vía `pypdf`)
 2. `splitter.py` los divide en chunks de ~1000 caracteres con 200 de overlap (RecursiveCharacterTextSplitter)
 3. `embeddings.py` genera vectores con `GoogleGenerativeAIEmbeddings` (modelo `models/gemini-embedding-001`)
 4. `vectorstore.py` almacena cada documento en **su propia colección** ChromaDB:
@@ -450,6 +621,10 @@ python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 > | `messages` | Mensajes, fuentes RAG y anexos (imágenes Base64). |
 > | `oportunidades` | Registros del CRM (Cotizaciones del Agente de Acción). |
 > | `audit_logs` | Telemetría (latencia, agentes invocados, intención). |
+> | `evaluations` | Resultados del Juez LLM (6 métricas por conversación). |
+
+> [!TIP]
+> **Fallback automático a SQLite:** Si PostgreSQL (Docker) no está disponible, el sistema detecta la falla y hace un *fallback* automático a SQLite, garantizando la continuidad del servicio sin requerir intervención manual.
 
 ### Paso 3: Ingesta de Documentos
 
@@ -476,6 +651,7 @@ npm run dev
 | Backend API | http://localhost:8000/docs | Swagger UI interactivo |
 | Frontend UI | http://localhost:3000 | Interfaz de chat |
 | PostgreSQL | `localhost:5433` | Base de datos (vía Docker) |
+| Phoenix UI | http://localhost:6006 | Observabilidad y trazas |
 
 ---
 
@@ -485,10 +661,11 @@ npm run dev
 | :--- | :--- | :--- |
 | `POST` | `/api/v1/chat` | Envía pregunta al orquestador. Acepta `question`, `image` (base64), `confirmation` (bool). |
 | `GET` | `/api/v1/conversations` | Lista historial de conversaciones. |
-| `GET` | `/api/v1/conversations/{id}` | Detalle de una conversación. |
+| `GET` | `/api/v1/conversations/{id}` | Detalle de una conversación con sus mensajes. |
 | `DELETE` | `/api/v1/conversations/{id}` | Elimina una conversación. |
-| `GET` | `/api/v1/health` | Estado del servicio. |
-| `GET` | `/api/v1/documents` | Lista documentos indexados. |
+| `GET` | `/api/v1/health` | Estado del servicio y componentes (BD, LLM). |
+| `POST` | `/api/v1/documents/ingest` | Dispara ingesta de documentos en ChromaDB (background). |
+| `GET` | `/api/v1/metrics/costs` | Costos agregados por intención de los últimos N días. Parámetro: `?days=7`. |
 
 ### Ejemplo de request `POST /api/v1/chat`
 
@@ -516,6 +693,19 @@ npm run dev
 {
   "question": "Registra una oportunidad: cliente Comercial ABC, 10 unidades Patito Pro 2026, 8% descuento, contado",
   "confirmation": true
+}
+```
+
+### Ejemplo de respuesta `GET /api/v1/metrics/costs?days=7`:
+
+```json
+{
+  "period_days": 7,
+  "total_cost_usd": 0.0023,
+  "by_intent": [
+    { "intent": "catalogo_precios", "cost_usd": 0.0012, "requests": 5 },
+    { "intent": "politicas_comerciales", "cost_usd": 0.0008, "requests": 3 }
+  ]
 }
 ```
 
@@ -568,7 +758,7 @@ npm run dev
 3. **Usuario responde:** *Contacto: Geremy, el precio es $23.*
 4. **Respuesta del agente:** Presenta resumen con datos calculados (precio con descuento: $21.16, monto total: $211.60) y pide confirmación.
 5. **Usuario responde:** *Sí, registrar.*
-6. **Acción final:** Se ejecuta la herramienta (Function Calling) y genera un registro con ID único (ej. OPP-20260706-A3F2B1) en `data/registro_oportunidades.txt`.
+6. **Acción final:** Se ejecuta la herramienta (Function Calling) y genera un registro con ID único (ej. OPP-20260706-A3F2B1) en `data/registro_oportunidades.txt` **y** en la tabla `oportunidades` de PostgreSQL.
 
 ---
 
@@ -598,6 +788,141 @@ Además, para garantizar persistencia, **cada oportunidad se inserta simultánea
 
 ---
 
+## 🧪 Testing y Calidad de Código
+
+### Pruebas Implementadas
+
+El proyecto cuenta con **2 suites de pruebas funcionales** que validan el sistema de punta a punta:
+
+#### 1. Test de Regresión con Golden Dataset (`test_golden_regression.py`)
+
+Test automatizado con **Pytest** que ejecuta un dataset de preguntas doradas contra el orquestador LangGraph y verifica que el flujo completo (clasificación → enrutamiento → respuesta) no esté roto:
+
+```text
+backend/tests/
+├── test_golden_regression.py   # ✅ Test funcional con Pytest (48 líneas)
+└── golden_dataset.json         # ✅ 5 casos de prueba (catálogo, políticas, proceso, acción, mixta)
+```
+
+**Ejecutar:**
+
+```bash
+cd backend
+pytest tests/test_golden_regression.py -v
+```
+
+#### 2. Script de Pruebas de Producción (`test_production.py`)
+
+Script completo (120 líneas) que simula un entorno productivo y valida los **4 pilares E-O-C-S** automáticamente:
+
+```bash
+python scripts/test_production.py
+```
+
+Este script ejecuta las siguientes pruebas en secuencia:
+
+| Prueba | Qué valida |
+|:---|:---|
+| **Seguridad** | Envía un ataque de inyección de prompt y verifica que sea bloqueado |
+| **Chat RAG** | Envía una consulta normal y mide latencia, agente invocado y calidad de respuesta |
+| **Costos** | Consulta `GET /metrics/costs` y verifica los costos agregados |
+| **Evaluación** | Ejecuta `scripts/evaluate.py` (Juez LLM batch) y reporta resultados |
+
+#### Estructura de Tests Preparada (para futura implementación)
+
+Se dejó preparada la estructura de directorios para expandir la cobertura de pruebas en el futuro:
+
+```text
+backend/tests/
+├── unit/                       # (Pendiente) Tests unitarios
+│   ├── test_agents.py          
+│   ├── test_classifier.py      
+│   └── test_retriever.py       
+├── integration/                # (Pendiente) Tests de integración
+│   └── test_chat_endpoint.py   
+└── e2e/                        # (Pendiente) Tests end-to-end
+    └── test_full_flow.py       
+
+frontend/tests/
+├── ChatWindow.test.tsx         # (Pendiente) Test de componente React
+└── api.test.ts                 # (Pendiente) Test del cliente HTTP
+```
+
+### Herramientas de Calidad de Código
+
+La configuración de calidad de código se encuentra centralizada en `pyproject.toml`:
+
+| Herramienta | Propósito | Comando |
+|:---|:---|:---|
+| **Ruff** | Linter ultra-rápido (pycodestyle, pyflakes, isort, bugbear) | `ruff check .` |
+| **Black** | Formateo automático de código (line-length: 88) | `black .` |
+| **Mypy** | Chequeo estático de tipos | `mypy app/` |
+| **ESLint** | Linter para TypeScript/React (frontend) | `npm run lint` |
+| **Prettier** | Formateo automático del frontend | Integrado en el editor |
+
+---
+
+## 🔬 Pilares E-O-C-S y Próximos Pasos
+
+Este proyecto implementa los **4 pilares** que necesita cualquier sistema de IA en producción, integrados directamente en la arquitectura central.
+
+| Pilar | Implementación Actual | Ubicación |
+|:---|:---|:---|
+| **Evaluación** | Script Batch de Juez LLM que califica conversaciones con rúbrica Pydantic (6 métricas) y guarda en DB | `scripts/evaluate.py`, `app/evaluation/rubrica.py`, `app/models/evaluation.py` |
+| **Observabilidad** | OTLP Exporter en `lifespan` + LangChainInstrumentor. Trazas completas en UI | `app/main.py` + Phoenix UI (`localhost:6006`) |
+| **Costos** | Extracción de tokens desde Gemini, cálculo de `$USD` y endpoint de agregación | `app/services/chat_service.py`, `app/api/v1/endpoints/metrics.py` |
+| **Seguridad** | 4 Capas: FastAPI Dependency (Capa 1), Hardening Prompts (Capa 2), Server-side Sandboxing (Capa 3), Output Validation (Capa 4) | `app/api/v1/dependencies.py`, `app/core/security.py`, `app/agents/accion_agent.py`, `app/services/chat_service.py` |
+
+### Rúbrica del Juez LLM (6 métricas)
+
+El sistema de evaluación automática califica cada conversación con las siguientes métricas Pydantic (escala 1-5):
+
+| Métrica | Qué evalúa |
+|:---|:---|
+| `precision_precio` | ¿El precio citado coincide con el catálogo? |
+| `cita_fuentes` | ¿Mencionó de qué documento sacó la información? |
+| `autorizacion_descuento` | ¿Advirtió autorización si el descuento > 10%? |
+| `completitud_crm` | ¿Pidió todos los campos obligatorios para el registro? |
+| `tono` | ¿Tono profesional, amable y corporativo? |
+| `longitud` | ¿Respuesta concisa y precisa sin excesos? |
+
+### Pasos para probar en tu entorno:
+
+1. **Aplicar migraciones BD:** Ocurre automáticamente al iniciar el servidor FastAPI (`uvicorn app.main:app`).
+2. **Probar el flujo completo:**
+   Envía peticiones a `POST /api/v1/chat` (o usa el frontend) y verifica las trazas (spans) capturadas automáticamente en Phoenix en http://localhost:6006.
+3. **Consultar métricas de costos:**
+   Realiza una petición GET a `/api/v1/metrics/costs?days=7` para ver los costos agregados por intención.
+4. **Ejecutar Juez LLM (Evaluación Offline):**
+   Usa el nuevo script batch para calificar conversaciones reales guardadas en la BD:
+   ```bash
+   python scripts/evaluate.py
+   ```
+   *Esto guardará las métricas resultantes en la tabla `evaluations`.*
+
+---
+
+## 🔄 CI/CD — Integración Continua (Estructura Preparada)
+
+El proyecto incluye la **estructura base** de 3 workflows de GitHub Actions, listos para ser implementados:
+
+```text
+.github/workflows/
+├── ci-backend.yml       # (Pendiente) Lint + tests del backend Python
+├── ci-frontend.yml      # (Pendiente) Lint + build del frontend Next.js
+└── docker-build.yml     # (Pendiente) Build de imágenes Docker
+```
+
+| Workflow | Propósito Planeado |
+|:---|:---|
+| **CI Backend** | Ruff lint → Pytest → Mypy |
+| **CI Frontend** | npm install → ESLint → next build |
+| **Docker Build** | Construir imágenes Docker de backend y frontend |
+
+> **Nota:** Los archivos de workflow ya están creados con la estructura de directorios necesaria. Para activarlos, se necesita implementar la sintaxis YAML de GitHub Actions dentro de cada archivo.
+
+---
+
 ## Decisiones Técnicas
 
 ### Arquitectura de Software vs. Jupyter Notebook
@@ -605,7 +930,7 @@ A diferencia de enfoques académicos que agrupan todo el código en un único ar
 
 **¿Por qué se tomó esta decisión?**
 1. **Realismo Empresarial:** En la industria, las soluciones de IA no se despliegan en notebooks. Se integran a través de APIs REST (FastAPI) y se consumen desde interfaces de usuario (React/Next.js) para que los usuarios no técnicos puedan interactuar con ellas.
-2. **Modularidad y Mantenimiento:** Separar los agentes (`agents/`), la orquestación (`core/`) y la conexión a la base de datos (`rag/`, `db/`) permite que múltiples desarrolladores trabajen en paralelo sin conflictos, y facilita la escritura de pruebas unitarias.
+2. **Modularidad y Mantenimiento:** Separar los agentes (`agents/`), la orquestación (`core/`), los repositorios (`repositories/`) y la conexión a la base de datos (`rag/`, `db/`) permite que múltiples desarrolladores trabajen en paralelo sin conflictos, y facilita la escritura de pruebas unitarias.
 3. **Persistencia Robusta:** Un notebook pierde su estado al reiniciarse. Este sistema utiliza PostgreSQL y ChromaDB montados en volúmenes para garantizar que el historial y la memoria de la empresa persistan de forma segura a lo largo del tiempo.
 4. **Tolerancia a Fallos:** Se implementó un diseño tolerante a fallos donde si PostgreSQL (Docker) no está disponible, el sistema detecta la falla y hace un *fallback* automático a SQLite, garantizando la continuidad del servicio sin requerir intervención manual.
 
@@ -620,8 +945,11 @@ El framework **LangChain** es el pilar de la solución de IA y se utiliza extens
 ### Uso de PostgreSQL y SQLite (Fallback)
 El proyecto implementa una base de datos relacional (PostgreSQL) usando SQLAlchemy como ORM, empleada estrictamente para dos objetivos:
 1. **Persistencia del Historial de Chat:** Guarda cada conversación (`Conversation`), los mensajes del usuario y las respuestas de los agentes (`Message`). Esto permite recuperar el contexto y mostrar el historial previo al usuario al recargar la página.
-2. **Registro de Auditoría:** Guarda un log detallado (`AuditLog`) de cada petición procesada por el sistema. Registra la intención detectada, el agente que respondió, las fuentes utilizadas y el tiempo de latencia. *Nota: La base de conocimiento y los vectores no se guardan en PostgreSQL, sino en ChromaDB.*
+2. **Registro de Auditoría y Oportunidades:** Guarda un log detallado (`AuditLog`) de cada petición procesada por el sistema. Registra la intención detectada, el agente que respondió, las fuentes utilizadas y el tiempo de latencia. También persiste las oportunidades del CRM (`Oportunidad`) con todos sus campos. *Nota: La base de conocimiento y los vectores no se guardan en PostgreSQL, sino en ChromaDB.*
 (El sistema cuenta con un mecanismo de *fallback* a SQLite si el contenedor de PostgreSQL no está disponible).
+
+### Patrón Repository
+Se implementó el **Patrón Repository** (`app/repositories/`) para separar la capa de acceso a datos de la lógica de negocio. Los repositorios (`ConversationRepository`, `AuditRepository`) encapsulan las operaciones CRUD sobre SQLAlchemy, facilitando el testing con mocks y la eventual migración a otros backends de datos.
 
 ### Estrategia de Chunking
 - **Tamaño:** 1000 caracteres con 200 de overlap
@@ -666,6 +994,16 @@ Dado el tamaño de nuestros documentos originales, la fragmentación genera muy 
 - **Elección:** `LangGraph (StateGraph)` en lugar de LangChain AgentExecutor clásico o un Router Chain simple.
 - **Justificación:** LangGraph permite modelar el flujo de trabajo como un grafo de estados (StateGraph). Esto nos otorga un control total, predecible y determinista sobre el enrutamiento. En lugar de tener un solo agente tomando decisiones arbitrarias (que puede entrar en bucles infinitos o alucinar llamadas a herramientas), con LangGraph diseñamos una tubería estricta: primero se clasifica la intención (nodo `classify`), luego se toma una decisión de enrutamiento (nodo condicional), se ejecutan los agentes pertinentes (incluso en paralelo para consultas mixtas) y finalmente se consolida. Esto garantiza escalabilidad, reduce el consumo de tokens y facilita la integración del Agente de Acción y el Agente Multimodal.
 
+### Manejo de Errores Centralizado
+Se implementó un sistema de excepciones personalizadas (`app/core/exceptions.py`) con clases específicas:
+- `AppError` — Base para todos los errores
+- `AgentNotFoundError` — Agente no registrado
+- `RAGRetrievalError` — Error al recuperar documentos de ChromaDB
+- `InsufficientContextError` — Información insuficiente en la base documental
+- `LLMConnectionError` — Error de conexión con Gemini
+
+Todas las excepciones son capturadas por un handler global de FastAPI que retorna respuestas JSON estandarizadas con `error_code` y `message`.
+
 ---
 
 ## Riesgos y Mejoras Futuras
@@ -677,7 +1015,7 @@ Dado el tamaño de nuestros documentos originales, la fragmentación genera muy 
 | Alucinación del LLM | Respuestas inventadas | Prompt estricto + temp baja + validación "no encontré información" |
 | API Key expuesta | Seguridad | `.env` + `.gitignore` + `.env.example` sin credenciales |
 | Documentos pequeños | Chunks redundantes | Ajuste de chunk_size. Monitorear calidad de retrieval |
-| Costos de API Gemini | Consumo de tokens | Modelo Flash (económico), cacheo futuro |
+| Costos de API Gemini | Consumo de tokens | Modelo Flash Lite (económico), cacheo futuro |
 | Concurrencia | Escritura simultánea en registro_oportunidades.txt | File lock o migrar a BD en producción |
 | Latencia en consultas mixtas | 3 agentes + LLM consolidador | Ejecución paralela en LangGraph |
 
@@ -705,36 +1043,17 @@ Dado el tamaño de nuestros documentos originales, la fragmentación genera muy 
 
 ---
 
-##  Pilares E-O-C-S y Próximos Pasos
-
-Este proyecto implementa los **4 pilares** que necesita cualquier sistema de IA en producción, integrados directamente en la arquitectura central.
-
-| Pilar | Implementación Actual | Ubicación |
-|:---|:---|:---|
-| **Evaluación** | Script Batch de Juez LLM que califica conversaciones con rúbrica Pydantic y guarda en DB | `scripts/evaluate.py`, `app/models/evaluation.py` |
-| **Observabilidad** | OTLP Exporter en `lifespan` + LangChainInstrumentor. Trazas completas en UI | `app/main.py` + Phoenix UI (`localhost:6006`) |
-| **Costos** | Extracción de tokens desde Gemini, cálculo de `$USD` y endpoint de agregación | `app/services/chat_service.py`, `app/api/v1/endpoints/metrics.py` |
-| **Seguridad** | 4 Capas: FastAPI Dependency (Capa 1), Hardening Prompts (Capa 2), Server-side Sandboxing (Capa 3), Output Validation (Capa 4) | `app/api/v1/dependencies.py`, `app/agents/accion_agent.py`, `app/services/chat_service.py` |
-
-### Pasos para probar en tu entorno:
-
-1. **Aplicar migraciones BD:** Ocurre automáticamente al iniciar el servidor FastAPI (`uvicorn app.main:app`).
-2. **Probar el flujo completo:**
-   Envía peticiones a `POST /api/v1/chat` (o usa el frontend) y verifica las trazas (spans) capturadas automáticamente en Phoenix en http://localhost:6006.
-3. **Consultar métricas de costos:**
-   Realiza una petición GET a `/api/v1/metrics/costs?days=7` para ver los costos agregados por intención.
-4. **Ejecutar Juez LLM (Evaluación Offline):**
-   Usa el nuevo script batch para calificar conversaciones reales guardadas en la BD:
-   ```bash
-   python scripts/evaluate.py
-   ```
-   *Esto guardará las métricas resultantes en la tabla `evaluations`.*
-
----
-
 ## Licencia
 
-Proyecto académico — Semillero de Inteligencia Artificial.
+MIT License
+
+Copyright (c) 2026 Geremy Jampier Salas Garcia
+
+Se concede permiso, libre de cargos, a cualquier persona que obtenga una copia de este software y de los archivos de documentación asociados (el "Software"), para utilizar el Software sin restricción, incluyendo sin limitación los derechos a usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar, y/o vender copias del Software, y a permitir a las personas a las que se les proporcione el Software a hacer lo mismo, sujeto a las siguientes condiciones:
+
+El aviso de copyright anterior y este aviso de permiso se incluirán en todas las copias o partes sustanciales del Software.
+
+EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO.
 
 ---
 
@@ -746,5 +1065,5 @@ Proyecto académico — Semillero de Inteligencia Artificial.
   </p>
   
   <br>
-  <sub><i>Desarrollado con LangChain, LangGraph y Google Gemini</i></sub>
+  <sub><i>Desarrollado con LangChain, LangGraph, Google Gemini, ChromaDB, FastAPI, Next.js, PostgreSQL y Arize Phoenix</i></sub>
 </div>

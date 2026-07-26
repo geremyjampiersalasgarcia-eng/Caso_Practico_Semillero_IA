@@ -16,8 +16,8 @@ class Settings(BaseSettings):
     GOOGLE_API_KEY: str = Field(default="")
     
     # LLM y Embeddings
-    LLM_MODEL_NAME: str = Field(default="gemini-1.5-flash")
-    EMBEDDING_MODEL_NAME: str = Field(default="models/gemini-embedding-2")
+    LLM_MODEL_NAME: str = Field(default="gemini-flash-lite-latest")
+    EMBEDDING_MODEL_NAME: str = Field(default="models/gemini-embedding-001")
     LLM_TEMPERATURE: float = Field(default=0.1)
     
     # Base de Datos
