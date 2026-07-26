@@ -554,11 +554,12 @@ pip install -r requirements.txt
 ```
 
 > [!TIP]
-> **Para desarrollo** (linting, formateo, type checking), instala las dependencias adicionales:
+> **(Opcional) Para desarrollo y contribución:**
+> Si planeas modificar el código o ejecutar los tests locales, puedes instalar las dependencias de desarrollo. **NO es necesario** para que el sistema y la IA funcionen normalmente:
 > ```bash
 > pip install -r requirements-dev.txt
 > ```
-> Esto incluye **Ruff** (linter), **Black** (formatter), **Mypy** (type checker) y sus dependencias.
+> Esto incluye herramientas exclusivas para programadores como **Pytest**, **Ruff** (linter), **Black** (formatter) y **Mypy** (type checker).
 
 ---
 
