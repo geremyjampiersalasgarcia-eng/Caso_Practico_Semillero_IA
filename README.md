@@ -1056,6 +1056,16 @@ El aviso de copyright anterior y este aviso de permiso se incluirán en todas la
 EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO.
 
 ---
+## 📚 ¿Tienes alguna duda?
+
+Si después de revisar este repositorio aún tienes preguntas sobre la arquitectura, la implementación, los agentes o el funcionamiento del sistema, puedes consultar la documentación técnica completa del proyecto.
+
+👉 **Documentación oficial (Mintlify):**  
+https://mintlify.wiki/geremyjampiersalasgarcia-eng/Caso_Practico_Semillero_IA
+
+Allí encontrarás explicaciones detalladas de la arquitectura, el pipeline RAG, los agentes, la API, la estructura del proyecto, diagramas, decisiones técnicas y otros aspectos de implementación que complementan este repositorio.
+
+---
 
 <div align="center">
   <h3> Desarrollado por </h3>
