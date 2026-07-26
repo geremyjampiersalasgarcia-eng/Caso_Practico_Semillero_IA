@@ -511,7 +511,7 @@ cd Caso_Practico_Semillero_IA
 
 ### 2. Configurar Variables de Entorno del Backend (IMPORTANTE)
 
-**La GOOGLE_API_KEY es obligatoria** para que funcionen los agentes, embeddings y el clasificador.
+**Es ESTRICTAMENTE NECESARIO crear el archivo `.env` dentro de la carpeta `backend/`** copiando el contenido de `.env.example` y configurando tu propia clave. La `GOOGLE_API_KEY` es obligatoria para que funcionen los agentes, embeddings y el clasificador.
 
 ```bash
 cd backend
@@ -519,7 +519,7 @@ cp .env.example .env
 # En Windows: copy .env.example .env
 ```
 
-Abre el archivo `.env` y pega tu clave de Google Gemini:
+Abre el nuevo archivo `.env` que acabas de crear y reemplaza el valor de `GOOGLE_API_KEY` con tu propia clave de Google Gemini:
 
 ```env
 GOOGLE_API_KEY=tu_api_key_aqui
