@@ -101,3 +101,17 @@ Condición de pago: contado
 Monto total: 230.0
 Estado: Registrada
 ============================================================
+
+============================================================
+ID: OPP-20260726-44DC82
+Fecha: 2026-07-26 17:53:36
+Cliente: Comercial LLC
+Contacto: Miranda
+Producto: Patito Pro 2026
+Cantidad: 14
+Precio unitario (con descuento): 23.0
+Descuento aplicado: 8.0%
+Condición de pago: Contado
+Monto total: 322.0
+Estado: Registrada
+============================================================
