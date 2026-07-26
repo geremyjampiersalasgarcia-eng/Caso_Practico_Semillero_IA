@@ -553,13 +553,7 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-> [!TIP]
-> **(Opcional) Para desarrollo y contribución:**
-> Si planeas modificar el código o ejecutar los tests locales, puedes instalar las dependencias de desarrollo. **NO es necesario** para que el sistema y la IA funcionen normalmente:
-> ```bash
-> pip install -r requirements-dev.txt
-> ```
-> Esto incluye herramientas exclusivas para programadores como **Pytest**, **Ruff** (linter), **Black** (formatter) y **Mypy** (type checker).
+
 
 ---
 
