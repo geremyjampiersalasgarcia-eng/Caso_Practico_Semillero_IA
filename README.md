@@ -499,6 +499,9 @@ Para ejecutar y explorar este proyecto en tu entorno local, se recomienda contar
 
 ## 🚀 Cómo empezar
 
+> [!IMPORTANT]
+> **Es SUMAMENTE NECESARIO seguir este paso a paso al pie de la letra.** Si te saltas un paso o cambias el orden, podrías experimentar errores. Pero si sigues la guía paso a paso, ¡te garantizo que el sistema funcionará perfectamente a la primera!
+
 ### 1. Clonar el repositorio
 
 ```bash
@@ -1060,6 +1063,13 @@ EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO.
   
   <p>
     <img src="https://img.icons8.com/fluency/48/user-male-circle.png" width="22" height="22" style="vertical-align: middle; margin-right: 5px;" /> <b>Geremy Jampier Salas Garcia</b>
+  </p>
+
+  <p>
+    <a href="https://www.linkedin.com/in/geremy-jampier-salas-garcia" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
+    <a href="https://github.com/geremyjampiersalasgarcia-eng" target="_blank"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+    <a href="https://geremysalas.vercel.app/" target="_blank"><img src="https://img.shields.io/badge/Portafolio-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white" alt="Portfolio"></a>
+    <a href="mailto:geremyjampiersalasgarcia@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"></a>
   </p>
   
   <br>
