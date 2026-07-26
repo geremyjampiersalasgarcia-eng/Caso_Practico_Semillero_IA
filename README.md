@@ -590,8 +590,8 @@ pip install -r requirements.txt
 > **ORDEN ESTRICTO DE EJECUCIÓN**
 > Para evitar errores de conexión o fallos silenciosos, los servicios **DEBEN** levantarse en la siguiente secuencia exacta:
 > 1. **Docker (PostgreSQL y Phoenix)** → Esperar a que los contenedores estén *Healthy* (listos para conexiones), no solo *Running*.
-> 2. **Backend (FastAPI)** → Levantar el servidor Uvicorn.
-> 3. **Ingesta de datos (`ingest.py`)** → Ejecutar *después* de que la BD esté lista.
+> 2. **Ingesta de datos (`ingest.py`)** → Ejecutar para poblar la base de datos vectorial (ChromaDB) antes de las consultas.
+> 3. **Backend (FastAPI)** → Levantar el servidor Uvicorn.
 > 4. **Frontend (Next.js)** → Último paso.
 
 ### Paso 1: Levantar la Base de Datos (con Docker)
@@ -607,7 +607,19 @@ docker-compose up -d postgres phoenix
 
 ![Docker Corriendo](docs/images/DOCKER%20CORRIENDO.png)
 
-### Paso 2: Levantar el Backend
+### Paso 2: Ingesta de Documentos
+
+Ejecuta el script para poblar la base de datos vectorial ChromaDB antes de levantar el servidor para que los agentes ya tengan contexto:
+
+```bash
+cd backend
+# .\venv\Scripts\activate  (Si usas Windows, activa el entorno primero)
+python scripts/ingest.py
+```
+
+### Paso 3: Levantar el Backend
+
+Abre una **nueva terminal** (dejando la consola de ingest si quieres, o ahí mismo) y ejecuta el backend:
 
 ```bash
 cd backend
@@ -626,16 +638,6 @@ python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 > [!TIP]
 > **Fallback automático a SQLite:** Si PostgreSQL (Docker) no está disponible, el sistema detecta la falla y hace un *fallback* automático a SQLite, garantizando la continuidad del servicio sin requerir intervención manual.
-
-### Paso 3: Ingesta de Documentos
-
-Abre una **nueva terminal** (dejando el backend corriendo en la otra), y ejecuta el script para poblar ChromaDB:
-
-```bash
-cd backend
-# .\venv\Scripts\activate  (Si usas Windows, activa el entorno primero)
-python scripts/ingest.py
-```
 
 ### Paso 4: Levantar el Frontend
 

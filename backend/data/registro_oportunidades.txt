@@ -115,3 +115,17 @@ Condición de pago: Contado
 Monto total: 322.0
 Estado: Registrada
 ============================================================
+
+============================================================
+ID: OPP-20260726-C69BAF
+Fecha: 2026-07-26 18:43:57
+Cliente: Comercial CYY
+Contacto: Geremy
+Producto: Patito Pro 2026
+Cantidad: 10
+Precio unitario (con descuento): 21.16
+Descuento aplicado: 8.0%
+Condición de pago: Contado
+Monto total: 211.6
+Estado: Registrada
+============================================================
