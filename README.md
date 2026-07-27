@@ -776,6 +776,9 @@ Además, para garantizar persistencia, **cada oportunidad se inserta simultánea
 
 ## 🧪 Testing y Calidad de Código
 
+> [!NOTE]
+> **(Sección Avanzada)** Lee esta sección solo si deseas saber más del proyecto a nivel técnico. No es necesario ejecutar estas pruebas para utilizar el sistema, pero demuestran las buenas prácticas de ingeniería de software implementadas.
+
 ### Pruebas Implementadas
 
 El proyecto cuenta con **2 suites de pruebas funcionales** que validan el sistema de punta a punta:
