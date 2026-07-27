@@ -532,21 +532,7 @@ GOOGLE_API_KEY=tu_api_key_aqui
 
 El archivo `.env` está excluido en `.gitignore` — no hay riesgo de subir tu clave a GitHub.
 
-### 3. Configurar Variables de Entorno del Frontend
-
-```bash
-cd frontend
-cp .env.example .env.local
-# En Windows: copy .env.example .env.local
-```
-
-El archivo ya viene preconfigurado con la URL del backend por defecto:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
-```
-
-### 4. Instalar dependencias de Python
+### 3. Instalar dependencias de Python
 
 ```bash
 cd backend
